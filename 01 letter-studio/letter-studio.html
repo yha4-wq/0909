@@ -17,140 +17,339 @@ img{max-width:100%}
 </style>
 <style>
 :root{
-  --ground:#F5F3F7;
+  color-scheme: light;
+
+  /* warm white, biased a touch toward the rose accent rather than neutral grey */
+  --ground:#FAF8F7;
   --surface:#FFFFFF;
-  --paper:#FFFDFB;
-  --paper-line:#E7E1EC;
-  --ink:#26202E;
-  --muted:#6B6276;
-  --line:#DDD6E4;
-  --accent:#C92A62;
+  --raised:#FFFFFF;
+  --paper:#FFFDFC;
+  --paper-line:#F0E9EC;
+  --ink:#1C1A1D;
+  --ink-soft:#453F48;
+  --muted:#7A7280;
+  --faint:#A8A1AC;
+  --line:#EDE7EA;
+  --line-strong:#E0D8DD;
+  --accent:#C8446A;
   --accent-ink:#FFFFFF;
-  --gold:#C9962E;
-  --soft:#FBE7EE;
-  --focus:#7B4FD6;
-  --display:"Gowun Batang", "Iowan Old Style", Georgia, serif;
-  --body:"Gowun Dodum", "Avenir Next", "Segoe UI", system-ui, sans-serif;
-  --hand:"Nanum Pen Script", "Bradley Hand", "Segoe Print", cursive;
-}
-@media (prefers-color-scheme: dark){
-  :root:not([data-theme="light"]){
-    --ground:#16121B; --surface:#211B28; --paper:#2A2331; --paper-line:#3A3243;
-    --ink:#F1ECF5; --muted:#A99FB4; --line:#3A3243;
-    --accent:#F0679A; --accent-ink:#1B1220; --gold:#E7BE63; --soft:#3A2230; --focus:#B69BFF;
-  }
-}
-:root[data-theme="dark"]{
-  --ground:#16121B; --surface:#211B28; --paper:#2A2331; --paper-line:#3A3243;
-  --ink:#F1ECF5; --muted:#A99FB4; --line:#3A3243;
-  --accent:#F0679A; --accent-ink:#1B1220; --gold:#E7BE63; --soft:#3A2230; --focus:#B69BFF;
+  --accent-soft:#FDF3F6;
+  --accent-edge:#F3D9E2;
+  --gold:#B8863B;
+  --focus:#8A5BD6;
+
+  --shadow-sm:0 1px 2px rgba(28,26,29,.04), 0 2px 8px rgba(28,26,29,.04);
+  --shadow-md:0 2px 4px rgba(28,26,29,.03), 0 12px 28px -12px rgba(28,26,29,.14);
+  --shadow-lg:0 4px 8px rgba(28,26,29,.03), 0 28px 56px -24px rgba(28,26,29,.22);
+
+  --display:"Gowun Batang","Iowan Old Style",Georgia,serif;
+  --body:"Gowun Dodum","Pretendard","Avenir Next","Segoe UI",system-ui,sans-serif;
+  --hand:"Nanum Pen Script","Bradley Hand","Segoe Print",cursive;
+
+  --ease:cubic-bezier(.22,.61,.36,1);
 }
 
 *{box-sizing:border-box}
 [hidden]{display:none!important}
-body{background:var(--ground);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.6}
-.wrap{max-width:1240px;margin:0 auto;padding-inline:24px}
-@media (max-width:600px){.wrap{padding-inline:16px}}
+
+body{
+  background:var(--ground);
+  color:var(--ink);
+  font-family:var(--body);
+  font-size:16px;
+  line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+}
+
+.wrap{max-width:1080px;margin-inline:auto;padding-inline:32px}
+@media (max-width:720px){.wrap{padding-inline:20px}}
+@media (max-width:400px){.wrap{padding-inline:16px}}
+
 a{color:inherit}
-:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
-h1,h2,h3{font-family:var(--display);font-weight:700;text-wrap:balance;margin:0;line-height:1.2}
+:focus-visible{outline:2px solid var(--focus);outline-offset:3px;border-radius:4px}
+
+h1,h2,h3{font-family:var(--display);font-weight:700;text-wrap:balance;margin:0;line-height:1.22;letter-spacing:-.01em}
 p{margin:0}
 
-/* header */
-.site-head{border-bottom:1px solid var(--line);background:var(--surface)}
-.site-head .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:14px;flex-wrap:wrap}
-.brand{display:flex;align-items:baseline;gap:8px;text-decoration:none}
-.brand b{font-family:var(--display);font-size:1.7rem;letter-spacing:.02em;color:var(--ink)}
-.brand span{font-size:.85rem;color:var(--muted)}
-.brand i{width:9px;height:9px;border-radius:50%;background:var(--accent);display:inline-block;transform:translateY(-2px)}
-nav ul{list-style:none;margin:0;padding:0;display:flex;gap:4px 20px;flex-wrap:wrap;font-size:.92rem}
-nav a{text-decoration:none;color:var(--muted)}
-nav a:hover,nav a[aria-current]{color:var(--ink)}
-nav a[aria-current]{border-bottom:2px solid var(--accent)}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
+}
 
-/* intro */
-.intro{padding-block:44px 28px;display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:24px 48px;align-items:end}
-.eyebrow{font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:10px}
-.intro h1{font-size:clamp(2rem,4.4vw,3.2rem)}
-.intro h1 em{font-style:normal;font-family:var(--hand);font-weight:400;color:var(--accent);font-size:1.25em;line-height:1}
-.intro p{color:var(--muted);max-width:44ch}
-@media (max-width:800px){.intro{grid-template-columns:1fr;padding-block:32px 20px}}
+/* ---------------------------------------------------------------- header */
+.site-head{
+  position:sticky;top:env(safe-area-inset-top,0px);z-index:20;
+  background:rgba(255,255,255,.82);
+  backdrop-filter:saturate(1.4) blur(14px);
+  -webkit-backdrop-filter:saturate(1.4) blur(14px);
+  border-bottom:1px solid var(--line);
+}
+.site-head .wrap{display:flex;align-items:center;justify-content:space-between;gap:18px;padding-block:15px;flex-wrap:wrap}
+.brand{display:flex;align-items:baseline;gap:9px;text-decoration:none}
+.brand b{font-family:var(--display);font-size:1.6rem;letter-spacing:-.015em;color:var(--ink);font-weight:700}
+.brand span{font-size:.8rem;color:var(--faint);letter-spacing:.02em}
+.brand i{width:7px;height:7px;border-radius:50%;background:var(--accent);display:inline-block;transform:translateY(-3px)}
+nav ul{list-style:none;margin:0;padding:0;display:flex;gap:2px 26px;flex-wrap:wrap;font-size:.9rem}
+nav a{text-decoration:none;color:var(--muted);position:relative;padding-block:3px;transition:color .2s var(--ease)}
+nav a::after{
+  content:"";position:absolute;left:0;right:0;bottom:-2px;height:1.5px;
+  background:var(--accent);transform:scaleX(0);transform-origin:left;
+  transition:transform .28s var(--ease);
+}
+nav a:hover{color:var(--ink)}
+nav a:hover::after,nav a[aria-current]::after{transform:scaleX(1)}
+nav a[aria-current]{color:var(--ink)}
 
-/* studio */
-.studio{display:grid;grid-template-columns:minmax(280px,340px) minmax(0,1fr) minmax(0,.86fr);gap:20px;align-items:start;padding-bottom:56px}
-@media (max-width:1060px){.studio{grid-template-columns:minmax(0,1fr) minmax(0,.86fr)} .composer{grid-column:1 / -1}}
-@media (max-width:680px){.studio{grid-template-columns:1fr}}
+/* ----------------------------------------------------------------- intro */
+.intro{
+  padding-block:76px 40px;
+  display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);
+  gap:28px 64px;align-items:end;
+}
+.eyebrow{
+  font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);
+  margin-bottom:16px;font-weight:600;
+}
+.intro h1{font-size:clamp(2.1rem,4.6vw,3.4rem);letter-spacing:-.025em}
+.intro h1 em{
+  font-style:normal;font-family:var(--hand);font-weight:400;color:var(--accent);
+  font-size:1.28em;line-height:.9;
+}
+.intro p{color:var(--muted);max-width:42ch;font-size:1.02rem}
+@media (max-width:840px){.intro{grid-template-columns:1fr;padding-block:52px 32px;gap:20px}}
 
-.composer{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:22px;display:flex;flex-direction:column;gap:16px}
-.composer h2{font-size:1.25rem}
-.composer .hint{font-size:.88rem;color:var(--muted);margin-top:4px}
-.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-@media (max-width:1060px) and (min-width:681px){.form-grid{grid-template-columns:repeat(4,minmax(0,1fr))} .span-all{grid-column:1 / -1}}
+/* animate the opener from a visible resting state */
+.intro > *{animation:rise .7s var(--ease) both}
+.intro > *:nth-child(2){animation-delay:.09s}
+@keyframes rise{from{opacity:.001;transform:translateY(14px)}to{opacity:1;transform:none}}
+
+/* ---------------------------------------------------------------- studio */
+.studio{max-width:840px;margin-inline:auto;padding-bottom:88px}
+
+/* progress rail — the fill encodes how far along the five steps you are */
+.stepbar{list-style:none;display:flex;gap:4px;margin:0 0 22px;padding:0;counter-reset:s}
+.stepbar li{
+  flex:1;min-width:0;font-size:.72rem;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--faint);padding-top:11px;position:relative;
+  display:flex;gap:8px;align-items:baseline;
+  transition:color .32s var(--ease);
+}
+.stepbar li::after{
+  content:"";position:absolute;top:0;left:0;right:0;height:2px;border-radius:2px;background:var(--line-strong);
+}
+.stepbar li::before{
+  counter-increment:s;content:counter(s);
+  font-variant-numeric:tabular-nums;font-size:.74rem;font-weight:600;
+}
+.stepbar li[data-state="current"]{color:var(--ink)}
+.stepbar li[data-state="done"]{color:var(--accent)}
+.stepbar li[data-state="done"]::before{content:"✓";font-size:.8rem}
+.stepbar li[data-state="current"]::after,
+.stepbar li[data-state="done"]::after{
+  background:var(--accent);
+  animation:railFill .5s var(--ease) both;
+}
+@keyframes railFill{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+.stepbar li::after{transform-origin:left}
+.stepbar .label{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+@media (max-width:620px){.stepbar .label{display:none}.stepbar li{justify-content:center}}
+
+.composer{
+  background:var(--surface);
+  border:1px solid var(--line);
+  border-radius:20px;
+  padding:34px 34px 26px;
+  display:flex;flex-direction:column;gap:22px;
+  box-shadow:var(--shadow-md);
+}
+@media (max-width:620px){.composer{padding:24px 20px 20px;border-radius:16px}}
+.composer h2{font-size:1.55rem;letter-spacing:-.02em}
+.composer .hint{font-size:.92rem;color:var(--muted);margin-top:7px}
+
+.step{display:flex;flex-direction:column;gap:22px;animation:stepIn .42s var(--ease) both}
+@keyframes stepIn{from{opacity:.001;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+@media (max-width:560px){.form-grid{grid-template-columns:1fr}}
 .span-all{grid-column:1 / -1}
-.field{display:flex;flex-direction:column;gap:6px;min-width:0}
-label,.legend{font-size:.76rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
-input[type=text],select,textarea{font:inherit;color:var(--ink);background:var(--ground);border:1px solid var(--line);border-radius:8px;padding:9px 11px;width:100%}
-textarea{min-height:128px;resize:vertical;line-height:1.5}
-input:focus,select:focus,textarea:focus{border-color:var(--focus);outline:none;box-shadow:0 0 0 3px color-mix(in srgb,var(--focus) 22%,transparent)}
+.field{display:flex;flex-direction:column;gap:8px;min-width:0}
 fieldset{border:0;padding:0;margin:0;min-width:0}
-.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+
+label,.legend{
+  font-size:.7rem;letter-spacing:.15em;text-transform:uppercase;
+  color:var(--faint);font-weight:600;
+}
+
+input[type=text],select,textarea{
+  font:inherit;color:var(--ink);background:var(--ground);
+  border:1px solid var(--line);border-radius:11px;padding:12px 14px;width:100%;
+  transition:border-color .2s var(--ease),box-shadow .2s var(--ease),background .2s var(--ease);
+}
+input[type=text]:hover,textarea:hover,select:hover{border-color:var(--line-strong)}
+textarea{min-height:142px;resize:vertical;line-height:1.6}
+input:focus,select:focus,textarea:focus{
+  border-color:var(--accent);background:var(--surface);outline:none;
+  box-shadow:0 0 0 4px var(--accent-soft);
+}
+
+/* chips — small exclusive choices */
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
 .chips input{position:absolute;opacity:0;pointer-events:none}
-.chips label{text-transform:none;letter-spacing:0;font-size:.9rem;color:var(--ink);border:1px solid var(--line);border-radius:999px;padding:5px 12px;cursor:pointer;background:var(--ground)}
-.chips input:checked + label{background:var(--ink);color:var(--ground);border-color:var(--ink)}
+.chips label{
+  text-transform:none;letter-spacing:0;font-size:.92rem;font-weight:400;color:var(--ink-soft);
+  border:1px solid var(--line);border-radius:999px;padding:7px 15px;cursor:pointer;
+  background:var(--surface);
+  transition:border-color .2s var(--ease),background .2s var(--ease),color .2s var(--ease),transform .2s var(--ease);
+}
+.chips label:hover{border-color:var(--accent-edge);transform:translateY(-1px)}
+.chips input:checked + label{background:var(--ink);color:var(--surface);border-color:var(--ink)}
 .chips input:focus-visible + label{outline:2px solid var(--focus);outline-offset:2px}
+
+/* option cards — the bigger catalogues (relationship, occasion, style) */
+.optgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(158px,1fr));gap:10px}
+.optgrid input{position:absolute;opacity:0;pointer-events:none}
+.optgrid label{
+  text-transform:none;letter-spacing:0;font-size:.95rem;font-weight:400;color:var(--ink);
+  border:1px solid var(--line);border-radius:13px;padding:13px 15px;cursor:pointer;
+  background:var(--surface);display:flex;flex-direction:column;gap:3px;line-height:1.35;
+  transition:border-color .2s var(--ease),background .2s var(--ease),transform .2s var(--ease),box-shadow .2s var(--ease);
+}
+.optgrid label small{color:var(--faint);font-size:.76rem}
+.optgrid label:hover{border-color:var(--accent-edge);transform:translateY(-2px);box-shadow:var(--shadow-sm)}
+.optgrid input:checked + label{
+  border-color:var(--accent);background:var(--accent-soft);
+  box-shadow:0 0 0 1px var(--accent) inset;
+}
+.optgrid input:checked + label small{color:var(--accent)}
+.optgrid input:focus-visible + label{outline:2px solid var(--focus);outline-offset:2px}
+
+/* ------------------------------------------------------------- controls */
+.wizard-nav{
+  display:flex;gap:10px;align-items:center;flex-wrap:wrap;
+  border-top:1px solid var(--line);padding-top:20px;
+}
+.wizard-nav .spacer{flex:1}
 .actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-.btn{font:inherit;font-size:.95rem;border-radius:999px;padding:10px 20px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer;display:inline-flex;align-items:center;gap:8px}
-.btn:hover{border-color:var(--ink)}
-.btn:disabled{opacity:.5;cursor:default}
-.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);font-weight:600}
-.btn.primary:hover{filter:brightness(1.06)}
-.btn.small{padding:6px 14px;font-size:.86rem}
-.status{font-size:.86rem;color:var(--muted);min-height:1.4em}
 
-/* output panels */
-.panel-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap}
-.panel-head h2{font-size:1.05rem}
-.tag{font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;border-radius:999px;padding:2px 10px;background:var(--soft);color:var(--accent)}
-.paper{background:var(--paper);border:1px solid var(--line);border-radius:4px;box-shadow:0 1px 0 var(--line),0 14px 30px -18px rgba(38,32,46,.35);padding:34px 34px 40px;position:relative;min-height:440px}
-.paper::before{content:"";position:absolute;top:0;bottom:0;left:22px;width:1px;background:color-mix(in srgb,var(--accent) 30%,transparent)}
-.letter{font-family:var(--hand);font-size:1.5rem;line-height:2.1rem;white-space:pre-wrap;overflow-wrap:anywhere;
-  background-image:repeating-linear-gradient(to bottom,transparent 0,transparent calc(2.1rem - 1px),var(--paper-line) calc(2.1rem - 1px),var(--paper-line) 2.1rem);
-  background-position:0 -.45rem;min-height:18rem;padding-left:4px}
-.letter[data-state="thinking"]{color:var(--muted)}
-.letter[data-state="thinking"]::after{content:"";display:inline-block;width:.5em;height:1em;margin-left:4px;background:var(--accent);opacity:.6;animation:blink 1s steps(2) infinite;vertical-align:-2px}
+.btn{
+  font:inherit;font-size:.95rem;border-radius:999px;padding:11px 22px;
+  border:1px solid var(--line-strong);background:var(--surface);color:var(--ink);cursor:pointer;
+  display:inline-flex;align-items:center;gap:8px;
+  transition:border-color .2s var(--ease),background .2s var(--ease),transform .15s var(--ease),box-shadow .2s var(--ease);
+}
+.btn:hover{border-color:var(--ink);transform:translateY(-1px)}
+.btn:active{transform:translateY(0)}
+.btn:disabled{opacity:.42;cursor:default;transform:none}
+.btn.primary{
+  background:var(--accent);color:var(--accent-ink);border-color:var(--accent);font-weight:600;
+  box-shadow:0 1px 2px rgba(200,68,106,.2), 0 8px 20px -8px rgba(200,68,106,.5);
+}
+.btn.primary:hover{background:#B93B60;border-color:#B93B60;box-shadow:0 2px 4px rgba(200,68,106,.22), 0 12px 26px -8px rgba(200,68,106,.55)}
+.btn.primary:disabled{box-shadow:none}
+.btn.small{padding:7px 15px;font-size:.87rem}
+
+.status{font-size:.88rem;color:var(--muted);min-height:1.5em;padding-top:2px}
+
+/* -------------------------------------------------------------- results */
+.panel-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
+.panel-head h2{font-size:1.5rem;letter-spacing:-.02em}
+.tag{
+  font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;font-weight:600;
+  border-radius:999px;padding:4px 11px;background:var(--accent-soft);color:var(--accent);
+  border:1px solid var(--accent-edge);
+}
+
+.resulttabs{display:flex;gap:7px;flex-wrap:wrap}
+.resulttabs button{
+  font:inherit;font-size:.9rem;border:1px solid var(--line);background:var(--surface);color:var(--muted);
+  border-radius:999px;padding:8px 18px;cursor:pointer;
+  transition:border-color .2s var(--ease),background .2s var(--ease),color .2s var(--ease),transform .15s var(--ease);
+}
+.resulttabs button:hover{color:var(--ink);border-color:var(--accent-edge);transform:translateY(-1px)}
+.resulttabs button[aria-selected="true"]{
+  background:var(--ink);color:var(--surface);border-color:var(--ink);font-weight:600;transform:none;
+}
+.result{display:flex;flex-direction:column;gap:16px;animation:stepIn .4s var(--ease) both}
+
+.paper{
+  background:var(--paper);border:1px solid var(--line);border-radius:6px;
+  box-shadow:var(--shadow-lg);
+  padding:44px 44px 52px;position:relative;min-height:440px;
+}
+@media (max-width:620px){.paper{padding:28px 24px 34px}}
+.paper::before{
+  content:"";position:absolute;top:0;bottom:0;left:26px;width:1px;
+  background:var(--accent-edge);
+}
+.letter{
+  font-family:var(--hand);font-size:1.55rem;line-height:2.15rem;white-space:pre-wrap;overflow-wrap:anywhere;
+  color:var(--ink);
+  background-image:repeating-linear-gradient(to bottom,transparent 0,transparent calc(2.15rem - 1px),var(--paper-line) calc(2.15rem - 1px),var(--paper-line) 2.15rem);
+  background-position:0 -.45rem;min-height:18rem;padding-left:6px;
+}
+.letter[data-state="thinking"]{color:var(--faint)}
+.letter[data-state="thinking"]::after{
+  content:"";display:inline-block;width:.5em;height:1em;margin-left:5px;
+  background:var(--accent);opacity:.65;animation:blink 1s steps(2) infinite;vertical-align:-2px;
+}
 @keyframes blink{50%{opacity:0}}
-.below{display:flex;justify-content:space-between;gap:10px;margin-top:12px;flex-wrap:wrap;align-items:center}
-.words{font-size:.84rem;color:var(--muted);font-variant-numeric:tabular-nums}
+.below{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:center}
+.words{font-size:.85rem;color:var(--faint);font-variant-numeric:tabular-nums}
 
-.card-stage{background:color-mix(in srgb,var(--ink) 5%,var(--ground));border-radius:14px;padding:22px;display:flex;justify-content:center}
-canvas#card{width:100%;max-width:380px;aspect-ratio:5 / 7;height:auto;border-radius:3px;box-shadow:0 2px 3px rgba(20,14,26,.12),0 22px 40px -20px rgba(20,14,26,.5);transition:transform .35s ease}
-canvas#card.pop{transform:rotate(-1.2deg) scale(1.01)}
-@media (prefers-reduced-motion:reduce){canvas#card{transition:none}.letter[data-state="thinking"]::after{animation:none}}
-.spec{margin-top:14px;display:grid;grid-template-columns:auto 1fr;gap:6px 14px;font-size:.86rem;align-items:center}
-.spec dt{color:var(--muted);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase}
-.spec dd{margin:0}
-.swatches{display:flex;gap:6px;flex-wrap:wrap}
-.sw{display:inline-flex;align-items:center;gap:5px;font-size:.76rem;color:var(--muted);font-variant-numeric:tabular-nums}
-.sw i{width:16px;height:16px;border-radius:50%;border:1px solid var(--line);display:inline-block}
+.card-stage{
+  background:var(--ground);
+  border:1px solid var(--line);
+  border-radius:18px;padding:34px;display:flex;justify-content:center;
+}
+canvas#card{
+  width:100%;max-width:370px;aspect-ratio:5 / 7;height:auto;border-radius:4px;
+  box-shadow:var(--shadow-lg);
+  transition:transform .4s var(--ease);
+}
+canvas#card.pop{transform:rotate(-1.1deg) scale(1.012)}
+canvas#cake{
+  width:100%;max-width:430px;aspect-ratio:1 / 1;height:auto;border-radius:14px;
+  box-shadow:var(--shadow-md);
+  transition:transform .4s var(--ease);
+}
+canvas#cake.pop{transform:scale(1.015)}
 
-/* services & about */
+.spec{
+  margin:0;display:grid;grid-template-columns:auto 1fr;gap:10px 20px;
+  font-size:.9rem;align-items:baseline;
+}
+.spec dt{color:var(--faint);font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;font-weight:600;padding-top:3px}
+.spec dd{margin:0;color:var(--ink-soft)}
+.swatches{display:flex;gap:10px;flex-wrap:wrap}
+.sw{display:inline-flex;align-items:center;gap:6px;font-size:.74rem;color:var(--faint);font-variant-numeric:tabular-nums}
+.sw i{width:15px;height:15px;border-radius:50%;border:1px solid var(--line-strong);display:inline-block}
+
+/* ----------------------------------------------------- services & about */
 .band{background:var(--surface);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
-.services{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:28px;padding-block:44px}
-@media (max-width:760px){.services{grid-template-columns:1fr;gap:22px}}
-.services h3{font-size:1.2rem;margin-bottom:6px}
+.services{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:40px;padding-block:64px}
+@media (max-width:780px){.services{grid-template-columns:1fr;gap:30px;padding-block:46px}}
+.services h3{font-size:1.22rem;margin-bottom:8px}
 .services p{color:var(--muted);font-size:.95rem}
-.services .kicker{font-family:var(--hand);color:var(--accent);font-size:1.35rem;line-height:1}
-.about{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.4fr);gap:24px 56px;padding-block:52px}
-@media (max-width:760px){.about{grid-template-columns:1fr}}
-.about .word{font-family:var(--display);font-size:clamp(3rem,7vw,5rem);line-height:1}
-.about .word small{display:block;font-family:var(--body);font-size:.95rem;color:var(--muted);margin-top:10px;letter-spacing:.02em}
-.about h2{font-size:1.5rem;margin-bottom:10px}
-.about p{color:var(--muted);max-width:60ch}
-.about p + p{margin-top:12px}
-.how{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
-.how span{border:1px solid var(--line);border-radius:999px;padding:4px 12px;font-size:.88rem}
-footer{padding-block:26px;color:var(--muted);font-size:.85rem}
-footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.services .kicker{font-family:var(--hand);color:var(--accent);font-size:1.5rem;line-height:1;margin-bottom:4px}
+
+.about{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.45fr);gap:32px 72px;padding-block:76px}
+@media (max-width:780px){.about{grid-template-columns:1fr;padding-block:52px;gap:24px}}
+.about .word{font-family:var(--display);font-size:clamp(3rem,7vw,5.2rem);line-height:1;letter-spacing:-.03em}
+.about .word small{
+  display:block;font-family:var(--body);font-size:.92rem;color:var(--muted);
+  margin-top:16px;letter-spacing:.01em;line-height:1.6;
+}
+.about h2{font-size:1.6rem;margin-bottom:14px;letter-spacing:-.02em}
+.about p{color:var(--muted);max-width:58ch}
+.about p + p{margin-top:14px}
+.how{display:flex;gap:9px;flex-wrap:wrap;margin-top:24px}
+.how span{
+  border:1px solid var(--line-strong);border-radius:999px;padding:6px 15px;font-size:.88rem;color:var(--ink-soft);
+  transition:border-color .2s var(--ease),color .2s var(--ease);
+}
+.how span:hover{border-color:var(--accent-edge);color:var(--accent)}
+
+footer{padding-block:34px;color:var(--faint);font-size:.85rem;border-top:1px solid var(--line)}
+footer .wrap{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap}
 </style>
 </head>
 <body>
@@ -174,41 +373,63 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
   <section class="wrap intro">
     <div>
       <p class="eyebrow">NANAL Letter Studio</p>
-      <h1>Tell us about them. We'll write the letter <em>and design the card.</em></h1>
+      <h1>Tell us about them. We'll write the letter <em>and design the card and cake.</em></h1>
     </div>
-    <p>Share a few words about the star of the day — a memory, an inside joke, what you wish you could say. NANAL turns it into a letter in your voice and a card made just for them.</p>
+    <p>Share a few words about the star of the day — a memory, an inside joke, what you wish you could say. NANAL turns it into a letter in your voice, a card, and a cake designed for them alone.</p>
   </section>
 
   <section class="wrap studio" id="studio" aria-label="Letter and card studio">
+    <ol class="stepbar" id="stepbar" aria-label="Progress">
+      <li><span class="label">Who</span></li>
+      <li><span class="label">Occasion</span></li>
+      <li><span class="label">Story</span></li>
+      <li><span class="label">Look</span></li>
+      <li><span class="label">Result</span></li>
+    </ol>
+
     <form class="composer" id="composer" autocomplete="off">
-      <div>
-        <h2>Your story</h2>
-        <p class="hint">The more specific, the more it will sound like you.</p>
-      </div>
-      <div class="form-grid">
-        <div class="field">
-          <label for="to">To</label>
-          <input type="text" id="to" value="Grandma" maxlength="60">
+
+      <section class="step" data-step="1">
+        <div>
+          <h2>Who is this for?</h2>
+          <p class="hint">Names and how you know them shape how the letter sounds.</p>
+        </div>
+        <div class="form-grid">
+          <div class="field">
+            <label for="to">To</label>
+            <input type="text" id="to" value="Grandma" maxlength="60">
+          </div>
+          <div class="field">
+            <label for="from">From</label>
+            <input type="text" id="from" value="Minji" maxlength="60">
+          </div>
+        </div>
+        <fieldset>
+          <span class="legend">Your relationship</span>
+          <div class="optgrid" id="relationship-grid" role="radiogroup" aria-label="Relationship"></div>
+        </fieldset>
+      </section>
+
+      <section class="step" data-step="2" hidden>
+        <div>
+          <h2>What are we celebrating?</h2>
+          <p class="hint">Each occasion brings its own palette and motif.</p>
+        </div>
+        <fieldset>
+          <div class="optgrid" id="occasion-grid" role="radiogroup" aria-label="Occasion"></div>
+        </fieldset>
+      </section>
+
+      <section class="step" data-step="3" hidden>
+        <div>
+          <h2>Tell us the story</h2>
+          <p class="hint">The more specific, the more it will sound like you.</p>
         </div>
         <div class="field">
-          <label for="from">From</label>
-          <input type="text" id="from" value="Minji" maxlength="60">
+          <label for="notes">What would you like to say?</label>
+          <textarea id="notes" maxlength="2000">She's turning 80. Every winter she taught me to make kimchi in her kitchen and laughed at the red pepper on my face. She always kept a candy in her coat pocket for me. I'm studying abroad and can't make it to the party.</textarea>
         </div>
-        <div class="field span-all">
-          <label for="occasion">Occasion</label>
-          <select id="occasion">
-            <option value="birthday">Birthday</option>
-            <option value="milestone" selected>Milestone birthday (60th, 70th, 80th)</option>
-            <option value="dol">Baby's first birthday (Dol)</option>
-            <option value="wedding">Wedding</option>
-            <option value="graduation">Graduation</option>
-            <option value="anniversary">Anniversary</option>
-            <option value="retirement">Retirement</option>
-            <option value="thanks">Thank you</option>
-            <option value="other">Something else</option>
-          </select>
-        </div>
-        <fieldset class="span-all">
+        <fieldset>
           <span class="legend">Tone</span>
           <div class="chips" role="radiogroup" aria-label="Tone">
             <input type="radio" name="tone" id="tone-heartfelt" value="heartfelt" checked><label for="tone-heartfelt">Heartfelt</label>
@@ -217,58 +438,96 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
             <input type="radio" name="tone" id="tone-formal" value="polite and formal"><label for="tone-formal">Formal</label>
           </div>
         </fieldset>
-        <fieldset class="span-all">
-          <span class="legend">Length</span>
-          <div class="chips" role="radiogroup" aria-label="Length">
-            <input type="radio" name="len" id="len-short" value="short"><label for="len-short">Short note</label>
-            <input type="radio" name="len" id="len-medium" value="medium" checked><label for="len-medium">Full letter</label>
-          </div>
-        </fieldset>
-        <div class="field span-all">
-          <label for="notes">What would you like to say?</label>
-          <textarea id="notes" maxlength="2000">She's turning 80. Every winter she taught me to make kimchi in her kitchen and laughed at the red pepper on my face. She always kept a candy in her coat pocket for me. I'm studying abroad and can't make it to the party.</textarea>
+        <div class="form-grid">
+          <fieldset>
+            <span class="legend">Length</span>
+            <div class="chips" role="radiogroup" aria-label="Length">
+              <input type="radio" name="len" id="len-short" value="short"><label for="len-short">Short note</label>
+              <input type="radio" name="len" id="len-medium" value="medium" checked><label for="len-medium">Full letter</label>
+            </div>
+          </fieldset>
+          <fieldset>
+            <span class="legend">Language</span>
+            <div class="chips" role="radiogroup" aria-label="Language">
+              <input type="radio" name="lang" id="lang-en" value="English" checked><label for="lang-en">English</label>
+              <input type="radio" name="lang" id="lang-ko" value="Korean"><label for="lang-ko">한국어</label>
+            </div>
+          </fieldset>
         </div>
-      </div>
-      <div class="actions">
-        <button type="submit" class="btn primary" id="write">Write my letter</button>
+      </section>
+
+      <section class="step" data-step="4" hidden>
+        <div>
+          <h2>Pick a look</h2>
+          <p class="hint">This steers both the card and the cake.</p>
+        </div>
+        <fieldset>
+          <div class="optgrid" id="style-grid" role="radiogroup" aria-label="Visual style"></div>
+        </fieldset>
+      </section>
+
+      <section class="step" data-step="5" hidden>
+        <div class="panel-head">
+          <h2>Made for <span id="result-name">Grandma</span></h2>
+          <span class="tag" id="result-tag">Example</span>
+        </div>
+        <div class="resulttabs" role="tablist" aria-label="Results">
+          <button type="button" role="tab" data-result="letter" aria-selected="true">The letter</button>
+          <button type="button" role="tab" data-result="card" aria-selected="false">The card</button>
+          <button type="button" role="tab" data-result="cake" aria-selected="false">The cake</button>
+        </div>
+
+        <div class="result" data-panel="letter">
+          <div class="paper"><div class="letter" id="letter"></div></div>
+          <div class="below">
+            <span class="words" id="words"></span>
+            <button type="button" class="btn small" id="copy">Copy letter</button>
+          </div>
+        </div>
+
+        <div class="result" data-panel="card" hidden>
+          <div class="card-stage">
+            <canvas id="card" width="1000" height="1400" role="img" aria-label="Card design preview"></canvas>
+          </div>
+          <dl class="spec">
+            <dt>Front</dt><dd id="spec-front"></dd>
+            <dt>Motif</dt><dd id="spec-motif"></dd>
+            <dt>Colors</dt><dd><div class="swatches" id="spec-colors"></div></dd>
+            <dt>Size</dt><dd>5 × 7 in, portrait</dd>
+          </dl>
+          <div class="below">
+            <button type="button" class="btn small" id="shuffle">Shuffle layout</button>
+            <button type="button" class="btn small" id="save" hidden>Save card as PNG</button>
+          </div>
+        </div>
+
+        <div class="result" data-panel="cake" hidden>
+          <div class="card-stage">
+            <canvas id="cake" width="1100" height="1100" role="img" aria-label="Cake design preview"></canvas>
+          </div>
+          <dl class="spec">
+            <dt>Style</dt><dd id="cake-style"></dd>
+            <dt>Topper</dt><dd id="cake-topper"></dd>
+            <dt>Colors</dt><dd><div class="swatches" id="cake-colors"></div></dd>
+            <dt>Why this</dt><dd id="cake-note"></dd>
+          </dl>
+          <div class="below">
+            <span class="words" id="cake-size"></span>
+            <button type="button" class="btn small" id="save-cake" hidden>Save cake as PNG</button>
+          </div>
+        </div>
+      </section>
+
+      <div class="wizard-nav">
+        <button type="button" class="btn" id="prev" hidden>Back</button>
+        <span class="spacer"></span>
         <button type="button" class="btn" id="stop" hidden>Stop</button>
+        <button type="button" class="btn" id="restart" hidden>Start over</button>
+        <button type="button" class="btn primary" id="next">Next</button>
+        <button type="submit" class="btn primary" id="write" hidden>Write my letter</button>
       </div>
-      <p class="status" id="status" role="status" aria-live="polite">Showing an example. Edit the story and press “Write my letter.”</p>
+      <p class="status" id="status" role="status" aria-live="polite">Step 1 of 5 — who is this for?</p>
     </form>
-
-    <article aria-labelledby="letter-h">
-      <div class="panel-head">
-        <h2 id="letter-h">The letter</h2>
-        <span class="tag" id="letter-tag">Example</span>
-      </div>
-      <div class="paper">
-        <div class="letter" id="letter"></div>
-      </div>
-      <div class="below">
-        <span class="words" id="words"></span>
-        <button type="button" class="btn small" id="copy">Copy letter</button>
-      </div>
-    </article>
-
-    <aside aria-labelledby="card-h">
-      <div class="panel-head">
-        <h2 id="card-h">The card</h2>
-        <span class="tag" id="card-tag">Example</span>
-      </div>
-      <div class="card-stage">
-        <canvas id="card" width="1000" height="1400" role="img" aria-label="Card design preview"></canvas>
-      </div>
-      <dl class="spec">
-        <dt>Front</dt><dd id="spec-front"></dd>
-        <dt>Motif</dt><dd id="spec-motif"></dd>
-        <dt>Colors</dt><dd><div class="swatches" id="spec-colors"></div></dd>
-        <dt>Size</dt><dd>5 × 7 in, portrait</dd>
-      </dl>
-      <div class="below">
-        <button type="button" class="btn small" id="shuffle">Shuffle layout</button>
-        <button type="button" class="btn small" id="save" hidden>Save card as PNG</button>
-      </div>
-    </aside>
   </section>
 
   <div class="band" id="services">
@@ -318,17 +577,84 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
   const MOTIFS = ["balloons", "confetti", "blossoms", "stars", "hearts", "ribbon"];
   const MOTIF_LABEL = { balloons: "Balloons", confetti: "Confetti", blossoms: "Blossoms", stars: "Stars & sparkles", hearts: "Hearts", ribbon: "Gift ribbon" };
 
+  const cakeCanvas = $("cake"), cakeCtx = cakeCanvas.getContext("2d");
+  const CW = cakeCanvas.width, CH = cakeCanvas.height;
+
+  const TIERS = ["one", "two", "three"];
+  const DECOR = ["drip", "dots", "stripes", "flowers", "ruffle", "plain"];
+  const TOPPER = ["candles", "number", "flowers", "figure", "sparkler", "none"];
+  const DECOR_LABEL = { drip: "Drip glaze", dots: "Polka dots", stripes: "Stripes", flowers: "Buttercream flowers", ruffle: "Ruffles", plain: "Clean finish" };
+  const TOPPER_LABEL = { candles: "Candles", number: "Number topper", flowers: "Fresh flowers", figure: "Little figure", sparkler: "Sparkler", none: "Bare top" };
+
+  const OCCASIONS = [
+    { v: "birthday",    label: "Birthday",        sub: "Any year" },
+    { v: "milestone",   label: "Milestone",       sub: "60th, 70th, 80th" },
+    { v: "dol",         label: "First birthday",  sub: "Dol · 돌잔치" },
+    { v: "wedding",     label: "Wedding",         sub: "Ceremony day" },
+    { v: "anniversary", label: "Anniversary",     sub: "Years together" },
+    { v: "graduation",  label: "Graduation",      sub: "School or degree" },
+    { v: "admission",   label: "New school",      sub: "First day · 입학" },
+    { v: "promotion",   label: "Promotion",       sub: "A step up" },
+    { v: "opening",     label: "New business",    sub: "Opening day · 개업" },
+    { v: "housewarming",label: "Housewarming",    sub: "New home · 집들이" },
+    { v: "retirement",  label: "Retirement",      sub: "Last day of work" },
+    { v: "discharge",   label: "Coming home",     sub: "Service done · 전역" },
+    { v: "recovery",    label: "Getting well",    sub: "Out of hospital" },
+    { v: "pet",         label: "Pet's day",       sub: "Furry family" },
+    { v: "thanks",      label: "Thank you",       sub: "Just because" },
+    { v: "other",       label: "Something else",  sub: "Tell us below" },
+  ];
+
+  const RELATIONSHIPS = [
+    { v: "grandparent", label: "Grandparent", sub: "할머니 · 할아버지" },
+    { v: "parent",      label: "Parent",      sub: "엄마 · 아빠" },
+    { v: "child",       label: "My child",    sub: "딸 · 아들" },
+    { v: "sibling",     label: "Sibling",     sub: "형제 · 자매" },
+    { v: "partner",     label: "Partner",     sub: "연인 · 배우자" },
+    { v: "friend",      label: "Friend",      sub: "가까운 사이" },
+    { v: "colleague",   label: "Colleague",   sub: "함께 일하는 사이" },
+    { v: "mentor",      label: "Mentor",      sub: "선생님 · 상사" },
+    { v: "other",       label: "Someone else", sub: "" },
+  ];
+
+  const STYLES = [
+    { v: "auto",       label: "Let NANAL decide", sub: "Picked from your story" },
+    { v: "minimal",    label: "Minimal",          sub: "Clean, lots of space" },
+    { v: "vintage",    label: "Vintage",          sub: "Warm, faded, classic" },
+    { v: "watercolor", label: "Watercolor",       sub: "Soft, painterly" },
+    { v: "pop",        label: "Pop",              sub: "Bright and bold" },
+    { v: "botanical",  label: "Botanical",        sub: "Leaves and blooms" },
+  ];
+
+  const STYLE_HINT = {
+    auto: "choose whatever suits the story",
+    minimal: "restrained, lots of empty space, one or two colors, no clutter",
+    vintage: "warm faded tones, classic serif feeling, slightly muted",
+    watercolor: "soft washed colors that bleed into each other, painterly",
+    pop: "bright saturated colors, high contrast, playful",
+    botanical: "leaves, petals and greenery, natural greens with one warm accent",
+  };
+
   const PRESETS = {
     birthday:    { motif: "balloons", palette: { background: "#FFE9EE", ink: "#3A1F2B", accent: "#E0457B", accent2: "#F2B84B" }, headline: "Happy Birthday" },
     milestone:   { motif: "blossoms", palette: { background: "#E9F0EA", ink: "#1F3A30", accent: "#C9506B", accent2: "#D9A441" }, headline: "Happy Birthday" },
     dol:         { motif: "stars",    palette: { background: "#E6F0FB", ink: "#1E3050", accent: "#F07C9A", accent2: "#E9B949" }, headline: "Happy First Birthday" },
     wedding:     { motif: "ribbon",   palette: { background: "#F3F0FA", ink: "#2E2748", accent: "#9C7BD1", accent2: "#CFB06A" }, headline: "Happily Ever After" },
     graduation:  { motif: "confetti", palette: { background: "#1F2A44", ink: "#F7F2E6", accent: "#F2B84B", accent2: "#7FB3E8" }, headline: "You Did It" },
+    admission:   { motif: "stars",    palette: { background: "#EAF2FF", ink: "#1E2F52", accent: "#4B79D6", accent2: "#F2B84B" }, headline: "A Bright Start" },
+    promotion:   { motif: "confetti", palette: { background: "#F0EEE6", ink: "#2C2A22", accent: "#B07634", accent2: "#3C6E5B" }, headline: "Well Deserved" },
+    opening:     { motif: "ribbon",   palette: { background: "#FFF1E3", ink: "#402A18", accent: "#D9534F", accent2: "#E0A526" }, headline: "Congratulations" },
+    housewarming:{ motif: "blossoms", palette: { background: "#F1F4EC", ink: "#2A3324", accent: "#7A9A5B", accent2: "#D28A4C" }, headline: "Welcome Home" },
     anniversary: { motif: "hearts",   palette: { background: "#FBE9E7", ink: "#4A1E24", accent: "#C8323F", accent2: "#E9A3A0" }, headline: "Happy Anniversary" },
     retirement:  { motif: "blossoms", palette: { background: "#EAF1F5", ink: "#1E3342", accent: "#E07A5F", accent2: "#6FA3B8" }, headline: "Happy Retirement" },
+    discharge:   { motif: "stars",    palette: { background: "#ECF1EC", ink: "#22301F", accent: "#4F7A4A", accent2: "#D9A441" }, headline: "Welcome Back" },
+    recovery:    { motif: "blossoms", palette: { background: "#F2F7F4", ink: "#23392F", accent: "#5E9C86", accent2: "#E7B7C2" }, headline: "Get Well Soon" },
+    pet:         { motif: "confetti", palette: { background: "#FFF3E0", ink: "#3A2A1A", accent: "#E5804B", accent2: "#77B6A8" }, headline: "Happy Day" },
     thanks:      { motif: "ribbon",   palette: { background: "#FDF1DD", ink: "#3B2A12", accent: "#D6336C", accent2: "#3B8E7A" }, headline: "Thank You" },
     other:       { motif: "confetti", palette: { background: "#F2EEF8", ink: "#2A2233", accent: "#D6336C", accent2: "#F2B84B" }, headline: "For You" },
   };
+
+  const CAKE_PRESET = { tiers: "two", decor: "drip", topper: "candles", flavour: "Vanilla sponge", message: "" };
 
   const EXAMPLE = {
     design: {
@@ -336,10 +662,18 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
       motif: "blossoms", mood: "soft sage, spring blossoms, gold",
       palette: { background: "#E9F0EA", ink: "#1F3A30", accent: "#C9506B", accent2: "#D9A441" },
     },
+    cake: {
+      tiers: "two", decor: "flowers", topper: "number", number: "80",
+      message: "", flavour: "Chestnut cream sponge",
+      note: "Two quiet tiers with buttercream blossoms, echoing the card.",
+      palette: { sponge: "#E8CFA9", frosting: "#F3F6EF", accent: "#C9506B", accent2: "#D9A441" },
+    },
     letter: "Dear Grandma,\n\nHappy 80th birthday! I wish I could be there to hug you and eat far too much of your cooking, but I'm sending my love from across the ocean instead.\n\nEvery winter I think of the two of us in your kitchen, sleeves rolled up, making kimchi while you laughed at the red pepper all over my face. And I still remember the candy you always kept in your coat pocket, just for me. Those small things taught me what love looks like.\n\nEighty years of stories, and I'm so lucky to be part of them. Please eat well, rest well, and save me a spot at the table next winter.\n\nWith all my love,\nMinji",
   };
 
-  let design = EXAMPLE.design, shuffle = 0, sample = null, downloads = null, ctl = null;
+  let design = EXAMPLE.design, cake = EXAMPLE.cake, shuffle = 0, sample = null, downloads = null, ctl = null;
+  let step = 1;
+  const LAST_STEP = 5;
 
   /* ---------- color helpers ---------- */
   const HEX = /^#[0-9a-f]{6}$/i;
@@ -363,6 +697,259 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
       mood: String(d.mood || "").slice(0, 60),
       palette: pal,
     };
+  }
+
+  const mix = (a, b, t) => {
+    const [r1, g1, b1] = rgb(a), [r2, g2, b2] = rgb(b);
+    const to = (x, y) => Math.round(x + (y - x) * t).toString(16).padStart(2, "0");
+    return `#${to(r1, r2)}${to(g1, g2)}${to(b1, b2)}`;
+  };
+
+  function cleanCake(raw, f, cardPalette) {
+    const d = raw && typeof raw === "object" ? raw : {};
+    const num = String(d.number || "").replace(/[^0-9]/g, "").slice(0, 3);
+    const msg = String(d.message || "").slice(0, 18);
+    const p = d.palette && typeof d.palette === "object" ? d.palette : {};
+    const fallback = {
+      sponge: "#E8CFA9",
+      frosting: mix(cardPalette.background, "#FFFFFF", 0.45),
+      accent: cardPalette.accent,
+      accent2: cardPalette.accent2,
+    };
+    const pal = {};
+    for (const k of ["sponge", "frosting", "accent", "accent2"]) pal[k] = HEX.test(String(p[k] || "")) ? String(p[k]) : fallback[k];
+
+    return {
+      tiers: TIERS.includes(d.tiers) ? d.tiers : CAKE_PRESET.tiers,
+      decor: DECOR.includes(d.decor) ? d.decor : CAKE_PRESET.decor,
+      topper: TOPPER.includes(d.topper) ? d.topper : CAKE_PRESET.topper,
+      number: num,
+      // the topper already carries the number; don't pipe it on the tier as well
+      message: msg.trim() === num ? "" : msg,
+      flavour: String(d.flavour || CAKE_PRESET.flavour).slice(0, 48),
+      note: String(d.note || "").slice(0, 110),
+      palette: pal,
+    };
+  }
+
+  /* ---------- cake drawing ---------- */
+  function candle(x, baseY, h, body, flame) {
+    cakeCtx.fillStyle = body;
+    cakeCtx.beginPath(); cakeCtx.roundRect(x - 9, baseY - h, 18, h, 5); cakeCtx.fill();
+    cakeCtx.fillStyle = "rgba(255,255,255,.45)";
+    cakeCtx.fillRect(x - 3, baseY - h + 6, 4, h - 12);
+    cakeCtx.strokeStyle = "rgba(60,40,30,.6)"; cakeCtx.lineWidth = 3;
+    cakeCtx.beginPath(); cakeCtx.moveTo(x, baseY - h); cakeCtx.lineTo(x, baseY - h - 12); cakeCtx.stroke();
+    cakeCtx.fillStyle = flame;
+    cakeCtx.beginPath(); cakeCtx.ellipse(x, baseY - h - 26, 10, 18, 0, 0, Math.PI * 2); cakeCtx.fill();
+    cakeCtx.fillStyle = "rgba(255,245,200,.95)";
+    cakeCtx.beginPath(); cakeCtx.ellipse(x, baseY - h - 24, 5, 10, 0, 0, Math.PI * 2); cakeCtx.fill();
+  }
+
+  function bloom(x, y, s, a, b) {
+    for (let k = 0; k < 5; k++) {
+      const ang = k * Math.PI * 2 / 5;
+      cakeCtx.fillStyle = a;
+      cakeCtx.beginPath();
+      cakeCtx.ellipse(x + Math.cos(ang) * s * 0.55, y + Math.sin(ang) * s * 0.55, s * 0.5, s * 0.36, ang, 0, Math.PI * 2);
+      cakeCtx.fill();
+    }
+    cakeCtx.fillStyle = b;
+    cakeCtx.beginPath(); cakeCtx.arc(x, y, s * 0.24, 0, Math.PI * 2); cakeCtx.fill();
+  }
+
+  function drawCake() {
+    const c = cake, p = c.palette;
+    const r = rng(hash(c.flavour + c.decor + c.topper + c.message) + shuffle * 6607);
+    const ink = lum(p.frosting) > 0.45 ? "#2B2028" : "#FFF8F2";
+
+    cakeCtx.clearRect(0, 0, CW, CH);
+    const bg = cakeCtx.createLinearGradient(0, 0, 0, CH);
+    bg.addColorStop(0, mix(p.frosting, "#FFFFFF", 0.62));
+    bg.addColorStop(1, mix(p.accent, "#FFFFFF", 0.84));
+    cakeCtx.fillStyle = bg;
+    cakeCtx.fillRect(0, 0, CW, CH);
+
+    const count = TIERS.indexOf(c.tiers) + 1;
+    const baseY = 812;
+    const tiers = [];
+    let w = count === 1 ? 500 : count === 2 ? 560 : 610;
+    let h = count === 1 ? 300 : count === 2 ? 248 : 206;
+    let y = baseY;
+    for (let i = 0; i < count; i++) {
+      tiers.push({ x: CW / 2, y, w, h });
+      y -= h - 3;            // tiers meet with no seam
+      w *= 0.70;
+      h *= 0.84;
+    }
+
+    // the stand, drawn as one connected object: plate, stem, foot
+    const stand = mix(p.frosting, p.sponge, 0.5);
+    const plateY = baseY + 6, plateW = tiers[0].w * 0.64;
+    cakeCtx.fillStyle = rgba("#6B5B50", 0.1);
+    cakeCtx.beginPath(); cakeCtx.ellipse(CW / 2, plateY + 6, plateW, 24, 0, 0, Math.PI * 2); cakeCtx.fill();
+    cakeCtx.fillStyle = stand;
+    cakeCtx.beginPath();
+    cakeCtx.moveTo(CW / 2 - 36, plateY + 14);
+    cakeCtx.lineTo(CW / 2 - 132, plateY + 116);
+    cakeCtx.lineTo(CW / 2 + 132, plateY + 116);
+    cakeCtx.lineTo(CW / 2 + 36, plateY + 14);
+    cakeCtx.closePath(); cakeCtx.fill();
+    cakeCtx.beginPath(); cakeCtx.ellipse(CW / 2, plateY + 118, 134, 20, 0, 0, Math.PI * 2); cakeCtx.fill();
+    cakeCtx.beginPath(); cakeCtx.ellipse(CW / 2, plateY, plateW, 24, 0, 0, Math.PI * 2); cakeCtx.fill();
+    cakeCtx.fillStyle = rgba("#FFFFFF", 0.4);
+    cakeCtx.beginPath(); cakeCtx.ellipse(CW / 2, plateY - 4, plateW - 12, 18, 0, 0, Math.PI * 2); cakeCtx.fill();
+
+    for (let i = count - 1; i >= 0; i--) {
+      const t = tiers[i], left = t.x - t.w / 2, top = t.y - t.h;
+
+      cakeCtx.fillStyle = p.sponge;
+      cakeCtx.beginPath(); cakeCtx.roundRect(left, top, t.w, t.h, 14); cakeCtx.fill();
+      cakeCtx.fillStyle = p.frosting;
+      cakeCtx.beginPath(); cakeCtx.roundRect(left, top, t.w, t.h - 26, 14); cakeCtx.fill();
+      cakeCtx.fillStyle = rgba("#000000", 0.07);
+      cakeCtx.beginPath(); cakeCtx.roundRect(left, t.y - 34, t.w, 34, { bottomLeft: 14, bottomRight: 14 }); cakeCtx.fill();
+
+      // drip over the tier edge
+      if (c.decor === "drip") {
+        cakeCtx.fillStyle = p.accent;
+        cakeCtx.beginPath(); cakeCtx.roundRect(left, top, t.w, 34, { topLeft: 14, topRight: 14 }); cakeCtx.fill();
+        for (let d = 0; d < Math.round(t.w / 46); d++) {
+          const dx = left + 26 + d * (t.w - 52) / Math.max(1, Math.round(t.w / 46) - 1);
+          const dh = 26 + r() * 54;
+          cakeCtx.beginPath();
+          cakeCtx.moveTo(dx - 12, top + 26);
+          cakeCtx.quadraticCurveTo(dx - 12, top + dh, dx, top + dh);
+          cakeCtx.quadraticCurveTo(dx + 12, top + dh, dx + 12, top + 26);
+          cakeCtx.fill();
+        }
+      } else if (c.decor === "dots") {
+        for (let d = 0; d < 16; d++) {
+          cakeCtx.fillStyle = rgba(d % 2 ? p.accent : p.accent2, 0.85);
+          cakeCtx.beginPath();
+          cakeCtx.arc(left + 30 + r() * (t.w - 60), top + 24 + r() * (t.h - 60), 9 + r() * 7, 0, Math.PI * 2);
+          cakeCtx.fill();
+        }
+      } else if (c.decor === "stripes") {
+        cakeCtx.save();
+        cakeCtx.beginPath(); cakeCtx.roundRect(left, top, t.w, t.h - 26, 14); cakeCtx.clip();
+        for (let d = -2; d < t.w / 34 + 2; d++) {
+          cakeCtx.fillStyle = rgba(p.accent, 0.5);
+          cakeCtx.fillRect(left + d * 34, top, 15, t.h);
+        }
+        cakeCtx.restore();
+      } else if (c.decor === "ruffle") {
+        cakeCtx.strokeStyle = rgba(p.accent, 0.45); cakeCtx.lineWidth = 7;
+        for (let row = 0; row < 3; row++) {
+          const ry = top + 34 + row * ((t.h - 70) / 2);
+          cakeCtx.beginPath();
+          for (let x = left + 6; x < left + t.w - 6; x += 26) {
+            cakeCtx.moveTo(x, ry);
+            cakeCtx.quadraticCurveTo(x + 13, ry + 16, x + 26, ry);
+          }
+          cakeCtx.stroke();
+        }
+      } else if (c.decor === "flowers") {
+        const n = Math.max(2, Math.round(t.w / 165));
+        const span = t.w - 120;
+        for (let d = 0; d < n; d++) {
+          const fx = left + 60 + (n === 1 ? span / 2 : span * d / (n - 1));
+          bloom(fx, top + 54 + r() * 20, 27 + r() * 9,
+                rgba(d % 2 ? p.accent : p.accent2, 0.92), p.frosting);
+        }
+      }
+
+      // the words go on the widest tier
+      if (i === 0 && c.message) {
+        cakeCtx.textAlign = "center";
+        cakeCtx.textBaseline = "middle";
+        let size = 74;
+        cakeCtx.font = `700 ${size}px "Gowun Batang", Georgia, serif`;
+        while (cakeCtx.measureText(c.message).width > t.w - 90 && size > 28) {
+          size -= 3;
+          cakeCtx.font = `700 ${size}px "Gowun Batang", Georgia, serif`;
+        }
+        cakeCtx.fillStyle = ink;
+        cakeCtx.fillText(c.message, t.x, t.y - t.h / 2 + 6);
+      }
+    }
+
+    // topper sits on the smallest tier
+    const top = tiers[count - 1], surface = top.y - top.h;
+    if (c.topper === "candles") {
+      const n = Math.min(7, 3 + Math.floor(r() * 4));
+      for (let i = 0; i < n; i++) {
+        candle(top.x - top.w * 0.32 + i * (top.w * 0.64) / Math.max(1, n - 1), surface + 6,
+               64 + r() * 22, i % 2 ? p.accent : p.accent2, "rgba(255,170,60,.95)");
+      }
+    } else if (c.topper === "number" && c.number) {
+      cakeCtx.textAlign = "center"; cakeCtx.textBaseline = "alphabetic";
+      cakeCtx.font = `700 118px "Gowun Batang", Georgia, serif`;
+      const baseline = surface - 26, numW = cakeCtx.measureText(c.number).width;
+      cakeCtx.strokeStyle = rgba(p.accent, 0.45); cakeCtx.lineWidth = 5; cakeCtx.lineCap = "round";
+      for (const off of [-numW * 0.2, numW * 0.2]) {
+        cakeCtx.beginPath();
+        cakeCtx.moveTo(top.x + off, baseline - 8);
+        cakeCtx.lineTo(top.x + off, surface + 10);
+        cakeCtx.stroke();
+      }
+      cakeCtx.fillStyle = rgba(p.accent, 0.26);
+      cakeCtx.fillText(c.number, top.x + 4, baseline + 5);
+      cakeCtx.fillStyle = p.accent;
+      cakeCtx.fillText(c.number, top.x, baseline);
+    } else if (c.topper === "flowers") {
+      for (let i = 0; i < 5; i++) {
+        bloom(top.x - 90 + i * 45 + (r() - 0.5) * 16, surface - 26 - r() * 26, 34 + r() * 14,
+              rgba(i % 2 ? p.accent : p.accent2, 0.95), p.frosting);
+      }
+    } else if (c.topper === "figure") {
+      cakeCtx.fillStyle = p.accent;
+      cakeCtx.beginPath(); cakeCtx.arc(top.x, surface - 88, 34, 0, Math.PI * 2); cakeCtx.fill();
+      cakeCtx.beginPath(); cakeCtx.roundRect(top.x - 30, surface - 58, 60, 58, { topLeft: 26, topRight: 26 }); cakeCtx.fill();
+      cakeCtx.fillStyle = p.accent2;
+      cakeCtx.beginPath(); cakeCtx.arc(top.x - 12, surface - 94, 5, 0, Math.PI * 2); cakeCtx.fill();
+      cakeCtx.beginPath(); cakeCtx.arc(top.x + 12, surface - 94, 5, 0, Math.PI * 2); cakeCtx.fill();
+    } else if (c.topper === "sparkler") {
+      cakeCtx.strokeStyle = rgba(p.accent, 0.8); cakeCtx.lineWidth = 6;
+      cakeCtx.beginPath(); cakeCtx.moveTo(top.x, surface); cakeCtx.lineTo(top.x, surface - 96); cakeCtx.stroke();
+      for (let i = 0; i < 26; i++) {
+        const a = r() * Math.PI * 2, len = 22 + r() * 46;
+        cakeCtx.strokeStyle = rgba(i % 2 ? p.accent2 : "#FFC94D", 0.85);
+        cakeCtx.lineWidth = 3;
+        cakeCtx.beginPath();
+        cakeCtx.moveTo(top.x, surface - 100);
+        cakeCtx.lineTo(top.x + Math.cos(a) * len, surface - 100 + Math.sin(a) * len);
+        cakeCtx.stroke();
+      }
+    }
+
+    cakeCtx.textAlign = "center"; cakeCtx.textBaseline = "alphabetic";
+    cakeCtx.font = `26px "Gowun Dodum", sans-serif`;
+    cakeCtx.fillStyle = rgba("#2B2028", 0.5);
+    cakeCtx.fillText("nanal  ·  나날", CW / 2, CH - 46);
+
+    cakeCanvas.setAttribute("aria-label",
+      `Cake design: ${count} tier, ${DECOR_LABEL[c.decor].toLowerCase()}, ${TOPPER_LABEL[c.topper].toLowerCase()}${c.message ? `, reading “${c.message}”` : ""}`);
+    renderCakeSpec();
+  }
+
+  function renderCakeSpec() {
+    const count = TIERS.indexOf(cake.tiers) + 1;
+    $("cake-style").textContent = `${count} tier · ${DECOR_LABEL[cake.decor]} · ${cake.flavour}`;
+    $("cake-topper").textContent = TOPPER_LABEL[cake.topper] + (cake.topper === "number" && cake.number ? ` (${cake.number})` : "");
+    $("cake-note").textContent = cake.note || "—";
+    $("cake-size").textContent = count === 1 ? "6 in round" : count === 2 ? "6 + 4 in tiers" : "8 + 6 + 4 in tiers";
+    const box = $("cake-colors"); box.replaceChildren();
+    for (const k of ["sponge", "frosting", "accent", "accent2"]) {
+      const s = document.createElement("span"); s.className = "sw";
+      const i = document.createElement("i"); i.style.background = cake.palette[k];
+      s.append(i, cake.palette[k].toUpperCase()); box.append(s);
+    }
+  }
+
+  function setCake(c) {
+    cake = c; drawCake();
+    cakeCanvas.classList.add("pop"); setTimeout(() => cakeCanvas.classList.remove("pop"), 380);
   }
 
   /* ---------- card drawing ---------- */
@@ -569,24 +1156,54 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
     wordsEl.textContent = state === "thinking" || !n ? "" : `${n} words`;
   }
 
+  /* ---------- option grids ---------- */
+  function buildGrid(el, name, items, checked) {
+    el.replaceChildren();
+    for (const it of items) {
+      const input = document.createElement("input");
+      input.type = "radio"; input.name = name; input.id = `${name}-${it.v}`; input.value = it.v;
+      if (it.v === checked) input.checked = true;
+      const label = document.createElement("label");
+      label.setAttribute("for", input.id);
+      label.append(document.createTextNode(it.label));
+      if (it.sub) { const s = document.createElement("small"); s.textContent = it.sub; label.append(s); }
+      el.append(input, label);
+    }
+  }
+
   /* ---------- form & prompt ---------- */
+  function pick(name, fallback) {
+    return form.querySelector(`input[name="${name}"]:checked`)?.value || fallback;
+  }
+
   function readForm() {
+    const occasion = pick("occasion", "birthday");
+    const relationship = pick("relationship", "other");
+    const occMeta = OCCASIONS.find((o) => o.v === occasion) || OCCASIONS[0];
+    const relMeta = RELATIONSHIPS.find((o) => o.v === relationship) || RELATIONSHIPS[RELATIONSHIPS.length - 1];
     return {
       to: $("to").value.trim(), from: $("from").value.trim(),
-      occasion: $("occasion").value, occasionLabel: $("occasion").selectedOptions[0].textContent,
-      tone: form.querySelector('input[name="tone"]:checked').value,
-      len: form.querySelector('input[name="len"]:checked').value,
+      occasion, occasionLabel: occMeta.sub ? `${occMeta.label} — ${occMeta.sub}` : occMeta.label,
+      relationship, relationshipLabel: relMeta.label,
+      tone: pick("tone", "heartfelt"),
+      len: pick("len", "medium"),
+      lang: pick("lang", "English"),
+      style: pick("style", "auto"),
       notes: $("notes").value.trim(),
     };
   }
 
   function buildPrompt(f) {
     const words = f.len === "short" ? "60 to 100 words" : "150 to 220 words";
-    return `You are the letter writer and card designer at NANAL, a Korean gift brand ("nanal" is a native Korean word meaning "day after day, every day") that makes custom cards for once-in-a-lifetime days.
+    const language = f.lang === "Korean"
+      ? "Korean (한국어). Use natural 존댓말 unless the relationship clearly calls for 반말."
+      : "English";
+    return `You are the letter writer and designer at NANAL, a Korean gift brand ("nanal" is a native Korean word meaning "day after day, every day") that makes custom cards, cakes and party goods for once-in-a-lifetime days.
 
-Write a letter in English.
+Write a letter in ${language}
 - From: ${f.from || "(sender did not give a name; sign off without a name)"}
 - To: ${f.to || "(recipient did not give a name; use a warm general greeting)"}
+- Sender's relationship to them: ${f.relationshipLabel}
 - Occasion: ${f.occasionLabel}
 - Tone: ${f.tone}
 - Length: ${words}
@@ -596,24 +1213,44 @@ The sender's notes are below between triple quotes. Use their specific details a
 ${f.notes.slice(0, 2000)}
 """
 
-Then design the front of a 5x7 inch card that matches the letter's feeling.
+Then design two things for the same person: the front of a 5x7 inch card, and a cake for the day.
+Visual direction for both: ${STYLE_HINT[f.style] || STYLE_HINT.auto}.
+The cake and the card should look like they belong together.
 
 Reply in EXACTLY this format and nothing else:
-Line 1: one JSON object on a single line with these keys:
-  "headline": card front text, 2 to 5 words (may include the recipient's name),
-  "subline": a short handwritten-style line, at most 7 words,
-  "motif": one of "balloons", "confetti", "blossoms", "stars", "hearts", "ribbon",
-  "palette": {"background": "#RRGGBB", "ink": "#RRGGBB", "accent": "#RRGGBB", "accent2": "#RRGGBB"} (ink must be very readable on background; accent and accent2 are motif colors),
-  "mood": 3 to 6 words describing the design
+Line 1: one JSON object on a single line with keys "card" and "cake":
+  "card": {
+    "headline": card front text, 2 to 5 words (may include the recipient's name),
+    "subline": a short handwritten-style line, at most 7 words,
+    "motif": one of "balloons", "confetti", "blossoms", "stars", "hearts", "ribbon",
+    "palette": {"background": "#RRGGBB", "ink": "#RRGGBB", "accent": "#RRGGBB", "accent2": "#RRGGBB"} (ink must be very readable on background),
+    "mood": 3 to 6 words describing the design
+  },
+  "cake": {
+    "tiers": "one", "two" or "three",
+    "decor": one of "drip", "dots", "stripes", "flowers", "ruffle", "plain",
+    "topper": one of "candles", "number", "flowers", "figure", "sparkler", "none",
+    "number": digits only when topper is "number" (e.g. "80"), otherwise "",
+    "message": at most 18 characters piped onto the cake — leave "" when a number topper already carries it,
+    "flavour": a sponge and filling suited to this person, at most 6 words,
+    "palette": {"sponge": "#RRGGBB", "frosting": "#RRGGBB", "accent": "#RRGGBB", "accent2": "#RRGGBB"},
+    "note": one sentence on why this cake suits them
+  }
 Line 2: ---
 After that: the letter as plain text. Greeting line, paragraphs separated by one blank line, a closing line, then the sender's name on its own line. No markdown, no title.`;
   }
 
   function templateLetter(f) {
     const to = f.to || "you", from = f.from || "";
-    const occ = { birthday: "Happy birthday!", milestone: "Happy birthday — what a milestone!", dol: "Happy first birthday, little one!", wedding: "Congratulations on your wedding!", graduation: "Congratulations, graduate!", anniversary: "Happy anniversary!", retirement: "Happy retirement!", thanks: "Thank you — truly.", other: "I made this just for you." }[f.occasion];
-    const story = f.notes ? `I've been thinking about everything this day means: ${f.notes.replace(/\s+/g, " ").slice(0, 280)}${f.notes.length > 280 ? "…" : ""}` : "";
-    return `Dear ${to},\n\n${occ}\n\n${story}\n\nThank you for being you. I hope today feels as special as you make everyone else feel.\n\nWith love,\n${from}`.replace(/\n{3,}/g, "\n\n").trim();
+    const occMeta = OCCASIONS.find((o) => o.v === f.occasion) || OCCASIONS[0];
+    const trimmed = f.notes.replace(/\s+/g, " ").slice(0, 280) + (f.notes.length > 280 ? "…" : "");
+    if (f.lang === "Korean") {
+      return `${to}께\n\n오늘의 ${occMeta.label}을 진심으로 축하드려요.\n\n${f.notes ? trimmed : ""}\n\n오늘 하루가 오래 간직할 추억으로 남기를 바랍니다.\n\n${from} 드림`
+        .replace(/\n{3,}/g, "\n\n").trim();
+    }
+    const story = f.notes ? `I've been thinking about everything this day means: ${trimmed}` : "";
+    return `Dear ${to},\n\nCongratulations on your ${occMeta.label.toLowerCase()}.\n\n${story}\n\nThank you for being you. I hope today feels as special as you make everyone else feel.\n\nWith love,\n${from}`
+      .replace(/\n{3,}/g, "\n\n").trim();
   }
 
   function split(text) {
@@ -621,10 +1258,19 @@ After that: the letter as plain text. Greeting line, paragraphs separated by one
     if (!m) return null;
     return { head: text.slice(0, m.index), body: text.slice(m.index + m[0].length) };
   }
+
+  /** Returns both designs. Falls back to presets for anything the model left out. */
   function parseHead(head, f) {
     const s = head.indexOf("{"), e = head.lastIndexOf("}");
-    try { return cleanDesign(s >= 0 && e > s ? JSON.parse(head.slice(s, e + 1)) : null, f); }
-    catch { return cleanDesign(null, f); }
+    let raw = null;
+    try {
+      if (s >= 0 && e > s) raw = JSON.parse(head.slice(s, e + 1));
+    } catch {
+      raw = null;
+    }
+    // "card" wrapper is the current shape; a bare object is the older one
+    const d = cleanDesign(raw && raw.card ? raw.card : raw, f);
+    return { design: d, cake: cleanCake(raw && raw.cake, f, d.palette) };
   }
 
   const ERR = {
@@ -637,42 +1283,111 @@ After that: the letter as plain text. Greeting line, paragraphs separated by one
     prompt_too_large: "The story is too long. Shorten it and try again.",
   };
 
+  /* ---------- wizard ---------- */
+  const stepEls = [...form.querySelectorAll(".step")];
+  const stepBarEls = [...$("stepbar").children];
+  const prevBtn = $("prev"), nextBtn = $("next"), restartBtn = $("restart");
+
+  const STEP_HINT = {
+    1: "Step 1 of 5 — who is this for?",
+    2: "Step 2 of 5 — what are we celebrating?",
+    3: "Step 3 of 5 — tell us the story.",
+    4: "Step 4 of 5 — pick a look, then write.",
+    5: "Your letter, card and cake.",
+  };
+
+  function showStep(n, scroll = true) {
+    step = Math.min(LAST_STEP, Math.max(1, n));
+    for (const el of stepEls) el.hidden = Number(el.dataset.step) !== step;
+    stepBarEls.forEach((li, i) => {
+      const state = i + 1 === step ? "current" : i + 1 < step ? "done" : "";
+      if (state) li.dataset.state = state; else delete li.dataset.state;
+    });
+    prevBtn.hidden = step === 1;
+    nextBtn.hidden = step >= 4;
+    writeBtn.hidden = step !== 4;
+    restartBtn.hidden = step !== LAST_STEP;
+    if (!ctl) statusEl.textContent = STEP_HINT[step];
+    if (scroll) $("studio").scrollIntoView({ block: "start", behavior: "smooth" });
+  }
+
+  function validateStep(n) {
+    if (n === 3 && !$("notes").value.trim()) {
+      statusEl.textContent = "Add a few words about them first — a memory, a wish, anything.";
+      $("notes").focus();
+      return false;
+    }
+    return true;
+  }
+
+  const resultTabs = [...form.querySelectorAll(".resulttabs button")];
+  const resultPanels = [...form.querySelectorAll(".result")];
+
+  function showResult(name) {
+    for (const b of resultTabs) b.setAttribute("aria-selected", String(b.dataset.result === name));
+    for (const p of resultPanels) p.hidden = p.dataset.panel !== name;
+    if (name === "card") drawCard();
+    if (name === "cake") drawCake();
+  }
+
   function setBusy(on) {
-    writeBtn.disabled = on; stopBtn.hidden = !on;
+    writeBtn.disabled = on;
+    nextBtn.disabled = on;
+    prevBtn.disabled = on;
+    restartBtn.disabled = on;
+    stopBtn.hidden = !on;
     writeBtn.textContent = on ? "Writing…" : "Write again";
     for (const el of form.querySelectorAll("input,select,textarea")) el.disabled = on;
   }
 
   async function generate() {
     const f = readForm();
-    if (!f.notes) { statusEl.textContent = "Add a few words about them first — a memory, a wish, anything."; $("notes").focus(); return; }
-    $("letter-tag").textContent = "Draft"; $("card-tag").textContent = "Draft";
+    if (!f.notes) { statusEl.textContent = "Add a few words about them first — a memory, a wish, anything."; showStep(3); return; }
+
+    $("result-name").textContent = f.to || "them";
+    $("result-tag").textContent = "Draft";
+    showStep(LAST_STEP);
+    showResult("letter");
 
     if (!sample) {
-      setDesign(cleanDesign(null, f));
+      const d = cleanDesign(null, f);
+      setDesign(d);
+      setCake(cleanCake(null, f, d.palette));
       setLetter(templateLetter(f));
-      statusEl.textContent = "Showing a simple template. Open this page in Claude to have each letter written from your story.";
-      writeBtn.textContent = "Write again";
+      statusEl.textContent = "Showing a simple template — start the NANAL server (npm start) to have each letter written from your story.";
       return;
     }
 
     ctl = new AbortController();
     setBusy(true);
-    setLetter("Designing your card…", "thinking");
+    setLetter("Designing your card and cake…", "thinking");
     statusEl.textContent = "Reading your story…";
     let designed = false;
     const onText = ({ text }) => {
       const parts = split(text);
       if (!parts) return;
-      if (!designed) { designed = true; setDesign(parseHead(parts.head, f)); statusEl.textContent = "Card ready. Writing the letter…"; }
+      if (!designed) {
+        designed = true;
+        const applied = parseHead(parts.head, f);
+        setDesign(applied.design);
+        setCake(applied.cake);
+        statusEl.textContent = "Card and cake ready. Writing the letter…";
+      }
       setLetter(parts.body || "Writing…", parts.body ? null : "thinking");
     };
     try {
       const { text, truncated } = await sample(buildPrompt(f), { signal: ctl.signal, cache: false, onText });
       const parts = split(text);
-      if (!designed) setDesign(parts ? parseHead(parts.head, f) : cleanDesign(null, f));
+      if (!designed) {
+        const applied = parts ? parseHead(parts.head, f) : { design: cleanDesign(null, f), cake: null };
+        setDesign(applied.design);
+        setCake(applied.cake || cleanCake(null, f, applied.design.palette));
+      }
       setLetter((parts ? parts.body : text.replace(/^\s*\{.*\}\s*$/m, "")).trim());
-      statusEl.textContent = truncated ? "The letter was cut short. Try the short note length." : "Done. Edit the story and write again, or shuffle the card layout.";
+      $("result-tag").textContent = "Made for you";
+      statusEl.textContent = truncated
+        ? "The letter was cut short. Try the short note length."
+        : "Done — have a look at the card and the cake too.";
     } catch (e) {
       const partial = e && e.text ? split(e.text) : null;
       if (e?.code === "cancelled") {
@@ -689,7 +1404,11 @@ After that: the letter as plain text. Greeting line, paragraphs separated by one
   }
 
   form.addEventListener("submit", (ev) => { ev.preventDefault(); generate(); });
+  nextBtn.addEventListener("click", () => { if (validateStep(step)) showStep(step + 1); });
+  prevBtn.addEventListener("click", () => showStep(step - 1));
+  restartBtn.addEventListener("click", () => { $("result-tag").textContent = "Example"; showStep(1); });
   stopBtn.addEventListener("click", () => ctl?.abort());
+  for (const b of resultTabs) b.addEventListener("click", () => showResult(b.dataset.result));
   $("shuffle").addEventListener("click", () => { shuffle++; drawCard(); });
 
   $("copy").addEventListener("click", async () => {
@@ -704,24 +1423,33 @@ After that: the letter as plain text. Greeting line, paragraphs separated by one
     setTimeout(() => { btn.textContent = "Copy letter"; }, 2200);
   });
 
-  $("save").addEventListener("click", () => {
+  function savePng(node, kind) {
     if (!downloads) return;
-    canvas.toBlob(async (blob) => {
+    node.toBlob(async (blob) => {
       if (!blob) return;
-      const slug = design.headline.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || "card";
-      try { await downloads.save({ filename: `nanal-card-${slug}.png`, data: blob }); statusEl.textContent = "Card saved."; }
-      catch (e) { if (e?.code !== "cancelled" && e?.code !== "declined") statusEl.textContent = "The card couldn't be saved this time."; }
+      const slug = design.headline.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || kind;
+      try { await downloads.save({ filename: `nanal-${kind}-${slug}.png`, data: blob }); statusEl.textContent = `${kind === "card" ? "Card" : "Cake"} saved.`; }
+      catch (e) { if (e?.code !== "cancelled" && e?.code !== "declined") statusEl.textContent = "That couldn't be saved this time."; }
     }, "image/png");
-  });
+  }
+
+  $("save").addEventListener("click", () => savePng(canvas, "card"));
+  $("save-cake").addEventListener("click", () => savePng(cakeCanvas, "cake"));
 
   /* ---------- boot ---------- */
+  buildGrid($("relationship-grid"), "relationship", RELATIONSHIPS, "grandparent");
+  buildGrid($("occasion-grid"), "occasion", OCCASIONS, "milestone");
+  buildGrid($("style-grid"), "style", STYLES, "auto");
+  showStep(1, false);
+
   setLetter(EXAMPLE.letter);
   drawCard();
+  drawCake();
   Promise.all([
     document.fonts.load('700 100px "Gowun Batang"'),
     document.fonts.load('60px "Nanum Pen Script"'),
     document.fonts.load('28px "Gowun Dodum"'),
-  ]).catch(() => {}).then(drawCard);
+  ]).catch(() => {}).then(() => { drawCard(); drawCake(); });
 
   /* ---------- letter backend ----------
      Inside a Claude artifact the page asks Claude directly. When it is served
@@ -756,6 +1484,11 @@ After that: the letter as plain text. Greeting line, paragraphs separated by one
     return { text, truncated: false };
   }
 
+  function showSaveButtons(on) {
+    $("save").hidden = !on;
+    $("save-cake").hidden = !on;
+  }
+
   // Stand-in for the artifact "downloads" capability.
   const anchorDownloads = {
     async save({ filename, data }) {
@@ -769,7 +1502,7 @@ After that: the letter as plain text. Greeting line, paragraphs separated by one
 
   if (window.claude?.use) {
     window.claude.use("sample").then((s) => { sample = s; }).catch(() => {});
-    window.claude.use("downloads").then((d) => { downloads = d; $("save").hidden = !d; }).catch(() => {});
+    window.claude.use("downloads").then((d) => { downloads = d; showSaveButtons(Boolean(d)); }).catch(() => {});
   } else {
     fetch("/api/health", { cache: "no-store" })
       .then((r) => (r.ok ? r.json() : null))
@@ -777,7 +1510,8 @@ After that: the letter as plain text. Greeting line, paragraphs separated by one
         if (!health?.configured) return;
         sample = proxySample;
         downloads = anchorDownloads;
-        $("save").hidden = false;
+        showSaveButtons(true);
+        if (!ctl && step === 1) statusEl.textContent = STEP_HINT[1];
       })
       .catch(() => {});
   }
