@@ -873,3 +873,21 @@ h1 {
     width: min(100%, 240px);
   }
 }
+
+/* a new story arrives while the box is already open */
+.balloon-area.celebrate .balloon {
+  animation: balloonBounce 0.9s ease-in-out 2;
+}
+
+@keyframes balloonBounce {
+  0%,
+  100% {
+    transform: translateY(0) scale(1);
+  }
+  30% {
+    transform: translateY(-26px) scale(1.06);
+  }
+  60% {
+    transform: translateY(-8px) scale(0.98);
+  }
+}

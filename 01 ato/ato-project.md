@@ -28,20 +28,29 @@ appear from the box.
 ## Technical specifications
 - The text and speech processing will use various ChatGPT models through the
   OpenAI API.
-- Use gpt-4o-mini-transcribe for audio transcription.
-- Use gpt-5-mini to analyze the transcription and decide if the user told a
-  story about a special day. ONLY STORIES THAT MENTION BOTH THE OCCASION AND WHO
-  IT IS FOR SHOULD BE ACCEPTED. SMALL TALK OR VAGUE STATEMENTS (e.g. "I'm in a
-  good mood today") ARE NOT ENOUGH.
-- Use gpt-5-mini to write the custom card message (2-3 sentences) and the gift
-  box's speech bubble text.
+- The browser never calls OpenAI directly. It calls `server.js` on the same
+  origin, and the server adds the API key. See "Running it" below.
+- Audio transcription: `gpt-transcribe`.
+  (The original spec called for `gpt-4o-mini-transcribe`. OpenAI deprecated it on
+  2026-08-26 with removal on 2027-02-26, and names `gpt-transcribe` as the
+  replacement.)
+- Story analysis and card/bubble writing: `gpt-5.6-luna`.
+  (The original spec called for `gpt-5-mini`, which is no longer in the current
+  model lineup. `gpt-5.6-luna` is the cheapest current text model.)
+- Both model IDs are read from `.env`, so swapping them takes one line and no
+  code change.
+- ONLY STORIES THAT MENTION BOTH THE OCCASION AND WHO IT IS FOR SHOULD BE
+  ACCEPTED. SMALL TALK OR VAGUE STATEMENTS (e.g. "I'm in a good mood today") ARE
+  NOT ENOUGH.
 - Get the analysis result back as JSON.
   Example: {"special_day": true, "occasion": "birthday", "hero": "Mom",
             "card": "...", "bubble": "..."}
-- All text shown on the page (buttons, card, speech bubble) is in Korean.
+- Everything NANAL says (card, speech bubble, status line) is in Korean.
+- If the server is not running, or has no key configured, the page falls back to
+  local keyword matching so it still works offline.
 
 ## Gift box personality
-The gift box is named ATO (아토), a native Korean word that means "gift." It is
+The gift box is named NANAL (나날), a native Korean word that means "day after day, every day." It is
 warm and cheerful and speaks politely (존댓말). It loves turning someone's special
 day into a memory they will keep for a long time, and it likes to use pretty
 native Korean words (한아름, 아름드리, 도담도담, etc.).
@@ -55,4 +64,33 @@ native Korean words (한아름, 아름드리, 도담도담, etc.).
 ## OpenAI API Key
 The project is designed to run locally without committing any real API keys.
 
-Use a local environment variable or a secure config file instead of checking credentials into the repository.
+The key lives only in `01 ato/.env`, which is listed in `.gitignore` and is never
+committed. `server.js` reads it at startup and attaches it to outgoing OpenAI
+requests. It is never sent to the browser, so it does not appear in the page
+source, in devtools, or in the network tab.
+
+Never paste a real key into `.env.example`, into the page, into a commit, or into
+a chat window. If a key is ever exposed, revoke it at
+https://platform.openai.com/api-keys and issue a new one — rotating is the only
+fix, since removing it from a later commit does not remove it from history.
+
+## Running it
+
+```bash
+cd "01 ato"
+cp .env.example .env      # then put your key in .env
+npm start                 # same as: node server.js
+```
+
+Then open http://localhost:5173/gift.html
+
+Requires Node 20.6+. There are no dependencies to install.
+
+### Endpoints
+
+| Endpoint           | Method | Purpose                                            |
+| ------------------ | ------ | -------------------------------------------------- |
+| `/api/health`      | GET    | Reports whether a key is configured and which models are in use |
+| `/api/transcribe`  | POST   | Raw audio body in, `{ text }` out                  |
+| `/api/story`       | POST   | `{ text }` in, the analysis JSON out               |
+| everything else    | GET    | Static files from `01 ato/`                        |

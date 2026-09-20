@@ -1,0 +1,12 @@
+{
+  "name": "ato-gift",
+  "version": "1.0.0",
+  "private": true,
+  "description": "ATO gift box page with a local proxy that keeps the OpenAI key off the client",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=20.6.0"
+  }
+}
