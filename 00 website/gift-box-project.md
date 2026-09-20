@@ -64,7 +64,7 @@ native Korean words (한아름, 아름드리, 도담도담, etc.).
 ## OpenAI API Key
 The project is designed to run locally without committing any real API keys.
 
-The key lives only in `01 ato/.env`, which is listed in `.gitignore` and is never
+The key lives only in `01 letter-studio/.env`, which is listed in `.gitignore` and is never
 committed. `server.js` reads it at startup and attaches it to outgoing OpenAI
 requests. It is never sent to the browser, so it does not appear in the page
 source, in devtools, or in the network tab.
@@ -77,12 +77,13 @@ fix, since removing it from a later commit does not remove it from history.
 ## Running it
 
 ```bash
-cd "01 ato"
+cd "01 letter-studio"
 cp .env.example .env      # then put your key in .env
 npm start                 # same as: node server.js
 ```
 
 Then open http://localhost:5173/gift.html
+(the letter studio is at http://localhost:5173/letter-studio.html)
 
 Requires Node 20.6+. There are no dependencies to install.
 
@@ -93,4 +94,5 @@ Requires Node 20.6+. There are no dependencies to install.
 | `/api/health`      | GET    | Reports whether a key is configured and which models are in use |
 | `/api/transcribe`  | POST   | Raw audio body in, `{ text }` out                  |
 | `/api/story`       | POST   | `{ text }` in, the analysis JSON out               |
-| everything else    | GET    | Static files from `01 ato/`                        |
+| `/api/letter`      | POST   | `{ prompt }` in, the letter streamed back as text  |
+| everything else    | GET    | Static files from `01 letter-studio/` and `00 website/` |

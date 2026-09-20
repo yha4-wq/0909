@@ -11,8 +11,8 @@
  *   2. put your key in .env   (OPENAI_API_KEY=sk-...)
  *   3. npm start              (or: node server.js)
  *
- *   http://localhost:5173/gift.html           the NANAL gift box
- *   http://localhost:5173/letter-studio.html  the NANAL letter studio
+ *   http://localhost:5173/letter-studio.html  the letter studio
+ *   http://localhost:5173/gift.html           the gift box
  */
 
 const http = require('node:http');
@@ -26,7 +26,7 @@ const PORT = Number(process.env.PORT || 5173);
 const API_KEY = (process.env.OPENAI_API_KEY || '').trim();
 const BASE_URL = (process.env.OPENAI_BASE_URL || 'https://api.openai.com/v1').replace(/\/+$/, '');
 
-// ato-project.md originally specified gpt-5-mini and gpt-4o-mini-transcribe.
+// gift-box-project.md originally specified gpt-5-mini and gpt-4o-mini-transcribe.
 // Both are on OpenAI's retirement list, so the defaults below are their current
 // equivalents. Override either one in .env without touching this file.
 const TEXT_MODEL = process.env.OPENAI_TEXT_MODEL || 'gpt-5.6-luna';
@@ -40,12 +40,13 @@ const STREAM_TIMEOUT_MS = 120000;
 
 // Pages live in two folders, so they are mapped to clean URLs here rather than
 // exposing folder names that contain spaces.
-const APP_DIR = __dirname;
-const SITE_DIR = path.join(__dirname, '..', '00 website');
+const APP_DIR = __dirname;                                 // 01 letter-studio
+const SITE_DIR = path.join(__dirname, '..', '00 website'); // 00 website
+const STATIC_DIRS = [APP_DIR, SITE_DIR];
 const ALIASES = {
-  '/': path.join(APP_DIR, 'gift.html'),
-  '/gift.html': path.join(APP_DIR, 'gift.html'),
-  '/letter-studio.html': path.join(SITE_DIR, 'letter-studio.html'),
+  '/': path.join(APP_DIR, 'letter-studio.html'),
+  '/letter-studio.html': path.join(APP_DIR, 'letter-studio.html'),
+  '/gift.html': path.join(SITE_DIR, 'gift.html'),
   '/ato.html': path.join(SITE_DIR, 'ato.html'),
 };
 
@@ -424,13 +425,25 @@ async function serveStatic(req, res, pathname) {
 
   if (!target) {
     const relative = decodeURIComponent(pathname);
-    // no dotfiles (.env, .git) and nothing outside the app folder
+    // no dotfiles (.env, .git) and nothing outside the served folders
     if (relative.split('/').some((segment) => segment.startsWith('.'))) {
       return sendJson(res, 404, { error: 'not_found' });
     }
-    target = path.join(APP_DIR, relative);
-    if (!target.startsWith(APP_DIR + path.sep)) {
-      return sendJson(res, 404, { error: 'not_found' });
+    // gift.html sits in 00 website and asks for styles.css / script.js beside it,
+    // so both folders are searched.
+    for (const dir of STATIC_DIRS) {
+      const candidate = path.join(dir, relative);
+      if (!candidate.startsWith(dir + path.sep)) continue;
+      try {
+        await fsp.access(candidate);
+        target = candidate;
+        break;
+      } catch {
+        /* not in this folder, try the next */
+      }
+    }
+    if (!target) {
+      return sendJson(res, 404, { error: 'not_found', message: `${pathname} 을(를) 찾을 수 없습니다.` });
     }
   }
 
@@ -474,8 +487,8 @@ const server = http.createServer(async (req, res) => {
 });
 
 server.listen(PORT, '127.0.0.1', () => {
-  console.log(`\n  NANAL     http://localhost:${PORT}/gift.html`);
-  console.log(`  NANAL   http://localhost:${PORT}/letter-studio.html`);
+  console.log(`\n  Letter studio  http://localhost:${PORT}/letter-studio.html`);
+  console.log(`  Gift box       http://localhost:${PORT}/gift.html`);
   console.log(`  text: ${TEXT_MODEL}   transcribe: ${TRANSCRIBE_MODEL}`);
   console.log(
     API_KEY
