@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="ATO Letter Studio creates custom letters and card designs for meaningful days."
+    />
+    <title>ATO — Letter Studio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #f6f1ea;
+        --paper: #faf7f1;
+        --ink: #202a25;
+        --muted: #5d6a63;
+        --line: rgba(32, 42, 37, 0.12);
+        --sage: #dfe6d7;
+        --peach: #f0d2bf;
+        --rose: #e9b7b5;
+        --gold: #e7c46d;
+        --card: #f4e9de;
+        --shadow: 0 30px 60px rgba(33, 38, 35, 0.1);
+        --serif: "Cormorant Garamond", Georgia, serif;
+        --sans: "Manrope", Arial, sans-serif;
+      }
+
+      * { box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font-family: var(--sans);
+      }
+
+      a { color: inherit; }
+      button, input, select, textarea { font: inherit; }
+      .container {
+        width: min(1200px, calc(100% - 64px));
+        margin: 0 auto;
+      }
+
+      .site-header {
+        position: sticky;
+        top: 0;
+        z-index: 20;
+        background: rgba(246, 241, 234, 0.92);
+        backdrop-filter: blur(12px);
+        border-bottom: 1px solid rgba(32, 42, 37, 0.08);
+      }
+
+      .site-header-inner {
+        width: min(1200px, calc(100% - 64px));
+        margin: 0 auto;
+        min-height: 84px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .logo {
+        text-decoration: none;
+        font-family: var(--serif);
+        font-size: 2rem;
+        letter-spacing: 0.12em;
+        font-weight: 700;
+      }
+
+      .nav {
+        display: flex;
+        align-items: center;
+        gap: 26px;
+        font-size: 0.72rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+
+      .nav a {
+        text-decoration: none;
+        opacity: 0.8;
+      }
+
+      .nav a:hover,
+      .nav a:focus-visible {
+        opacity: 1;
+      }
+
+      .nav-button {
+        display: none;
+        border: 1px solid var(--line);
+        background: transparent;
+        border-radius: 12px;
+        padding: 10px 12px;
+      }
+
+      .studio-main {
+        padding: 60px 0 80px;
+      }
+
+      .hero {
+        display: grid;
+        grid-template-columns: 1.15fr 0.85fr;
+        gap: 42px;
+        align-items: center;
+        margin-bottom: 52px;
+      }
+
+      .eyebrow {
+        margin: 0 0 20px;
+        font-size: 0.7rem;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: #b35f55;
+        font-weight: 700;
+      }
+
+      h1, h2, h3, p { margin-top: 0; }
+
+      .hero h1 {
+        margin-bottom: 20px;
+        font-family: var(--serif);
+        font-size: clamp(3.1rem, 5vw, 5.8rem);
+        line-height: 0.9;
+        letter-spacing: -0.06em;
+      }
+
+      .hero p {
+        margin: 0;
+        max-width: 580px;
+        color: var(--muted);
+        font-size: 1.08rem;
+        line-height: 1.8;
+      }
+
+      .mini-panel {
+        padding: 24px 22px;
+        background: rgba(255, 255, 255, 0.28);
+        border: 1px solid var(--line);
+        box-shadow: var(--shadow);
+      }
+
+      .mini-panel h2 {
+        margin: 0 0 10px;
+        font-family: var(--serif);
+        font-size: clamp(2.4rem, 4vw, 4rem);
+        line-height: 0.9;
+      }
+
+      .mini-panel p {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.7;
+      }
+
+      .studio-body {
+        display: grid;
+        grid-template-columns: 0.9fr 1.1fr;
+        gap: 28px;
+      }
+
+      .form-panel,
+      .output-panel {
+        background: rgba(255, 255, 255, 0.26);
+        border: 1px solid var(--line);
+        box-shadow: var(--shadow);
+      }
+
+      .form-panel {
+        padding: 26px 22px;
+      }
+
+      .field-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 18px;
+      }
+
+      .field {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .field.full {
+        grid-column: 1 / -1;
+      }
+
+      label {
+        font-size: 0.72rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--muted);
+        font-weight: 700;
+      }
+
+      input,
+      select,
+      textarea {
+        width: 100%;
+        padding: 12px 14px;
+        background: rgba(255, 255, 255, 0.58);
+        border: 1px solid rgba(32, 42, 37, 0.12);
+        border-radius: 14px;
+        color: var(--ink);
+      }
+
+      textarea {
+        min-height: 140px;
+        resize: vertical;
+      }
+
+      .selector-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 8px;
+      }
+
+      .selector {
+        padding: 8px 12px;
+        border-radius: 999px;
+        border: 1px solid var(--line);
+        background: rgba(255,255,255,0.32);
+        color: var(--ink);
+        cursor: pointer;
+      }
+
+      .selector.active {
+        background: var(--ink);
+        border-color: var(--ink);
+        color: var(--paper);
+      }
+
+      .button-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: 18px;
+      }
+
+      .button {
+        border: none;
+        padding: 14px 18px;
+        border-radius: 999px;
+        cursor: pointer;
+        font-size: 0.72rem;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+
+      .button.primary {
+        background: var(--ink);
+        color: var(--paper);
+      }
+
+      .button.secondary {
+        background: rgba(255,255,255,0.45);
+        color: var(--ink);
+        border: 1px solid var(--line);
+      }
+
+      .output-panel {
+        padding: 22px;
+      }
+
+      .output-grid {
+        display: grid;
+        grid-template-columns: 1.1fr 0.9fr;
+        gap: 20px;
+        min-height: 100%;
+      }
+
+      .letter-box,
+      .card-box {
+        border: 1px solid var(--line);
+        background: rgba(255,255,255,0.24);
+      }
+
+      .letter-box {
+        padding: 22px 20px;
+      }
+
+      .box-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 16px;
+        font-size: 0.72rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+
+      .copy-button {
+        border: 1px solid var(--line);
+        background: rgba(255,255,255,0.38);
+        padding: 8px 10px;
+        border-radius: 999px;
+        cursor: pointer;
+        font-size: 0.62rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+
+      #letterOutput {
+        min-height: 360px;
+        padding: 18px 14px 12px;
+        background: rgba(255,255,255,0.46);
+        border: 1px solid rgba(32,42,37,0.06);
+        font-family: var(--serif);
+        font-size: 1.6rem;
+        line-height: 1.5;
+        white-space: pre-wrap;
+      }
+
+      .card-box {
+        display: flex;
+        flex-direction: column;
+        padding: 18px;
+        background: linear-gradient(180deg, rgba(244, 233, 222, 0.9), rgba(255,255,255,0.52));
+      }
+
+      .card-toolbar {
+        display: flex;
+        justify-content: space-between;
+        gap: 8px;
+        margin-bottom: 12px;
+      }
+
+      .card-toolbar button {
+        border: 1px solid var(--line);
+        background: rgba(255,255,255,0.56);
+        padding: 8px 10px;
+        border-radius: 999px;
+        cursor: pointer;
+        font-size: 0.62rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+
+      .card-preview {
+        position: relative;
+        flex: 1;
+        min-height: 360px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        border: 1px solid rgba(32,42,37,0.08);
+        background: linear-gradient(180deg, #fdf9f5, #f4e9de);
+      }
+
+      .motif {
+        position: absolute;
+        border-radius: 50%;
+        opacity: 0.7;
+      }
+
+      .motif.one { width: 140px; height: 140px; background: rgba(233, 183, 181, 0.4); top: 30px; right: 26px; }
+      .motif.two { width: 110px; height: 110px; background: rgba(231, 196, 109, 0.35); bottom: 26px; left: 28px; }
+      .motif.three { width: 180px; height: 180px; background: rgba(223, 230, 215, 0.6); left: 50%; top: 50%; transform: translate(-50%, -50%); }
+
+      .card-inner {
+        position: relative;
+        z-index: 1;
+        width: min(84%, 220px);
+        text-align: center;
+      }
+
+      .card-to {
+        margin: 0 0 12px;
+        font-size: 0.7rem;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+
+      .card-title {
+        margin: 0 0 12px;
+        font-family: var(--serif);
+        font-size: clamp(2.4rem, 4vw, 3.4rem);
+        line-height: 0.94;
+      }
+
+      .card-text {
+        margin: 0;
+        font-size: 0.9rem;
+        line-height: 1.7;
+        color: var(--ink);
+      }
+
+      @media (max-width: 900px) {
+        .studio-body,
+        .output-grid,
+        .hero {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (max-width: 760px) {
+        .nav {
+          position: absolute;
+          top: 84px;
+          right: 32px;
+          display: none;
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 16px;
+          padding: 20px 24px;
+          background: rgba(246, 241, 234, 0.98);
+          border: 1px solid var(--line);
+          box-shadow: var(--shadow);
+        }
+
+        .nav.open {
+          display: flex;
+        }
+
+        .nav-button {
+          display: inline-flex;
+        }
+
+        .field-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="site-header-inner">
+        <a href="ato.html" class="logo" aria-label="ATO home">ATO</a>
+        <button class="nav-button" type="button" aria-expanded="false" aria-controls="site-nav">Menu</button>
+        <nav class="nav" id="site-nav" aria-label="Main navigation">
+          <a href="ato.html#about">About</a>
+          <a href="ato.html#services">Services</a>
+          <a href="ato.html#studio">Letter Studio</a>
+          <a href="ato.html#shop">Shop</a>
+          <a href="ato.html#contact">Contact</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="studio-main">
+      <div class="container hero">
+        <div>
+          <p class="eyebrow">ATO Letter Studio</p>
+          <h1>Tell us about them. We’ll write the letter and design the card.</h1>
+          <p>
+            Share a few words about the star of the day — a memory, an inside joke, what you wish you could say.
+            ATO turns it into a letter in your voice and a card made just for them.
+          </p>
+        </div>
+
+        <aside class="mini-panel" aria-label="Letter studio note">
+          <h2>Made with feeling.</h2>
+          <p>
+            Every message is shaped by the story, tone, and personality of the person you are celebrating.
+          </p>
+        </aside>
+      </div>
+
+      <div class="container studio-body">
+        <section class="form-panel" aria-label="Letter form">
+          <form id="studioForm">
+            <div class="field-grid">
+              <div class="field">
+                <label for="toInput">To</label>
+                <input id="toInput" name="to" type="text" value="Mom" />
+              </div>
+
+              <div class="field">
+                <label for="fromInput">From</label>
+                <input id="fromInput" name="from" type="text" value="You" />
+              </div>
+
+              <div class="field full">
+                <label for="occasion">Occasion</label>
+                <select id="occasion" name="occasion">
+                  <option>Birthday</option>
+                  <option>Milestone birthday</option>
+                  <option>Baby’s first birthday</option>
+                  <option>Wedding</option>
+                  <option>Graduation</option>
+                  <option>Anniversary</option>
+                  <option>Retirement</option>
+                  <option>Thank you</option>
+                  <option>Something else</option>
+                </select>
+              </div>
+
+              <div class="field full">
+                <label>Tone</label>
+                <div class="selector-row" id="toneRow">
+                  <button class="selector active" type="button" data-tone="Heartfelt">Heartfelt</button>
+                  <button class="selector" type="button" data-tone="Warm">Warm</button>
+                  <button class="selector" type="button" data-tone="Playful">Playful</button>
+                  <button class="selector" type="button" data-tone="Formal">Formal</button>
+                </div>
+              </div>
+
+              <div class="field full">
+                <label>Length</label>
+                <div class="selector-row" id="lengthRow">
+                  <button class="selector active" type="button" data-length="Short note">Short note</button>
+                  <button class="selector" type="button" data-length="Full letter">Full letter</button>
+                </div>
+              </div>
+
+              <div class="field full">
+                <label for="message">What would you like to say?</label>
+                <textarea id="message" name="message">Thank you for always making life feel warmer and brighter. I hope you know how much you mean to me.</textarea>
+              </div>
+            </div>
+
+            <div class="button-row">
+              <button class="button primary" type="submit">Write my letter</button>
+              <button class="button secondary" type="button" id="writeAgain">Write again</button>
+              <button class="button secondary" type="button" id="stopButton">Stop</button>
+            </div>
+          </form>
+        </section>
+
+        <aside class="output-panel" aria-label="Letter and card output">
+          <div class="output-grid">
+            <div class="letter-box">
+              <div class="box-header">
+                <span>The letter</span>
+                <button class="copy-button" type="button" id="copyLetter">Copy letter</button>
+              </div>
+              <article id="letterOutput"></article>
+            </div>
+
+            <div class="card-box">
+              <div class="card-toolbar">
+                <button type="button">Shuffle layout</button>
+                <button type="button">Save card as PNG</button>
+              </div>
+
+              <div class="card-preview" id="cardPreview">
+                <span class="motif one"></span>
+                <span class="motif two"></span>
+                <span class="motif three"></span>
+
+                <div class="card-inner">
+                  <p class="card-to" id="cardTo">To Mom</p>
+                  <h3 class="card-title" id="cardTitle">Happy Birthday</h3>
+                  <p class="card-text" id="cardText">Thank you for always making life feel warmer and brighter.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </main>
+
+    <script>
+      const toneRow = document.getElementById('toneRow');
+      const lengthRow = document.getElementById('lengthRow');
+      const form = document.getElementById('studioForm');
+      const letterOutput = document.getElementById('letterOutput');
+      const cardTitle = document.getElementById('cardTitle');
+      const cardText = document.getElementById('cardText');
+      const cardTo = document.getElementById('cardTo');
+      const copyLetterButton = document.getElementById('copyLetter');
+      const writeAgainButton = document.getElementById('writeAgain');
+      const stopButton = document.getElementById('stopButton');
+
+      let selectedTone = 'Heartfelt';
+      let selectedLength = 'Short note';
+
+      function updateToneSelection(event) {
+        const button = event.target.closest('.selector');
+        if (!button) return;
+        selectedTone = button.dataset.tone;
+        toneRow.querySelectorAll('.selector').forEach((item) => item.classList.toggle('active', item === button));
+      }
+
+      function updateLengthSelection(event) {
+        const button = event.target.closest('.selector');
+        if (!button) return;
+        selectedLength = button.dataset.length;
+        lengthRow.querySelectorAll('.selector').forEach((item) => item.classList.toggle('active', item === button));
+      }
+
+      function generateLetterText({ to, from, occasion, tone, length, message }) {
+        const first = message.trim() || 'Thank you for always making life feel brighter and more beautiful.';
+        const opening = `Dear ${to},\n\n`;
+
+        const tonePhrases = {
+          Heartfelt: 'Your kindness, warmth, and presence have shaped so many moments in my life, and I want you to know how deeply I appreciate you.',
+          Warm: 'You have made everyday life feel softer, brighter, and more full of love, and I am so grateful for that.',
+          Playful: 'You are the kind of person who makes everything feel a little more fun, a little more special, and a lot more memorable.',
+          Formal: 'It is with sincere gratitude that I write to thank you for your kindness, generosity, and unwavering support.'
+        };
+
+        const body = `${tonePhrases[tone]}\n\n${first}\n\nI hope this ${occasion.toLowerCase()} reminds you how loved and cherished you are. You deserve all the comfort, joy, and happiness that life can give.\n\nWith love,\n${from}`;
+
+        if (length === 'Short note') {
+          return `${opening}${tonePhrases[tone]}\n\n${first}\n\nWith love,\n${from}`;
+        }
+
+        return `${opening}${body}`;
+      }
+
+      function buildCardCopy(occasion, tone, to, message) {
+        const titleMap = {
+          Birthday: 'Happy Birthday',
+          'Milestone birthday': 'Celebrating You',
+          'Baby’s first birthday': 'First Birthday',
+          Wedding: 'With Love',
+          Graduation: 'Congratulations',
+          Anniversary: 'Forever Grateful',
+          Retirement: 'Celebrating Your Next Chapter',
+          'Thank you': 'Thank You',
+          'Something else': 'For You'
+        };
+
+        const shortened = message.replace(/\s+/g, ' ').trim();
+        const previewText = shortened.length > 92 ? `${shortened.slice(0, 92).trim()}…` : shortened;
+
+        return {
+          title: titleMap[occasion] || 'For You',
+          text: `To ${to} — ${previewText}`
+        };
+      }
+
+      function renderLetter() {
+        const to = document.getElementById('toInput').value.trim() || 'Mom';
+        const from = document.getElementById('fromInput').value.trim() || 'You';
+        const occasion = document.getElementById('occasion').value;
+        const message = document.getElementById('message').value;
+
+        const finalLetter = generateLetterText({ to, from, occasion, tone: selectedTone, length: selectedLength, message });
+        const cardData = buildCardCopy(occasion, selectedTone, to, message);
+
+        letterOutput.textContent = finalLetter;
+        cardTo.textContent = `To ${to}`;
+        cardTitle.textContent = cardData.title;
+        cardText.textContent = cardData.text;
+      }
+
+      form.addEventListener('submit', (event) => {
+        event.preventDefault();
+        renderLetter();
+      });
+
+      toneRow.addEventListener('click', updateToneSelection);
+      lengthRow.addEventListener('click', updateLengthSelection);
+
+      writeAgainButton.addEventListener('click', () => {
+        document.getElementById('message').focus();
+      });
+
+      stopButton.addEventListener('click', () => {
+        letterOutput.textContent = 'The letter is waiting for the right words.';
+        cardTitle.textContent = 'For You';
+        cardText.textContent = 'Tell us about the people and moments that matter most.';
+        cardTo.textContent = 'To your favorite person';
+      });
+
+      copyLetterButton.addEventListener('click', async () => {
+        try {
+          await navigator.clipboard.writeText(letterOutput.textContent);
+          copyLetterButton.textContent = 'Copied';
+          setTimeout(() => { copyLetterButton.textContent = 'Copy letter'; }, 1200);
+        } catch (error) {
+          copyLetterButton.textContent = 'Copy failed';
+          setTimeout(() => { copyLetterButton.textContent = 'Copy letter'; }, 1200);
+        }
+      });
+
+      renderLetter();
+
+      const nav = document.getElementById('site-nav');
+      const toggle = document.querySelector('.nav-button');
+
+      toggle.addEventListener('click', () => {
+        const isOpen = nav.classList.toggle('open');
+        toggle.setAttribute('aria-expanded', String(isOpen));
+      });
+
+      nav.addEventListener('click', (event) => {
+        if (event.target.tagName === 'A') {
+          nav.classList.remove('open');
+          toggle.setAttribute('aria-expanded', 'false');
+        }
+      });
+    </script>
+  </body>
+</html>

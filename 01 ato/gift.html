@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="ATO creates a warm, meaningful gift to preserve your most precious memories"
+    />
+    <title>ATO | Special Day Gift Box</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Jua&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="topbar">
+        <div class="brand">ATO</div>
+        <nav class="main-nav" aria-label="Main menu">
+          <a href="#story">Special Day</a>
+          <a href="#details">Memories</a>
+          <a href="#gift">Gift Box</a>
+        </nav>
+      </header>
+
+      <main class="hero" id="story">
+        <section class="intro-copy">
+          <p class="eyebrow">ATO keeps your special day beautifully</p>
+          <h1>We keep today’s memories<br />in a warm gift.</h1>
+          <p class="summary">
+            Birthdays, anniversaries, graduations, proposals, first birthdays and more.
+            ATO carefully creates a card and a gift box for the person who matters most.
+          </p>
+
+          <div class="action-row">
+            <button id="storyButton" class="primary-btn" type="button">
+              Tell your story
+            </button>
+            <button id="demoBtn" class="ghost-btn" type="button">
+              View example
+            </button>
+          </div>
+
+          <div class="status-row">
+            <span class="status-dot"></span>
+            <span id="statusText">ATO is waiting to hear your story.</span>
+          </div>
+        </section>
+
+        <section class="gift-stage" aria-live="polite">
+          <div id="speechBubble" class="speech-bubble is-visible">
+            <span id="bubbleText">
+              ATO is waiting. Share the most precious story of today.
+            </span>
+          </div>
+
+          <div id="cardWrapper" class="card-wrapper" aria-live="polite">
+            <article class="custom-card">
+              <div class="card-ribbon"></div>
+              <p id="cardMessage">
+                An unopened gift feels a little excited. <br />
+                Tell me today’s story and ATO will turn it into a warm, heartfelt memory.
+              </p>
+            </article>
+          </div>
+
+          <div id="balloonArea" class="balloon-area" aria-hidden="true">
+            <span class="balloon balloon-one"></span>
+            <span class="balloon balloon-two"></span>
+            <span class="balloon balloon-three"></span>
+            <span class="balloon balloon-four"></span>
+            <span class="balloon balloon-five"></span>
+          </div>
+
+          <div id="giftBox" class="gift-box" aria-label="ATO gift box">
+            <div class="lid">
+              <span class="lid-bow"></span>
+            </div>
+            <div class="box-body">
+              <span class="ribbon ribbon-vertical"></span>
+              <span class="ribbon ribbon-horizontal"></span>
+              <span class="box-face">
+                <span class="eye eye-left"></span>
+                <span class="eye eye-right"></span>
+                <span class="smile"></span>
+              </span>
+              <span class="box-label">ATO</span>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <section id="details" class="highlights" aria-label="ATO service overview">
+        <article class="highlight-card">
+          <span class="highlight-icon">✦</span>
+          <h2>Custom Card</h2>
+          <p>We create a handwritten letter inspired by your cherished moments.</p>
+        </article>
+        <article class="highlight-card">
+          <span class="highlight-icon">❋</span>
+          <h2>Warm Space</h2>
+          <p>Soft colors and a cozy atmosphere make every day feel more beautiful.</p>
+        </article>
+        <article class="highlight-card">
+          <span class="highlight-icon">♡</span>
+          <h2>Meaningful Gift</h2>
+          <p>We prepare a gift with the perfect meaning for someone truly special.</p>
+        </article>
+      </section>
+    </div>
+
+    <div id="storyModal" class="story-modal hidden" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="story-panel">
+        <h2 id="modalTitle">Tell us about your special day</h2>
+        <textarea id="storyInput" rows="6" placeholder="Example: Today is my mom’s birthday. She has always worked so hard for us..."></textarea>
+        <div class="panel-actions">
+          <button id="submitStory" class="primary-btn small" type="button">Send</button>
+          <button id="closeModal" class="ghost-btn small" type="button">Close</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>

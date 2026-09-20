@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="ATO creates custom cards, styled event spaces, and party goods for the days worth keeping."
+    />
+    <title>ATO — Turning your special day into a memory to keep.</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #f6f1ea;
+        --paper: #faf7f1;
+        --ink: #202a25;
+        --muted: #5d6a63;
+        --line: rgba(32, 42, 37, 0.12);
+        --sage: #dfe6d7;
+        --peach: #f0d2bf;
+        --rose: #e9b7b5;
+        --gold: #e7c46d;
+        --card: #f4e9de;
+        --shadow: 0 30px 60px rgba(33, 38, 35, 0.1);
+        --serif: "Cormorant Garamond", Georgia, serif;
+        --sans: "Manrope", Arial, sans-serif;
+      }
+
+      * { box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font-family: var(--sans);
+      }
+
+      a { color: inherit; }
+      img { max-width: 100%; display: block; }
+      button { font: inherit; }
+      .container {
+        width: min(1200px, calc(100% - 64px));
+        margin: 0 auto;
+      }
+
+      .site-header {
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        background: rgba(246, 241, 234, 0.92);
+        backdrop-filter: blur(12px);
+        border-bottom: 1px solid rgba(32, 42, 37, 0.08);
+      }
+
+      .site-header-inner {
+        width: min(1200px, calc(100% - 64px));
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        min-height: 84px;
+      }
+
+      .logo {
+        text-decoration: none;
+        font-family: var(--serif);
+        font-size: 2rem;
+        letter-spacing: 0.12em;
+        font-weight: 700;
+      }
+
+      .nav {
+        display: flex;
+        align-items: center;
+        gap: 30px;
+        font-size: 0.75rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+
+      .nav a {
+        color: var(--ink);
+        text-decoration: none;
+        opacity: 0.8;
+      }
+
+      .nav a:hover,
+      .nav a:focus-visible {
+        opacity: 1;
+      }
+
+      .nav-button {
+        display: none;
+        border: 1px solid var(--line);
+        background: transparent;
+        padding: 10px 12px;
+        border-radius: 12px;
+      }
+
+      .hero {
+        display: grid;
+        grid-template-columns: 1.05fr 0.95fr;
+        gap: 52px;
+        align-items: center;
+        min-height: 760px;
+        padding: 74px 0 46px;
+      }
+
+      .eyebrow {
+        display: inline-block;
+        margin: 0 0 20px;
+        font-size: 0.72rem;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: #b35f55;
+        font-weight: 700;
+      }
+
+      h1, h2, h3, p { margin-top: 0; }
+
+      .hero h1 {
+        margin-bottom: 22px;
+        max-width: 640px;
+        font-family: var(--serif);
+        font-weight: 600;
+        font-size: clamp(4.1rem, 7vw, 7.2rem);
+        line-height: 0.92;
+        letter-spacing: -0.06em;
+      }
+
+      .hero-copy p {
+        max-width: 520px;
+        margin-bottom: 0;
+        color: var(--muted);
+        font-size: 1.08rem;
+        line-height: 1.8;
+      }
+
+      .cta-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 16px;
+        margin-top: 34px;
+      }
+
+      .button {
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        padding: 15px 20px;
+        border-radius: 999px;
+        text-decoration: none;
+        font-size: 0.72rem;
+        font-weight: 700;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+      }
+
+      .button.primary {
+        background: var(--ink);
+        color: var(--paper);
+        box-shadow: 0 18px 28px rgba(32, 42, 37, 0.12);
+      }
+
+      .button.secondary {
+        background: rgba(255, 255, 255, 0.22);
+        border: 1px solid var(--line);
+        color: var(--ink);
+      }
+
+      .button:hover,
+      .button:focus-visible {
+        transform: translateY(-2px);
+      }
+
+      .hero-art {
+        position: relative;
+        min-height: 620px;
+        background: linear-gradient(180deg, var(--sage), #c9d3bf);
+        box-shadow: var(--shadow);
+        overflow: hidden;
+      }
+
+      .hero-art::before {
+        content: "";
+        position: absolute;
+        inset: 58px 80px 0 80px;
+        background: radial-gradient(circle at center, rgba(255,255,255,0.9), rgba(255,255,255,0.04) 62%);
+        border-radius: 50% 50% 0 0;
+      }
+
+      .orb {
+        position: absolute;
+        border-radius: 50%;
+      }
+
+      .orb-one {
+        width: 120px;
+        height: 120px;
+        top: 110px;
+        right: 170px;
+        background: #f9dca8;
+      }
+
+      .orb-two {
+        width: 72px;
+        height: 72px;
+        left: 76px;
+        bottom: 130px;
+        background: rgba(255, 255, 255, 0.38);
+      }
+
+      .hero-card {
+        position: absolute;
+        left: 78px;
+        bottom: 70px;
+        width: min(54%, 280px);
+        background: rgba(250, 247, 241, 0.96);
+        border: 1px solid rgba(32, 42, 37, 0.08);
+        padding: 28px 28px 22px;
+        box-shadow: 0 26px 40px rgba(32, 42, 37, 0.12);
+        transform: rotate(-8deg);
+      }
+
+      .hero-card .label {
+        display: inline-block;
+        margin-bottom: 18px;
+        font-size: 0.65rem;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: #b35f55;
+        font-weight: 700;
+      }
+
+      .hero-card h3 {
+        margin: 0;
+        font-family: var(--serif);
+        font-size: clamp(2.2rem, 4vw, 3.6rem);
+        line-height: 0.9;
+      }
+
+      .brand-mark {
+        position: absolute;
+        right: 48px;
+        top: 50px;
+        font-family: var(--serif);
+        font-size: clamp(4rem, 5vw, 6rem);
+        letter-spacing: 0.1em;
+        color: rgba(255, 255, 255, 0.7);
+        transform: rotate(90deg);
+      }
+
+      .section {
+        padding: 108px 0;
+        border-top: 1px solid var(--line);
+      }
+
+      .section-grid {
+        display: grid;
+        grid-template-columns: 0.75fr 1.25fr;
+        gap: 80px;
+        align-items: start;
+      }
+
+      .section-label {
+        margin: 0;
+        font-size: 0.72rem;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: #b35f55;
+        font-weight: 700;
+      }
+
+      .about h2,
+      .services h2,
+      .studio h2,
+      .shop h2 {
+        margin: 16px 0 18px;
+        font-family: var(--serif);
+        line-height: 0.96;
+        letter-spacing: -0.05em;
+      }
+
+      .about h2 {
+        font-size: clamp(2.8rem, 4.5vw, 5rem);
+      }
+
+      .about-copy {
+        max-width: 540px;
+        color: var(--muted);
+        font-size: 1.08rem;
+        line-height: 1.8;
+      }
+
+      .about-copy strong {
+        color: var(--ink);
+        font-weight: 700;
+      }
+
+      .services-head {
+        display: flex;
+        align-items: end;
+        justify-content: space-between;
+        gap: 28px;
+        margin-bottom: 34px;
+      }
+
+      .services h2,
+      .studio h2,
+      .shop h2 {
+        margin: 0;
+        font-size: clamp(2.8rem, 4vw, 5rem);
+      }
+
+      .services-head p {
+        max-width: 340px;
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.7;
+      }
+
+      .service-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 18px;
+      }
+
+      .service-card {
+        min-height: 310px;
+        padding: 28px 24px 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        background: var(--card);
+        border: 1px solid rgba(32, 42, 37, 0.06);
+      }
+
+      .service-card:nth-child(2) { background: #dfe6d7; }
+      .service-card:nth-child(3) { background: #f1d0c4; }
+
+      .service-no {
+        font-size: 0.8rem;
+        font-weight: 700;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--ink);
+      }
+
+      .service-card h3 {
+        margin: 0 0 14px;
+        font-family: var(--serif);
+        font-size: clamp(2rem, 3vw, 3rem);
+        line-height: 0.95;
+      }
+
+      .service-card p {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.7;
+      }
+
+      .studio-grid {
+        display: grid;
+        grid-template-columns: 0.85fr 1.15fr;
+        gap: 50px;
+        align-items: center;
+      }
+
+      .studio-copy {
+        color: var(--muted);
+        font-size: 1.06rem;
+        line-height: 1.8;
+      }
+
+      .studio-preview {
+        display: grid;
+        grid-template-columns: 1.2fr 0.8fr;
+        gap: 18px;
+        padding: 18px;
+        background: rgba(255,255,255,0.28);
+        border: 1px solid var(--line);
+      }
+
+      .letter-panel,
+      .card-panel {
+        background: rgba(255, 255, 255, 0.45);
+        border: 1px solid var(--line);
+        padding: 22px 18px;
+      }
+
+      .letter-panel {
+        min-height: 260px;
+      }
+
+      .paper-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 20px;
+        font-size: 0.7rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+
+      .letter-content {
+        font-family: var(--serif);
+        font-size: 1.8rem;
+        line-height: 1.3;
+      }
+
+      .card-panel {
+        display: flex;
+        flex-direction: column;
+        min-height: 260px;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        background: linear-gradient(180deg, #f4e9de, #fdf7f1);
+      }
+
+      .card-swatch {
+        display: flex;
+        gap: 8px;
+        margin-bottom: 18px;
+      }
+
+      .swatch {
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+      }
+
+      .swatch.pink { background: #e7b7b8; }
+      .swatch.gold { background: #e7c46d; }
+      .swatch.sage { background: #c9d3bf; }
+
+      .card-panel h4 {
+        margin: 0;
+        font-size: 2.2rem;
+        line-height: 1;
+        font-family: var(--serif);
+      }
+
+      .shop-grid {
+        display: grid;
+        grid-template-columns: 0.85fr 1.15fr;
+        gap: 50px;
+        align-items: center;
+      }
+
+      .shop-copy {
+        color: var(--muted);
+        line-height: 1.8;
+      }
+
+      .product-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 18px;
+      }
+
+      .product-card {
+        padding: 14px 14px 18px;
+        border: 1px solid var(--line);
+        background: rgba(255,255,255,0.2);
+      }
+
+      .product-art {
+        display: grid;
+        place-items: center;
+        min-height: 190px;
+        margin-bottom: 16px;
+        background: #e5ded1;
+        color: #a05f5d;
+        font-family: var(--serif);
+        font-size: 3.6rem;
+      }
+
+      .product-card:nth-child(2) .product-art {
+        background: #dfe7d4;
+        color: var(--ink);
+      }
+
+      .product-card h4 {
+        margin: 0 0 6px;
+        font-size: 1.25rem;
+        font-family: var(--serif);
+      }
+
+      .product-card p {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.6;
+      }
+
+      .site-footer {
+        padding: 28px 0 52px;
+        border-top: 1px solid var(--line);
+      }
+
+      .footer-inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 18px;
+      }
+
+      .footer-inner span,
+      .footer-links a {
+        font-size: 0.73rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        text-decoration: none;
+        color: var(--ink);
+      }
+
+      .footer-links {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+      }
+
+      @media (max-width: 820px) {
+        .nav {
+          position: absolute;
+          top: 84px;
+          right: 32px;
+          display: none;
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 16px;
+          padding: 20px 24px;
+          background: rgba(246, 241, 234, 0.98);
+          border: 1px solid var(--line);
+          box-shadow: var(--shadow);
+        }
+
+        .nav.open {
+          display: flex;
+        }
+
+        .nav-button {
+          display: inline-flex;
+        }
+
+        .hero,
+        .section-grid,
+        .studio-grid,
+        .shop-grid,
+        .services-head,
+        .footer-inner {
+          grid-template-columns: 1fr;
+          display: block;
+        }
+
+        .hero {
+          padding-top: 52px;
+          min-height: auto;
+        }
+
+        .hero-art {
+          margin-top: 36px;
+          min-height: 450px;
+        }
+
+        .service-grid,
+        .product-grid {
+          grid-template-columns: 1fr;
+          display: grid;
+        }
+
+        .studio-preview {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="site-header-inner">
+        <a href="#home" class="logo" aria-label="ATO home">ATO</a>
+        <button class="nav-button" type="button" aria-expanded="false" aria-controls="site-nav">
+          Menu
+        </button>
+        <nav class="nav" id="site-nav" aria-label="Main navigation">
+          <a href="#about">About</a>
+          <a href="#services">Services</a>
+          <a href="#studio">Letter Studio</a>
+          <a href="#shop">Shop</a>
+          <a href="#contact">Contact</a>
+        </nav>
+      </div>
+    </header>
+
+    <main id="home">
+      <div class="container hero">
+        <div class="hero-copy">
+          <p class="eyebrow">Turning your special day into a memory to keep.</p>
+          <h1>Memories that stay with you.</h1>
+          <p>
+            ATO is a gift-like brand that creates everything for the star of a special day,
+            from custom cards and space styling to party supplies.
+          </p>
+          <div class="cta-row">
+            <a href="#services" class="button primary">Discover ATO</a>
+            <a href="#studio" class="button secondary">Letter Studio</a>
+          </div>
+        </div>
+
+        <div class="hero-art" aria-label="Warm ATO concept art">
+          <span class="orb orb-one"></span>
+          <span class="orb orb-two"></span>
+          <div class="brand-mark">ATO</div>
+          <article class="hero-card">
+            <span class="label">For the star of the day</span>
+            <h3>Made just<br />for you.</h3>
+          </article>
+        </div>
+      </div>
+
+      <section class="section" id="about">
+        <div class="container section-grid about">
+          <p class="section-label">01 / About</p>
+          <div>
+            <h2>Every special day deserves a gift.</h2>
+            <div class="about-copy">
+              <p><strong>“Ato” (아토)</strong> is a native Korean word meaning “gift.”</p>
+              <p>
+                Life can be hard and tiring, but the happiest, most precious days stay with us
+                for a long time. At ATO, we turn those days into memories you can keep for years
+                to come.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="services">
+        <div class="container">
+          <div class="services-head">
+            <h2>What we do</h2>
+            <p>
+              ATO designs goods and styles spaces for the once-in-a-lifetime days that matter most.
+            </p>
+          </div>
+
+          <div class="service-grid">
+            <article class="service-card">
+              <div class="service-no">01</div>
+              <div>
+                <h3>Custom cards</h3>
+                <p>Cards made for the person you are celebrating, shaped by their story and your voice.</p>
+              </div>
+            </article>
+
+            <article class="service-card">
+              <div class="service-no">02</div>
+              <div>
+                <h3>Event space styling</h3>
+                <p>We develop a concept for your event space and bring it to life with care and presence.</p>
+              </div>
+            </article>
+
+            <article class="service-card">
+              <div class="service-no">03</div>
+              <div>
+                <h3>Party supplies &amp; props</h3>
+                <p>Balloons, party goods, and props, all planned and made by ATO with a personal touch.</p>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="studio">
+        <div class="container studio-grid">
+          <div>
+            <p class="section-label">02 / Letter Studio</p>
+            <h2>Tell us about them. We’ll write the letter and design the card.</h2>
+            <p class="studio-copy">
+              Share a few words about the star of the day — a memory, an inside joke, what you wish you could say.
+              ATO turns it into a letter in your voice and a card made just for them.
+            </p>
+            <a href="letter-studio.html" class="button primary">Open Letter Studio</a>
+          </div>
+
+          <div class="studio-preview" aria-label="Letter studio preview mockup">
+            <div class="letter-panel">
+              <div class="paper-header">
+                <span>Letter</span>
+                <span>To: Mom</span>
+              </div>
+              <div class="letter-content">Dear Mom,<br />Thank you for always</div>
+            </div>
+
+            <div class="card-panel">
+              <div class="card-swatch">
+                <span class="swatch pink"></span>
+                <span class="swatch gold"></span>
+                <span class="swatch sage"></span>
+              </div>
+              <h4>Happy<br />Birthday</h4>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="shop">
+        <div class="container shop-grid">
+          <div class="shop-copy">
+            <p class="section-label">03 / ATO Originals</p>
+            <h2>Little things, made with feeling.</h2>
+            <p>
+              Made just for you. Each piece is shaped by the story and taste of the person it is for.
+              Products we plan, design, and make ourselves, available in our shop.
+            </p>
+          </div>
+
+          <div class="product-grid">
+            <article class="product-card">
+              <div class="product-art">A</div>
+              <h4>Day-of card set</h4>
+              <p>Three cards for the moments worth saying out loud.</p>
+            </article>
+
+            <article class="product-card">
+              <div class="product-art">✦</div>
+              <h4>Celebration kit</h4>
+              <p>A joyful edit of paper goods and party details.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer" id="contact">
+      <div class="container footer-inner">
+        <span>© 2026 ATO — made for meaningful days.</span>
+        <div class="footer-links">
+          <a href="mailto:hello@ato-gift.com">hello@ato-gift.com</a>
+          <a href="#home">Back to top ↑</a>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      const nav = document.getElementById('site-nav');
+      const toggle = document.querySelector('.nav-button');
+
+      toggle.addEventListener('click', () => {
+        const isOpen = nav.classList.toggle('open');
+        toggle.setAttribute('aria-expanded', String(isOpen));
+      });
+
+      nav.addEventListener('click', (event) => {
+        if (event.target.tagName === 'A') {
+          nav.classList.remove('open');
+          toggle.setAttribute('aria-expanded', 'false');
+        }
+      });
+    </script>
+  </body>
+</html>
