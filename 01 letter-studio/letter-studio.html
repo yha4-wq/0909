@@ -101,7 +101,7 @@ nav a[aria-current]{color:var(--ink)}
 
 /* ----------------------------------------------------------------- intro */
 .intro{
-  padding-block:76px 40px;
+  padding-block:48px 30px;
   display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);
   gap:28px 64px;align-items:end;
 }
@@ -109,7 +109,7 @@ nav a[aria-current]{color:var(--ink)}
   font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);
   margin-bottom:16px;font-weight:600;
 }
-.intro h1{font-size:clamp(2.1rem,4.6vw,3.4rem);letter-spacing:-.025em}
+.intro h1{font-size:clamp(1.9rem,3.6vw,2.7rem);letter-spacing:-.022em}
 .intro h1 em{
   font-style:normal;font-family:var(--hand);font-weight:400;color:var(--ink-soft);
   font-size:1.28em;line-height:.9;
@@ -123,7 +123,7 @@ nav a[aria-current]{color:var(--ink)}
 @keyframes rise{from{opacity:.001;transform:translateY(14px)}to{opacity:1;transform:none}}
 
 /* ---------------------------------------------------------------- studio */
-.studio{max-width:840px;margin-inline:auto;padding-bottom:88px}
+.studio{max-width:840px;margin-inline:auto;padding-bottom:64px}
 
 /* progress rail — the fill encodes how far along the five steps you are */
 .stepbar{list-style:none;display:flex;gap:4px;margin:0 0 22px;padding:0;counter-reset:s}
@@ -328,13 +328,13 @@ canvas#topper.pop{transform:scale(1.015)}
 
 /* ----------------------------------------------------- services & about */
 .band{background:var(--surface);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
-.services{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:40px;padding-block:64px}
+.services{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:36px;padding-block:44px}
 @media (max-width:780px){.services{grid-template-columns:1fr;gap:30px;padding-block:46px}}
 .services h3{font-size:1.22rem;margin-bottom:8px}
 .services p{color:var(--muted);font-size:.95rem}
 .services .kicker{font-family:var(--hand);color:var(--faint);font-size:1.5rem;line-height:1;margin-bottom:4px}
 
-.about{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.45fr);gap:32px 72px;padding-block:76px}
+.about{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.45fr);gap:28px 64px;padding-block:52px}
 @media (max-width:780px){.about{grid-template-columns:1fr;padding-block:52px;gap:24px}}
 .about .word{font-family:var(--display);font-size:clamp(3rem,7vw,5.2rem);line-height:1;letter-spacing:-.03em}
 .about .word small{
@@ -376,9 +376,9 @@ footer .wrap{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap}
   <section class="wrap intro">
     <div>
       <p class="eyebrow">NANAL Letter Studio</p>
-      <h1>Tell us about them. We'll write the letter <em>and design the card and topper.</em></h1>
+      <h1>Tell us about them.<br><em>We'll do the rest.</em></h1>
     </div>
-    <p>Share a few words about the star of the day — a memory, an inside joke, what you wish you could say. NANAL turns it into a letter in your voice, a card, and a cake topper cut just for them.</p>
+    <p>A few words about the star of the day become a letter in your voice, a card, and a cake topper cut just for them.</p>
   </section>
 
   <section class="wrap studio" id="studio" aria-label="Letter and card studio">
@@ -396,7 +396,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap}
       <section class="step" data-step="1">
         <div>
           <h2>Who is this for?</h2>
-          <p class="hint">Names and how you know them shape how the letter sounds.</p>
+          <p class="hint">How you know them sets the letter's tone.</p>
         </div>
         <div class="form-grid">
           <div class="field">
@@ -417,7 +417,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap}
       <section class="step" data-step="2" hidden>
         <div>
           <h2>What are we celebrating?</h2>
-          <p class="hint">Each occasion brings its own palette and motif.</p>
+          <p class="hint">Each one brings its own palette.</p>
         </div>
         <fieldset>
           <div class="optgrid" id="occasion-grid" role="radiogroup" aria-label="Occasion"></div>
@@ -427,7 +427,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap}
       <section class="step" data-step="3" hidden>
         <div>
           <h2>Tell us the story</h2>
-          <p class="hint">The more specific, the more it will sound like you.</p>
+          <p class="hint">The more specific, the more it sounds like you.</p>
         </div>
         <div class="field">
           <label for="notes">What would you like to say?</label>
@@ -463,7 +463,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap}
       <section class="step" data-step="4" hidden>
         <div>
           <h2>Pick a look</h2>
-          <p class="hint">This steers both the card and the topper.</p>
+          <p class="hint">Steers the card and the topper.</p>
         </div>
         <fieldset>
           <div class="optgrid" id="style-grid" role="radiogroup" aria-label="Visual style"></div>
@@ -526,14 +526,14 @@ footer .wrap{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap}
               <button type="button" class="btn small" id="save-topper" hidden>Save topper as PNG</button>
             </div>
           </div>
-          <p class="aside">Paste the prompt into ChatGPT to get a photo-style render of this topper. The drawing above is the spec a maker works from.</p>
+          <p class="aside">The drawing is the spec a maker works from. Paste the prompt into ChatGPT for a photo.</p>
         </div>
       </section>
 
       <section class="step" data-step="6" hidden>
         <div>
           <h2>Where should it go?</h2>
-          <p class="hint">NANAL makes the topper and card to order. Fill this in and your mail app opens with everything written out — you press send.</p>
+          <p class="hint">Fill this in and your mail app opens with the order written out.</p>
         </div>
         <div class="form-grid">
           <div class="field">
@@ -565,7 +565,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap}
           <a class="btn primary" id="order-mail" href="#" rel="noopener">Open my mail app</a>
           <button type="button" class="btn" id="order-copy">Copy the order instead</button>
         </div>
-        <p class="aside">Nothing is stored on this page. The details go straight into a mail draft on your own device.</p>
+        <p class="aside">Nothing is stored here — the details go straight into a draft on your device.</p>
       </section>
 
       <div class="wizard-nav">
@@ -583,19 +583,16 @@ footer .wrap{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap}
   <div class="band" id="services">
     <section class="wrap services" aria-label="What we do">
       <div>
-        <p class="kicker">cards</p>
         <h3>Custom Cards</h3>
-        <p>Cards made for the person you're celebrating, from the first word to the last detail.</p>
+        <p>Made for the person you're celebrating.</p>
       </div>
       <div>
-        <p class="kicker">spaces</p>
-        <h3>Event Space Styling</h3>
-        <p>We develop a concept for your event space and bring it to life.</p>
+        <h3>Event Styling</h3>
+        <p>A concept for the space, built and set up.</p>
       </div>
       <div>
-        <p class="kicker">party</p>
-        <h3>Party Supplies &amp; Props</h3>
-        <p>Balloons, party goods, and props, all made by NANAL.</p>
+        <h3>Party Goods</h3>
+        <p>Balloons, props, toppers.</p>
       </div>
     </section>
   </div>
@@ -604,8 +601,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap}
     <p class="word">nanal<small>“Nanal” is a native Korean word meaning “day after day, every day.”</small></p>
     <div>
       <h2>Turning your special day into a memory to keep.</h2>
-      <p>Life can be hard and tiring, but the happiest, most precious days stay with us for a long time. At NANAL, we turn those days into memories you can keep for years to come.</p>
-      <p>NANAL designs goods and styles spaces for the once-in-a-lifetime days that matter most.</p>
+      <p>The happiest days stay with us the longest. NANAL designs goods and styles spaces for the once-in-a-lifetime ones.</p>
       <div class="how"><span>Made just for you</span><span>NANAL Originals</span></div>
     </div>
   </section>
@@ -963,23 +959,12 @@ footer .wrap{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap}
     return top;
   }
 
-  function drawTopper() {
-    const t = topper, fin = FINISH_SPEC[t.finish], family = TOPPER_FONT[t.font];
-    const cx = TW / 2, cakeTop = 752;
-
-    topCtx.clearRect(0, 0, TW, TH);
-    const bg = topCtx.createLinearGradient(0, 0, 0, TH);
-    bg.addColorStop(0, "#FCFAF9");
-    bg.addColorStop(0.6, mix(fin.plate, "#FFFFFF", 0.9));
-    bg.addColorStop(1, mix(fin.plate, "#FFFFFF", 0.74));
-    topCtx.fillStyle = bg;
-    topCtx.fillRect(0, 0, TW, TH);
-
+  /* The topper is rendered the way it would be photographed: the whole piece is
+     drawn once as a silhouette on an offscreen canvas, then the material —
+     gradient, sheen, edge — is composited only inside that shape. */
+  function topperLayout(t, family, weight) {
     const lines = [t.text, t.sub].filter(Boolean);
-    const weight = TOPPER_WEIGHT[t.font];
     const maxW = 620;
-
-    // letter-spacing is what stops the glyphs touching; the size shrinks until both lines fit
     const spacing = t.font === "script" ? 0.05 : 0.08;
     let size = 128;
     const measure = (l, s) => {
@@ -995,69 +980,154 @@ footer .wrap{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap}
     const railW = widest + size * 0.5;
     const railH = Math.max(15, size * 0.18);
     const lineGap = size * 1.14;
-
-    // laid out from the bottom: rail, clear of the descenders, then the lines above it
-    const railBottom = 604;
+    const railBottom = 590;
     const railTop = railBottom - railH;
     const lastBaseline = railTop - size * 0.24;
     const baselines = lines.map((_, i) => lastBaseline - (lines.length - 1 - i) * lineGap);
-    const blockTop = baselines[0] - size * 0.78;
 
-    topCtx.textAlign = "center";
-    topCtx.textBaseline = "alphabetic";
+    return { lines, size, spacing, railW, railH, lineGap, railTop, railBottom,
+             baselines, blockTop: baselines[0] - size * 0.78 };
+  }
 
-    // pick first, then the cake, so the lettering lands on top of both
-    topCtx.fillStyle = mix(fin.edge, "#FFFFFF", 0.26);
+  /** Paints the whole piece in flat white on `ctx` — the mask the material fills. */
+  function topperSilhouette(ctx, L, family, weight) {
+    const cx = TW / 2;
+    ctx.textAlign = "center";
+    ctx.textBaseline = "alphabetic";
+    ctx.lineJoin = "round";
+    ctx.lineCap = "round";
+    ctx.fillStyle = "#FFFFFF";
+    ctx.strokeStyle = "#FFFFFF";
+
+    if (L.lines.length > 1) {
+      for (const off of [-L.railW * 0.3, L.railW * 0.3]) {
+        ctx.beginPath();
+        ctx.roundRect(cx + off - L.size * 0.055, L.baselines[0] + L.size * 0.1, L.size * 0.11, L.lineGap - L.size * 0.1, L.size * 0.05);
+        ctx.fill();
+      }
+    }
+
+    ctx.beginPath();
+    ctx.roundRect(cx - L.railW / 2, L.railTop, L.railW, L.railH, L.railH / 2);
+    ctx.fill();
+
+    ctx.font = `${weight} ${L.size}px ${family}`;
+    ctx.letterSpacing = `${Math.round(L.size * L.spacing)}px`;
+    ctx.lineWidth = Math.max(5, L.size * 0.13);
+    for (let i = 0; i < L.lines.length; i++) {
+      ctx.strokeText(L.lines[i], cx, L.baselines[i]);
+      ctx.fillText(L.lines[i], cx, L.baselines[i]);
+    }
+  }
+
+  function drawTopper() {
+    const t = topper, fin = FINISH_SPEC[t.finish], family = TOPPER_FONT[t.font];
+    const cx = TW / 2, cakeTop = 748;
+    const L = topperLayout(t, family, TOPPER_WEIGHT[t.font]);
+
+    // ---- backdrop: a lit seamless, the way a small product is shot ----
+    topCtx.clearRect(0, 0, TW, TH);
+    const wall = topCtx.createLinearGradient(0, 0, 0, TH);
+    wall.addColorStop(0, "#F2F2F1");
+    wall.addColorStop(0.5, "#FAFAF9");
+    wall.addColorStop(1, "#E2E2DE");
+    topCtx.fillStyle = wall;
+    topCtx.fillRect(0, 0, TW, TH);
+
+    const key = topCtx.createRadialGradient(cx - 60, 330, 40, cx, 430, 620);
+    key.addColorStop(0, "rgba(255,255,255,.95)");
+    key.addColorStop(1, "rgba(255,255,255,0)");
+    topCtx.fillStyle = key;
+    topCtx.fillRect(0, 0, TW, TH);
+
+    // ---- the piece, as a silhouette filled with its material ----
+    const off = document.createElement("canvas");
+    off.width = TW; off.height = TH;
+    const octx = off.getContext("2d");
+    topperSilhouette(octx, L, family, TOPPER_WEIGHT[t.font]);
+
+    const top = L.blockTop, bottom = L.railBottom;
+    octx.globalCompositeOperation = "source-in";
+    const body = octx.createLinearGradient(cx - L.railW / 2, top, cx + L.railW / 2, bottom);
+    body.addColorStop(0, mix(fin.plate, "#FFFFFF", 0.2));
+    body.addColorStop(0.3, fin.plate);
+    body.addColorStop(0.58, mix(fin.plate, fin.edge, 0.2));
+    body.addColorStop(1, mix(fin.plate, fin.edge, 0.75));
+    octx.fillStyle = body;
+    octx.fillRect(0, 0, TW, TH);
+
+    // a raking sheen and a darker underside, so it reads as a solid slab
+    octx.globalCompositeOperation = "source-atop";
+    const sheen = octx.createLinearGradient(cx - L.railW / 2, top, cx + L.railW * 0.2, bottom);
+    sheen.addColorStop(0.3, "rgba(255,255,255,0)");
+    sheen.addColorStop(0.4, "rgba(255,255,255,.28)");
+    sheen.addColorStop(0.46, "rgba(255,255,255,0)");
+    octx.fillStyle = sheen;
+    octx.fillRect(0, 0, TW, TH);
+
+    const under = octx.createLinearGradient(0, bottom - L.size * 0.9, 0, bottom);
+    under.addColorStop(0, "rgba(0,0,0,0)");
+    under.addColorStop(1, "rgba(40,28,18,.22)");
+    octx.fillStyle = under;
+    octx.fillRect(0, 0, TW, TH);
+
+    // pick, then cake, then the piece on top of both
+    topCtx.fillStyle = mix(fin.edge, "#FFFFFF", 0.3);
     topCtx.beginPath();
-    topCtx.roundRect(cx - 9, railBottom - 14, 18, cakeTop - railBottom + 104, 7);
+    topCtx.roundRect(cx - 9, bottom - 16, 18, cakeTop - bottom + 104, 7);
     topCtx.fill();
 
     drawWhiteCake(cakeTop);
 
+    // the shadow the piece casts onto the cake
     topCtx.save();
-    topCtx.shadowColor = "rgba(72,56,62,.2)";
-    topCtx.shadowBlur = 22;
-    topCtx.shadowOffsetY = 9;
-
-    // the two struts that hold the upper line to the lower one
-    if (lines.length > 1) {
-      topCtx.fillStyle = fin.plate;
-      topCtx.strokeStyle = fin.edge;
-      topCtx.lineWidth = Math.max(3, size * 0.05);
-      for (const off of [-railW * 0.3, railW * 0.3]) {
-        topCtx.beginPath();
-        topCtx.roundRect(cx + off - size * 0.055, baselines[0] + size * 0.1, size * 0.11, lineGap - size * 0.1, size * 0.05);
-        topCtx.fill();
-        topCtx.stroke();
-      }
-    }
-
-    cutRail(cx, railTop, railW, railH, fin);
+    topCtx.globalAlpha = 0.16;
+    topCtx.fillStyle = "#4A4038";
+    topCtx.beginPath();
+    topCtx.ellipse(cx + 34, cakeTop + 12, L.railW * 0.34, 16, 0, 0, Math.PI * 2);
+    topCtx.filter = "blur(6px)";
+    topCtx.fill();
     topCtx.restore();
 
-    for (let i = 0; i < lines.length; i++) {
-      topCtx.font = `${weight} ${size}px ${family}`;
-      topCtx.letterSpacing = `${Math.round(size * spacing)}px`;
-      cutLine(lines[i], cx, baselines[i], size, fin);
-    }
+    topCtx.save();
+    topCtx.shadowColor = "rgba(58,48,42,.3)";
+    topCtx.shadowBlur = 26;
+    topCtx.shadowOffsetX = 6;
+    topCtx.shadowOffsetY = 12;
+    topCtx.drawImage(off, 0, 0);
+    topCtx.restore();
 
-    // motif, clear of the lettering at the top corner
+    // the cut edge, drawn over the material
+    topCtx.textAlign = "center";
+    topCtx.textBaseline = "alphabetic";
+    topCtx.lineJoin = "round";
+    topCtx.lineCap = "round";
+    topCtx.strokeStyle = rgba(fin.edge, 0.9);
+    topCtx.lineWidth = Math.max(3, L.size * 0.035);
+    topCtx.beginPath();
+    topCtx.roundRect(cx - L.railW / 2, L.railTop, L.railW, L.railH, L.railH / 2);
+    topCtx.stroke();
+    topCtx.font = `${TOPPER_WEIGHT[t.font]} ${L.size}px ${family}`;
+    topCtx.letterSpacing = `${Math.round(L.size * L.spacing)}px`;
+    for (let i = 0; i < L.lines.length; i++) topCtx.strokeText(L.lines[i], cx, L.baselines[i]);
+
+    // motif, clear of the lettering
     const draw = MOTIF_DRAW_T[t.motif];
     if (draw) {
-      const s = size * 0.62;
-      draw(cx + railW / 2 + s * 0.34, blockTop + size * 0.24, s, fin);
+      const s = L.size * 0.62;
+      draw(cx + L.railW / 2 + s * 0.34, L.blockTop + L.size * 0.24, s, fin);
       if (t.motif === "heart" || t.motif === "star") {
-        draw(cx - railW / 2 - s * 0.34, blockTop + size * 0.42, s * 0.7, fin);
+        draw(cx - L.railW / 2 - s * 0.34, L.blockTop + L.size * 0.42, s * 0.7, fin);
       }
     }
 
     topCtx.letterSpacing = "0px";
     topCtx.font = `26px "Gowun Dodum", sans-serif`;
-    topCtx.fillStyle = "rgba(72,56,62,.38)";
+    topCtx.fillStyle = "rgba(60,58,56,.34)";
     topCtx.fillText("nanal", cx, TH - 44);
 
     topCanvas.setAttribute("aria-label",
-      `Cake topper: cut ${fin.label.toLowerCase()} lettering reading “${lines.join(" ")}”${t.motif !== "none" ? ` with ${TMOTIF_LABEL[t.motif].toLowerCase()}` : ""}, standing in a plain white cake`);
+      `Cake topper: cut ${fin.label.toLowerCase()} lettering reading “${L.lines.join(" ")}”${t.motif !== "none" ? ` with ${TMOTIF_LABEL[t.motif].toLowerCase()}` : ""}, standing in a plain white cake`);
     renderTopperSpec();
   }
 
