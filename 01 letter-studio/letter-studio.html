@@ -359,7 +359,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap}
 
 <header class="site-head">
   <div class="wrap">
-    <a class="brand" href="#top" aria-label="NANAL home"><b>nanal</b><i aria-hidden="true"></i><span>나날 · day after day</span></a>
+    <a class="brand" href="#top" aria-label="NANAL home"><b>nanal</b><i aria-hidden="true"></i><span>day after day</span></a>
     <nav aria-label="Main">
       <ul>
         <li><a href="#top">Home</a></li>
@@ -454,7 +454,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap}
             <span class="legend">Language</span>
             <div class="chips" role="radiogroup" aria-label="Language">
               <input type="radio" name="lang" id="lang-en" value="English" checked><label for="lang-en">English</label>
-              <input type="radio" name="lang" id="lang-ko" value="Korean"><label for="lang-ko">한국어</label>
+              <input type="radio" name="lang" id="lang-ko" value="Korean"><label for="lang-ko">Korean</label>
             </div>
           </fieldset>
         </div>
@@ -601,7 +601,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap}
   </div>
 
   <section class="wrap about" id="about">
-    <p class="word">나날<small>“Nanal” is a native Korean word meaning “day after day, every day.”</small></p>
+    <p class="word">nanal<small>“Nanal” is a native Korean word meaning “day after day, every day.”</small></p>
     <div>
       <h2>Turning your special day into a memory to keep.</h2>
       <p>Life can be hard and tiring, but the happiest, most precious days stay with us for a long time. At NANAL, we turn those days into memories you can keep for years to come.</p>
@@ -646,16 +646,16 @@ footer .wrap{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap}
   const OCCASIONS = [
     { v: "birthday",    label: "Birthday",        sub: "Any year" },
     { v: "milestone",   label: "Milestone",       sub: "60th, 70th, 80th" },
-    { v: "dol",         label: "First birthday",  sub: "Dol · 돌잔치" },
+    { v: "dol",         label: "First birthday",  sub: "The first year" },
     { v: "wedding",     label: "Wedding",         sub: "Ceremony day" },
     { v: "anniversary", label: "Anniversary",     sub: "Years together" },
     { v: "graduation",  label: "Graduation",      sub: "School or degree" },
-    { v: "admission",   label: "New school",      sub: "First day · 입학" },
+    { v: "admission",   label: "New school",      sub: "Starting school" },
     { v: "promotion",   label: "Promotion",       sub: "A step up" },
-    { v: "opening",     label: "New business",    sub: "Opening day · 개업" },
-    { v: "housewarming",label: "Housewarming",    sub: "New home · 집들이" },
+    { v: "opening",     label: "New business",    sub: "Opening day" },
+    { v: "housewarming",label: "Housewarming",    sub: "A new home" },
     { v: "retirement",  label: "Retirement",      sub: "Last day of work" },
-    { v: "discharge",   label: "Coming home",     sub: "Service done · 전역" },
+    { v: "discharge",   label: "Coming home",     sub: "Service finished" },
     { v: "recovery",    label: "Getting well",    sub: "Out of hospital" },
     { v: "pet",         label: "Pet's day",       sub: "Furry family" },
     { v: "thanks",      label: "Thank you",       sub: "Just because" },
@@ -663,14 +663,14 @@ footer .wrap{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap}
   ];
 
   const RELATIONSHIPS = [
-    { v: "grandparent", label: "Grandparent", sub: "할머니 · 할아버지" },
-    { v: "parent",      label: "Parent",      sub: "엄마 · 아빠" },
-    { v: "child",       label: "My child",    sub: "딸 · 아들" },
-    { v: "sibling",     label: "Sibling",     sub: "형제 · 자매" },
-    { v: "partner",     label: "Partner",     sub: "연인 · 배우자" },
-    { v: "friend",      label: "Friend",      sub: "가까운 사이" },
-    { v: "colleague",   label: "Colleague",   sub: "함께 일하는 사이" },
-    { v: "mentor",      label: "Mentor",      sub: "선생님 · 상사" },
+    { v: "grandparent", label: "Grandparent", sub: "Grandmother or grandfather" },
+    { v: "parent",      label: "Parent",      sub: "Mother or father" },
+    { v: "child",       label: "My child",    sub: "Daughter or son" },
+    { v: "sibling",     label: "Sibling",     sub: "Brother or sister" },
+    { v: "partner",     label: "Partner",     sub: "Partner or spouse" },
+    { v: "friend",      label: "Friend",      sub: "Someone close" },
+    { v: "colleague",   label: "Colleague",   sub: "Someone at work" },
+    { v: "mentor",      label: "Mentor",      sub: "A teacher or a boss" },
     { v: "other",       label: "Someone else", sub: "" },
   ];
 
@@ -1054,7 +1054,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap}
     topCtx.letterSpacing = "0px";
     topCtx.font = `26px "Gowun Dodum", sans-serif`;
     topCtx.fillStyle = "rgba(72,56,62,.38)";
-    topCtx.fillText("nanal  ·  나날", cx, TH - 44);
+    topCtx.fillText("nanal", cx, TH - 44);
 
     topCanvas.setAttribute("aria-label",
       `Cake topper: cut ${fin.label.toLowerCase()} lettering reading “${lines.join(" ")}”${t.motif !== "none" ? ` with ${TMOTIF_LABEL[t.motif].toLowerCase()}` : ""}, standing in a plain white cake`);
@@ -1256,7 +1256,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap}
     }
     ctx.font = `28px "Gowun Dodum", sans-serif`;
     ctx.fillStyle = rgba(p.ink, .6);
-    ctx.fillText("nanal  ·  나날", W / 2, H - 70);
+    ctx.fillText("nanal", W / 2, H - 70);
 
     canvas.setAttribute("aria-label", `Card design: “${d.headline}”${d.subline ? " — " + d.subline : ""}, ${MOTIF_LABEL[d.motif].toLowerCase()} on ${d.palette.background}`);
     renderSpec();
