@@ -179,12 +179,15 @@ label,.legend{
   color:var(--faint);font-weight:600;
 }
 
-input[type=text],select,textarea{
+.aside{font-size:.84rem;color:var(--faint);line-height:1.55;max-width:60ch}
+a.btn{text-decoration:none}
+
+input[type=text],input[type=date],select,textarea{
   font:inherit;color:var(--ink);background:var(--ground);
   border:1px solid var(--line);border-radius:11px;padding:12px 14px;width:100%;
   transition:border-color .2s var(--ease),box-shadow .2s var(--ease),background .2s var(--ease);
 }
-input[type=text]:hover,textarea:hover,select:hover{border-color:var(--line-strong)}
+input[type=text]:hover,input[type=date]:hover,textarea:hover,select:hover{border-color:var(--line-strong)}
 textarea{min-height:142px;resize:vertical;line-height:1.6}
 input:focus,select:focus,textarea:focus{
   border-color:var(--accent);background:var(--surface);outline:none;
@@ -306,12 +309,12 @@ canvas#card{
   transition:transform .4s var(--ease);
 }
 canvas#card.pop{transform:rotate(-1.1deg) scale(1.012)}
-canvas#cake{
+canvas#topper{
   width:100%;max-width:430px;aspect-ratio:1 / 1;height:auto;border-radius:14px;
   box-shadow:var(--shadow-md);
   transition:transform .4s var(--ease);
 }
-canvas#cake.pop{transform:scale(1.015)}
+canvas#topper.pop{transform:scale(1.015)}
 
 .spec{
   margin:0;display:grid;grid-template-columns:auto 1fr;gap:10px 20px;
@@ -373,9 +376,9 @@ footer .wrap{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap}
   <section class="wrap intro">
     <div>
       <p class="eyebrow">NANAL Letter Studio</p>
-      <h1>Tell us about them. We'll write the letter <em>and design the card and cake.</em></h1>
+      <h1>Tell us about them. We'll write the letter <em>and design the card and topper.</em></h1>
     </div>
-    <p>Share a few words about the star of the day — a memory, an inside joke, what you wish you could say. NANAL turns it into a letter in your voice, a card, and a cake designed for them alone.</p>
+    <p>Share a few words about the star of the day — a memory, an inside joke, what you wish you could say. NANAL turns it into a letter in your voice, a card, and a cake topper cut just for them.</p>
   </section>
 
   <section class="wrap studio" id="studio" aria-label="Letter and card studio">
@@ -385,6 +388,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap}
       <li><span class="label">Story</span></li>
       <li><span class="label">Look</span></li>
       <li><span class="label">Result</span></li>
+      <li><span class="label">Order</span></li>
     </ol>
 
     <form class="composer" id="composer" autocomplete="off">
@@ -459,7 +463,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap}
       <section class="step" data-step="4" hidden>
         <div>
           <h2>Pick a look</h2>
-          <p class="hint">This steers both the card and the cake.</p>
+          <p class="hint">This steers both the card and the topper.</p>
         </div>
         <fieldset>
           <div class="optgrid" id="style-grid" role="radiogroup" aria-label="Visual style"></div>
@@ -474,14 +478,17 @@ footer .wrap{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap}
         <div class="resulttabs" role="tablist" aria-label="Results">
           <button type="button" role="tab" data-result="letter" aria-selected="true">The letter</button>
           <button type="button" role="tab" data-result="card" aria-selected="false">The card</button>
-          <button type="button" role="tab" data-result="cake" aria-selected="false">The cake</button>
+          <button type="button" role="tab" data-result="topper" aria-selected="false">The topper</button>
         </div>
 
         <div class="result" data-panel="letter">
           <div class="paper"><div class="letter" id="letter"></div></div>
           <div class="below">
             <span class="words" id="words"></span>
-            <button type="button" class="btn small" id="copy">Copy letter</button>
+            <div class="actions">
+              <button type="button" class="btn small" id="copy">Copy letter</button>
+              <a class="btn small" id="email-letter" href="#" rel="noopener">Email this letter</a>
+            </div>
           </div>
         </div>
 
@@ -501,21 +508,64 @@ footer .wrap{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap}
           </div>
         </div>
 
-        <div class="result" data-panel="cake" hidden>
+        <div class="result" data-panel="topper" hidden>
           <div class="card-stage">
-            <canvas id="cake" width="1100" height="1100" role="img" aria-label="Cake design preview"></canvas>
+            <canvas id="topper" width="1100" height="1100" role="img" aria-label="Cake topper design preview"></canvas>
           </div>
           <dl class="spec">
-            <dt>Style</dt><dd id="cake-style"></dd>
-            <dt>Topper</dt><dd id="cake-topper"></dd>
-            <dt>Colors</dt><dd><div class="swatches" id="cake-colors"></div></dd>
-            <dt>Why this</dt><dd id="cake-note"></dd>
+            <dt>Lettering</dt><dd id="topper-text"></dd>
+            <dt>Shape</dt><dd id="topper-shape"></dd>
+            <dt>Finish</dt><dd id="topper-finish"></dd>
+            <dt>Colors</dt><dd><div class="swatches" id="topper-colors"></div></dd>
+            <dt>Why this</dt><dd id="topper-note"></dd>
           </dl>
           <div class="below">
-            <span class="words" id="cake-size"></span>
-            <button type="button" class="btn small" id="save-cake" hidden>Save cake as PNG</button>
+            <span class="words" id="topper-size"></span>
+            <div class="actions">
+              <button type="button" class="btn small" id="topper-prompt">Copy prompt for ChatGPT</button>
+              <button type="button" class="btn small" id="save-topper" hidden>Save topper as PNG</button>
+            </div>
+          </div>
+          <p class="aside">Paste the prompt into ChatGPT to get a photo-style render of this topper. The drawing above is the spec a maker works from.</p>
+        </div>
+      </section>
+
+      <section class="step" data-step="6" hidden>
+        <div>
+          <h2>Where should it go?</h2>
+          <p class="hint">NANAL makes the topper and card to order. Fill this in and your mail app opens with everything written out — you press send.</p>
+        </div>
+        <div class="form-grid">
+          <div class="field">
+            <label for="ship-name">Recipient name</label>
+            <input type="text" id="ship-name" maxlength="60" autocomplete="name">
+          </div>
+          <div class="field">
+            <label for="ship-phone">Contact number</label>
+            <input type="text" id="ship-phone" maxlength="30" autocomplete="tel" inputmode="tel">
+          </div>
+          <div class="field span-all">
+            <label for="ship-address">Delivery address</label>
+            <textarea id="ship-address" maxlength="300" style="min-height:92px" autocomplete="street-address"></textarea>
+          </div>
+          <div class="field">
+            <label for="ship-date">Needed by</label>
+            <input type="date" id="ship-date">
+          </div>
+          <div class="field">
+            <label for="ship-qty">How many</label>
+            <input type="text" id="ship-qty" value="1" maxlength="4" inputmode="numeric">
+          </div>
+          <div class="field span-all">
+            <label for="ship-note">Anything else</label>
+            <textarea id="ship-note" maxlength="400" style="min-height:80px" placeholder="Gift wrapping, a delivery window, a change to the topper wording…"></textarea>
           </div>
         </div>
+        <div class="actions">
+          <a class="btn primary" id="order-mail" href="#" rel="noopener">Open my mail app</a>
+          <button type="button" class="btn" id="order-copy">Copy the order instead</button>
+        </div>
+        <p class="aside">Nothing is stored on this page. The details go straight into a mail draft on your own device.</p>
       </section>
 
       <div class="wizard-nav">
@@ -526,7 +576,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap}
         <button type="button" class="btn primary" id="next">Next</button>
         <button type="submit" class="btn primary" id="write" hidden>Write my letter</button>
       </div>
-      <p class="status" id="status" role="status" aria-live="polite">Step 1 of 5 — who is this for?</p>
+      <p class="status" id="status" role="status" aria-live="polite">Step 1 of 6 — who is this for?</p>
     </form>
   </section>
 
@@ -577,14 +627,21 @@ footer .wrap{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap}
   const MOTIFS = ["balloons", "confetti", "blossoms", "stars", "hearts", "ribbon"];
   const MOTIF_LABEL = { balloons: "Balloons", confetti: "Confetti", blossoms: "Blossoms", stars: "Stars & sparkles", hearts: "Hearts", ribbon: "Gift ribbon" };
 
-  const cakeCanvas = $("cake"), cakeCtx = cakeCanvas.getContext("2d");
-  const CW = cakeCanvas.width, CH = cakeCanvas.height;
+  const topCanvas = $("topper"), topCtx = topCanvas.getContext("2d");
+  const TW = topCanvas.width, TH = topCanvas.height;
 
-  const TIERS = ["one", "two", "three"];
-  const DECOR = ["drip", "dots", "stripes", "flowers", "ruffle", "plain"];
-  const TOPPER = ["candles", "number", "flowers", "figure", "sparkler", "none"];
-  const DECOR_LABEL = { drip: "Drip glaze", dots: "Polka dots", stripes: "Stripes", flowers: "Buttercream flowers", ruffle: "Ruffles", plain: "Clean finish" };
-  const TOPPER_LABEL = { candles: "Candles", number: "Number topper", flowers: "Fresh flowers", figure: "Little figure", sparkler: "Sparkler", none: "Bare top" };
+  const SHAPES = ["arch", "circle", "banner", "cloud", "script", "tag"];
+  const FINISHES = ["gold", "silver", "acrylic", "wood", "rose"];
+  const FONTS = ["serif", "script", "round"];
+  const SHAPE_LABEL = { arch: "Arched plate", circle: "Round disc", banner: "Ribbon banner", cloud: "Cloud outline", script: "Free-standing lettering", tag: "Gift tag" };
+  const FONT_LABEL = { serif: "Serif", script: "Handwritten script", round: "Rounded sans" };
+  const FINISH_SPEC = {
+    gold:    { plate: "#D8B05A", edge: "#A9822B", ink: "#4A3712", label: "Brushed gold acrylic" },
+    silver:  { plate: "#CDD2D8", edge: "#98A0A9", ink: "#2E343A", label: "Mirror silver acrylic" },
+    acrylic: { plate: "#FFFFFF", edge: "#D5CEDA", ink: "#2B2430", label: "Clear acrylic" },
+    wood:    { plate: "#CE9F6B", edge: "#9A7043", ink: "#3B2716", label: "Birch wood" },
+    rose:    { plate: "#ECAFC2", edge: "#C8446A", ink: "#4A1B2B", label: "Rose acrylic" },
+  };
 
   const OCCASIONS = [
     { v: "birthday",    label: "Birthday",        sub: "Any year" },
@@ -654,26 +711,23 @@ footer .wrap{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap}
     other:       { motif: "confetti", palette: { background: "#F2EEF8", ink: "#2A2233", accent: "#D6336C", accent2: "#F2B84B" }, headline: "For You" },
   };
 
-  const CAKE_PRESET = { tiers: "two", decor: "drip", topper: "candles", flavour: "Vanilla sponge", message: "" };
-
   const EXAMPLE = {
     design: {
       headline: "Happy 80th, Grandma", subline: "Save me a spot at the table",
       motif: "blossoms", mood: "soft sage, spring blossoms, gold",
       palette: { background: "#E9F0EA", ink: "#1F3A30", accent: "#C9506B", accent2: "#D9A441" },
     },
-    cake: {
-      tiers: "two", decor: "flowers", topper: "number", number: "80",
-      message: "", flavour: "Chestnut cream sponge",
-      note: "Two quiet tiers with buttercream blossoms, echoing the card.",
-      palette: { sponge: "#E8CFA9", frosting: "#F3F6EF", accent: "#C9506B", accent2: "#D9A441" },
+    topper: {
+      text: "Happy 80th", sub: "Grandma", shape: "arch", finish: "gold", font: "script",
+      note: "An arched gold plate, so the lettering reads from across the room.",
     },
     letter: "Dear Grandma,\n\nHappy 80th birthday! I wish I could be there to hug you and eat far too much of your cooking, but I'm sending my love from across the ocean instead.\n\nEvery winter I think of the two of us in your kitchen, sleeves rolled up, making kimchi while you laughed at the red pepper all over my face. And I still remember the candy you always kept in your coat pocket, just for me. Those small things taught me what love looks like.\n\nEighty years of stories, and I'm so lucky to be part of them. Please eat well, rest well, and save me a spot at the table next winter.\n\nWith all my love,\nMinji",
   };
 
-  let design = EXAMPLE.design, cake = EXAMPLE.cake, shuffle = 0, sample = null, downloads = null, ctl = null;
+  let design = EXAMPLE.design, topper = EXAMPLE.topper, shuffle = 0, sample = null, downloads = null, ctl = null;
   let step = 1;
-  const LAST_STEP = 5;
+  const LAST_STEP = 6;
+  const RESULT_STEP = 5;
 
   /* ---------- color helpers ---------- */
   const HEX = /^#[0-9a-f]{6}$/i;
@@ -705,251 +759,188 @@ footer .wrap{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap}
     return `#${to(r1, r2)}${to(g1, g2)}${to(b1, b2)}`;
   };
 
-  function cleanCake(raw, f, cardPalette) {
+  function cleanTopper(raw, f) {
     const d = raw && typeof raw === "object" ? raw : {};
-    const num = String(d.number || "").replace(/[^0-9]/g, "").slice(0, 3);
-    const msg = String(d.message || "").slice(0, 18);
-    const p = d.palette && typeof d.palette === "object" ? d.palette : {};
-    const fallback = {
-      sponge: "#E8CFA9",
-      frosting: mix(cardPalette.background, "#FFFFFF", 0.45),
-      accent: cardPalette.accent,
-      accent2: cardPalette.accent2,
-    };
-    const pal = {};
-    for (const k of ["sponge", "frosting", "accent", "accent2"]) pal[k] = HEX.test(String(p[k] || "")) ? String(p[k]) : fallback[k];
-
     return {
-      tiers: TIERS.includes(d.tiers) ? d.tiers : CAKE_PRESET.tiers,
-      decor: DECOR.includes(d.decor) ? d.decor : CAKE_PRESET.decor,
-      topper: TOPPER.includes(d.topper) ? d.topper : CAKE_PRESET.topper,
-      number: num,
-      // the topper already carries the number; don't pipe it on the tier as well
-      message: msg.trim() === num ? "" : msg,
-      flavour: String(d.flavour || CAKE_PRESET.flavour).slice(0, 48),
-      note: String(d.note || "").slice(0, 110),
-      palette: pal,
+      text: String(d.text || f.to || "Congratulations").slice(0, 16),
+      sub: String(d.sub || "").slice(0, 22),
+      shape: SHAPES.includes(d.shape) ? d.shape : "arch",
+      finish: FINISHES.includes(d.finish) ? d.finish : "gold",
+      font: FONTS.includes(d.font) ? d.font : "script",
+      note: String(d.note || "").slice(0, 120),
     };
   }
 
-  /* ---------- cake drawing ---------- */
-  function candle(x, baseY, h, body, flame) {
-    cakeCtx.fillStyle = body;
-    cakeCtx.beginPath(); cakeCtx.roundRect(x - 9, baseY - h, 18, h, 5); cakeCtx.fill();
-    cakeCtx.fillStyle = "rgba(255,255,255,.45)";
-    cakeCtx.fillRect(x - 3, baseY - h + 6, 4, h - 12);
-    cakeCtx.strokeStyle = "rgba(60,40,30,.6)"; cakeCtx.lineWidth = 3;
-    cakeCtx.beginPath(); cakeCtx.moveTo(x, baseY - h); cakeCtx.lineTo(x, baseY - h - 12); cakeCtx.stroke();
-    cakeCtx.fillStyle = flame;
-    cakeCtx.beginPath(); cakeCtx.ellipse(x, baseY - h - 26, 10, 18, 0, 0, Math.PI * 2); cakeCtx.fill();
-    cakeCtx.fillStyle = "rgba(255,245,200,.95)";
-    cakeCtx.beginPath(); cakeCtx.ellipse(x, baseY - h - 24, 5, 10, 0, 0, Math.PI * 2); cakeCtx.fill();
+  /* ---------- topper drawing ---------- */
+  const TOPPER_FONT = { serif: '"Gowun Batang", Georgia, serif', script: '"Nanum Pen Script", cursive', round: '"Gowun Dodum", sans-serif' };
+  // Nanum Pen Script and Gowun Dodum ship one weight; asking for 700 drops them to a fallback serif
+  const TOPPER_WEIGHT = { serif: 700, script: 400, round: 400 };
+
+  /** Shrinks `text` until it fits `maxW`, and reports the size it settled on. */
+  function fitText(text, family, weight, start, maxW, min) {
+    let size = start;
+    topCtx.font = `${weight} ${size}px ${family}`;
+    while (topCtx.measureText(text).width > maxW && size > min) {
+      size -= 4;
+      topCtx.font = `${weight} ${size}px ${family}`;
+    }
+    return size;
   }
 
-  function bloom(x, y, s, a, b) {
-    for (let k = 0; k < 5; k++) {
-      const ang = k * Math.PI * 2 / 5;
-      cakeCtx.fillStyle = a;
-      cakeCtx.beginPath();
-      cakeCtx.ellipse(x + Math.cos(ang) * s * 0.55, y + Math.sin(ang) * s * 0.55, s * 0.5, s * 0.36, ang, 0, Math.PI * 2);
-      cakeCtx.fill();
-    }
-    cakeCtx.fillStyle = b;
-    cakeCtx.beginPath(); cakeCtx.arc(x, y, s * 0.24, 0, Math.PI * 2); cakeCtx.fill();
-  }
-
-  function drawCake() {
-    const c = cake, p = c.palette;
-    const r = rng(hash(c.flavour + c.decor + c.topper + c.message) + shuffle * 6607);
-    const ink = lum(p.frosting) > 0.45 ? "#2B2028" : "#FFF8F2";
-
-    cakeCtx.clearRect(0, 0, CW, CH);
-    const bg = cakeCtx.createLinearGradient(0, 0, 0, CH);
-    bg.addColorStop(0, mix(p.frosting, "#FFFFFF", 0.62));
-    bg.addColorStop(1, mix(p.accent, "#FFFFFF", 0.84));
-    cakeCtx.fillStyle = bg;
-    cakeCtx.fillRect(0, 0, CW, CH);
-
-    const count = TIERS.indexOf(c.tiers) + 1;
-    const baseY = 812;
-    const tiers = [];
-    let w = count === 1 ? 500 : count === 2 ? 560 : 610;
-    let h = count === 1 ? 300 : count === 2 ? 248 : 206;
-    let y = baseY;
-    for (let i = 0; i < count; i++) {
-      tiers.push({ x: CW / 2, y, w, h });
-      y -= h - 3;            // tiers meet with no seam
-      w *= 0.70;
-      h *= 0.84;
-    }
-
-    // the stand, drawn as one connected object: plate, stem, foot
-    const stand = mix(p.frosting, p.sponge, 0.5);
-    const plateY = baseY + 6, plateW = tiers[0].w * 0.64;
-    cakeCtx.fillStyle = rgba("#6B5B50", 0.1);
-    cakeCtx.beginPath(); cakeCtx.ellipse(CW / 2, plateY + 6, plateW, 24, 0, 0, Math.PI * 2); cakeCtx.fill();
-    cakeCtx.fillStyle = stand;
-    cakeCtx.beginPath();
-    cakeCtx.moveTo(CW / 2 - 36, plateY + 14);
-    cakeCtx.lineTo(CW / 2 - 132, plateY + 116);
-    cakeCtx.lineTo(CW / 2 + 132, plateY + 116);
-    cakeCtx.lineTo(CW / 2 + 36, plateY + 14);
-    cakeCtx.closePath(); cakeCtx.fill();
-    cakeCtx.beginPath(); cakeCtx.ellipse(CW / 2, plateY + 118, 134, 20, 0, 0, Math.PI * 2); cakeCtx.fill();
-    cakeCtx.beginPath(); cakeCtx.ellipse(CW / 2, plateY, plateW, 24, 0, 0, Math.PI * 2); cakeCtx.fill();
-    cakeCtx.fillStyle = rgba("#FFFFFF", 0.4);
-    cakeCtx.beginPath(); cakeCtx.ellipse(CW / 2, plateY - 4, plateW - 12, 18, 0, 0, Math.PI * 2); cakeCtx.fill();
-
-    for (let i = count - 1; i >= 0; i--) {
-      const t = tiers[i], left = t.x - t.w / 2, top = t.y - t.h;
-
-      cakeCtx.fillStyle = p.sponge;
-      cakeCtx.beginPath(); cakeCtx.roundRect(left, top, t.w, t.h, 14); cakeCtx.fill();
-      cakeCtx.fillStyle = p.frosting;
-      cakeCtx.beginPath(); cakeCtx.roundRect(left, top, t.w, t.h - 26, 14); cakeCtx.fill();
-      cakeCtx.fillStyle = rgba("#000000", 0.07);
-      cakeCtx.beginPath(); cakeCtx.roundRect(left, t.y - 34, t.w, 34, { bottomLeft: 14, bottomRight: 14 }); cakeCtx.fill();
-
-      // drip over the tier edge
-      if (c.decor === "drip") {
-        cakeCtx.fillStyle = p.accent;
-        cakeCtx.beginPath(); cakeCtx.roundRect(left, top, t.w, 34, { topLeft: 14, topRight: 14 }); cakeCtx.fill();
-        for (let d = 0; d < Math.round(t.w / 46); d++) {
-          const dx = left + 26 + d * (t.w - 52) / Math.max(1, Math.round(t.w / 46) - 1);
-          const dh = 26 + r() * 54;
-          cakeCtx.beginPath();
-          cakeCtx.moveTo(dx - 12, top + 26);
-          cakeCtx.quadraticCurveTo(dx - 12, top + dh, dx, top + dh);
-          cakeCtx.quadraticCurveTo(dx + 12, top + dh, dx + 12, top + 26);
-          cakeCtx.fill();
-        }
-      } else if (c.decor === "dots") {
-        for (let d = 0; d < 16; d++) {
-          cakeCtx.fillStyle = rgba(d % 2 ? p.accent : p.accent2, 0.85);
-          cakeCtx.beginPath();
-          cakeCtx.arc(left + 30 + r() * (t.w - 60), top + 24 + r() * (t.h - 60), 9 + r() * 7, 0, Math.PI * 2);
-          cakeCtx.fill();
-        }
-      } else if (c.decor === "stripes") {
-        cakeCtx.save();
-        cakeCtx.beginPath(); cakeCtx.roundRect(left, top, t.w, t.h - 26, 14); cakeCtx.clip();
-        for (let d = -2; d < t.w / 34 + 2; d++) {
-          cakeCtx.fillStyle = rgba(p.accent, 0.5);
-          cakeCtx.fillRect(left + d * 34, top, 15, t.h);
-        }
-        cakeCtx.restore();
-      } else if (c.decor === "ruffle") {
-        cakeCtx.strokeStyle = rgba(p.accent, 0.45); cakeCtx.lineWidth = 7;
-        for (let row = 0; row < 3; row++) {
-          const ry = top + 34 + row * ((t.h - 70) / 2);
-          cakeCtx.beginPath();
-          for (let x = left + 6; x < left + t.w - 6; x += 26) {
-            cakeCtx.moveTo(x, ry);
-            cakeCtx.quadraticCurveTo(x + 13, ry + 16, x + 26, ry);
-          }
-          cakeCtx.stroke();
-        }
-      } else if (c.decor === "flowers") {
-        const n = Math.max(2, Math.round(t.w / 165));
-        const span = t.w - 120;
-        for (let d = 0; d < n; d++) {
-          const fx = left + 60 + (n === 1 ? span / 2 : span * d / (n - 1));
-          bloom(fx, top + 54 + r() * 20, 27 + r() * 9,
-                rgba(d % 2 ? p.accent : p.accent2, 0.92), p.frosting);
-        }
+  function topperPlate(shape, cx, cy, w, h) {
+    topCtx.beginPath();
+    if (shape === "circle") {
+      topCtx.arc(cx, cy, Math.min(w, h) / 2, 0, Math.PI * 2);
+    } else if (shape === "arch") {
+      const r = w / 2, bottom = cy + h / 2;
+      topCtx.moveTo(cx - r, bottom);
+      topCtx.lineTo(cx - r, cy - h / 2 + r * 0.72);
+      topCtx.quadraticCurveTo(cx - r, cy - h / 2, cx, cy - h / 2);
+      topCtx.quadraticCurveTo(cx + r, cy - h / 2, cx + r, cy - h / 2 + r * 0.72);
+      topCtx.lineTo(cx + r, bottom);
+      topCtx.closePath();
+    } else if (shape === "banner") {
+      const r = w / 2, t = cy - h / 2, b = cy + h / 2, notch = 54;
+      topCtx.moveTo(cx - r, t);
+      topCtx.lineTo(cx + r, t);
+      topCtx.lineTo(cx + r - notch, cy);
+      topCtx.lineTo(cx + r, b);
+      topCtx.lineTo(cx - r, b);
+      topCtx.lineTo(cx - r + notch, cy);
+      topCtx.closePath();
+    } else if (shape === "cloud") {
+      const r = h * 0.42;
+      for (const [dx, dy, s] of [[-w * 0.3, 0, 1], [0, -h * 0.12, 1.24], [w * 0.3, 0, 1], [-w * 0.15, h * 0.16, 0.9], [w * 0.15, h * 0.16, 0.9]]) {
+        topCtx.moveTo(cx + dx + r * s, cy + dy);
+        topCtx.arc(cx + dx, cy + dy, r * s, 0, Math.PI * 2);
       }
-
-      // the words go on the widest tier
-      if (i === 0 && c.message) {
-        cakeCtx.textAlign = "center";
-        cakeCtx.textBaseline = "middle";
-        let size = 74;
-        cakeCtx.font = `700 ${size}px "Gowun Batang", Georgia, serif`;
-        while (cakeCtx.measureText(c.message).width > t.w - 90 && size > 28) {
-          size -= 3;
-          cakeCtx.font = `700 ${size}px "Gowun Batang", Georgia, serif`;
-        }
-        cakeCtx.fillStyle = ink;
-        cakeCtx.fillText(c.message, t.x, t.y - t.h / 2 + 6);
-      }
-    }
-
-    // topper sits on the smallest tier
-    const top = tiers[count - 1], surface = top.y - top.h;
-    if (c.topper === "candles") {
-      const n = Math.min(7, 3 + Math.floor(r() * 4));
-      for (let i = 0; i < n; i++) {
-        candle(top.x - top.w * 0.32 + i * (top.w * 0.64) / Math.max(1, n - 1), surface + 6,
-               64 + r() * 22, i % 2 ? p.accent : p.accent2, "rgba(255,170,60,.95)");
-      }
-    } else if (c.topper === "number" && c.number) {
-      cakeCtx.textAlign = "center"; cakeCtx.textBaseline = "alphabetic";
-      cakeCtx.font = `700 118px "Gowun Batang", Georgia, serif`;
-      const baseline = surface - 26, numW = cakeCtx.measureText(c.number).width;
-      cakeCtx.strokeStyle = rgba(p.accent, 0.45); cakeCtx.lineWidth = 5; cakeCtx.lineCap = "round";
-      for (const off of [-numW * 0.2, numW * 0.2]) {
-        cakeCtx.beginPath();
-        cakeCtx.moveTo(top.x + off, baseline - 8);
-        cakeCtx.lineTo(top.x + off, surface + 10);
-        cakeCtx.stroke();
-      }
-      cakeCtx.fillStyle = rgba(p.accent, 0.26);
-      cakeCtx.fillText(c.number, top.x + 4, baseline + 5);
-      cakeCtx.fillStyle = p.accent;
-      cakeCtx.fillText(c.number, top.x, baseline);
-    } else if (c.topper === "flowers") {
-      for (let i = 0; i < 5; i++) {
-        bloom(top.x - 90 + i * 45 + (r() - 0.5) * 16, surface - 26 - r() * 26, 34 + r() * 14,
-              rgba(i % 2 ? p.accent : p.accent2, 0.95), p.frosting);
-      }
-    } else if (c.topper === "figure") {
-      cakeCtx.fillStyle = p.accent;
-      cakeCtx.beginPath(); cakeCtx.arc(top.x, surface - 88, 34, 0, Math.PI * 2); cakeCtx.fill();
-      cakeCtx.beginPath(); cakeCtx.roundRect(top.x - 30, surface - 58, 60, 58, { topLeft: 26, topRight: 26 }); cakeCtx.fill();
-      cakeCtx.fillStyle = p.accent2;
-      cakeCtx.beginPath(); cakeCtx.arc(top.x - 12, surface - 94, 5, 0, Math.PI * 2); cakeCtx.fill();
-      cakeCtx.beginPath(); cakeCtx.arc(top.x + 12, surface - 94, 5, 0, Math.PI * 2); cakeCtx.fill();
-    } else if (c.topper === "sparkler") {
-      cakeCtx.strokeStyle = rgba(p.accent, 0.8); cakeCtx.lineWidth = 6;
-      cakeCtx.beginPath(); cakeCtx.moveTo(top.x, surface); cakeCtx.lineTo(top.x, surface - 96); cakeCtx.stroke();
-      for (let i = 0; i < 26; i++) {
-        const a = r() * Math.PI * 2, len = 22 + r() * 46;
-        cakeCtx.strokeStyle = rgba(i % 2 ? p.accent2 : "#FFC94D", 0.85);
-        cakeCtx.lineWidth = 3;
-        cakeCtx.beginPath();
-        cakeCtx.moveTo(top.x, surface - 100);
-        cakeCtx.lineTo(top.x + Math.cos(a) * len, surface - 100 + Math.sin(a) * len);
-        cakeCtx.stroke();
-      }
-    }
-
-    cakeCtx.textAlign = "center"; cakeCtx.textBaseline = "alphabetic";
-    cakeCtx.font = `26px "Gowun Dodum", sans-serif`;
-    cakeCtx.fillStyle = rgba("#2B2028", 0.5);
-    cakeCtx.fillText("nanal  ·  나날", CW / 2, CH - 46);
-
-    cakeCanvas.setAttribute("aria-label",
-      `Cake design: ${count} tier, ${DECOR_LABEL[c.decor].toLowerCase()}, ${TOPPER_LABEL[c.topper].toLowerCase()}${c.message ? `, reading “${c.message}”` : ""}`);
-    renderCakeSpec();
-  }
-
-  function renderCakeSpec() {
-    const count = TIERS.indexOf(cake.tiers) + 1;
-    $("cake-style").textContent = `${count} tier · ${DECOR_LABEL[cake.decor]} · ${cake.flavour}`;
-    $("cake-topper").textContent = TOPPER_LABEL[cake.topper] + (cake.topper === "number" && cake.number ? ` (${cake.number})` : "");
-    $("cake-note").textContent = cake.note || "—";
-    $("cake-size").textContent = count === 1 ? "6 in round" : count === 2 ? "6 + 4 in tiers" : "8 + 6 + 4 in tiers";
-    const box = $("cake-colors"); box.replaceChildren();
-    for (const k of ["sponge", "frosting", "accent", "accent2"]) {
-      const s = document.createElement("span"); s.className = "sw";
-      const i = document.createElement("i"); i.style.background = cake.palette[k];
-      s.append(i, cake.palette[k].toUpperCase()); box.append(s);
+    } else {
+      topCtx.roundRect(cx - w / 2, cy - h / 2, w, h, 26);
     }
   }
 
-  function setCake(c) {
-    cake = c; drawCake();
-    cakeCanvas.classList.add("pop"); setTimeout(() => cakeCanvas.classList.remove("pop"), 380);
+  function drawTopper() {
+    const t = topper, fin = FINISH_SPEC[t.finish], family = TOPPER_FONT[t.font];
+    const cx = TW / 2, cy = 430;
+
+    topCtx.clearRect(0, 0, TW, TH);
+    const bg = topCtx.createLinearGradient(0, 0, 0, TH);
+    bg.addColorStop(0, "#FFFFFF");
+    bg.addColorStop(1, mix(fin.plate, "#FFFFFF", 0.86));
+    topCtx.fillStyle = bg;
+    topCtx.fillRect(0, 0, TW, TH);
+
+    const freeStanding = t.shape === "script";
+    const w = t.shape === "circle" ? 560 : t.shape === "banner" ? 720 : t.shape === "tag" ? 520 : 640;
+    const h = t.shape === "circle" ? 560 : t.shape === "banner" ? 260 : t.shape === "tag" ? 440 : 400;
+    const plateBottom = freeStanding ? cy + 92 : cy + h / 2;
+
+    // picks first, so the plate sits on top of them
+    topCtx.fillStyle = mix(fin.edge, "#FFFFFF", 0.3);
+    for (const off of [-w * 0.19, w * 0.19]) {
+      topCtx.beginPath();
+      topCtx.roundRect(cx + off - 7, plateBottom - 20, 14, 330, 6);
+      topCtx.fill();
+    }
+
+    topCtx.fillStyle = "rgba(90,74,80,.09)";
+    topCtx.beginPath(); topCtx.ellipse(cx, plateBottom + 322, w * 0.42, 22, 0, 0, Math.PI * 2); topCtx.fill();
+
+    if (!freeStanding) {
+      topCtx.save();
+      topCtx.shadowColor = "rgba(70,56,62,.22)";
+      topCtx.shadowBlur = 34;
+      topCtx.shadowOffsetY = 14;
+      topperPlate(t.shape, cx, cy, w, h);
+      topCtx.fillStyle = fin.plate;
+      topCtx.fill();
+      topCtx.restore();
+
+      topperPlate(t.shape, cx, cy, w, h);
+      topCtx.strokeStyle = fin.edge;
+      topCtx.lineWidth = 7;
+      topCtx.stroke();
+
+      // a raking highlight, so gold and acrylic read as material rather than flat fill
+      topCtx.save();
+      topperPlate(t.shape, cx, cy, w, h);
+      topCtx.clip();
+      const sheen = topCtx.createLinearGradient(cx - w / 2, cy - h / 2, cx + w / 2, cy + h / 2);
+      sheen.addColorStop(0, "rgba(255,255,255,.55)");
+      sheen.addColorStop(0.45, "rgba(255,255,255,0)");
+      sheen.addColorStop(0.72, "rgba(255,255,255,.3)");
+      sheen.addColorStop(1, "rgba(255,255,255,0)");
+      topCtx.fillStyle = sheen;
+      topCtx.fillRect(cx - w / 2, cy - h / 2, w, h);
+      topCtx.restore();
+
+      if (t.shape === "tag") {
+        topCtx.fillStyle = mix(fin.plate, "#000000", 0.3);
+        topCtx.beginPath(); topCtx.arc(cx, cy - h / 2 + 46, 19, 0, Math.PI * 2); topCtx.fill();
+        topCtx.fillStyle = fin.plate;
+        topCtx.beginPath(); topCtx.arc(cx, cy - h / 2 + 46, 13, 0, Math.PI * 2); topCtx.fill();
+      }
+    }
+
+    topCtx.textAlign = "center";
+    topCtx.textBaseline = "middle";
+    const maxW = (freeStanding ? 880 : w) - (t.shape === "banner" ? 150 : 96);
+    const hasSub = Boolean(t.sub);
+    const startSize = freeStanding ? 190 : t.shape === "banner" ? 120 : 140;
+    const mainSize = fitText(t.text, family, TOPPER_WEIGHT[t.font], startSize, maxW, 44);
+    const mainY = hasSub ? cy - mainSize * 0.26 : cy + (t.shape === "tag" ? 22 : 0);
+
+    if (freeStanding) {
+      topCtx.save();
+      topCtx.shadowColor = "rgba(70,56,62,.2)";
+      topCtx.shadowBlur = 24;
+      topCtx.shadowOffsetY = 10;
+      topCtx.lineJoin = "round";
+      topCtx.strokeStyle = fin.edge;
+      topCtx.lineWidth = 16;
+      topCtx.strokeText(t.text, cx, mainY);
+      topCtx.restore();
+      topCtx.fillStyle = fin.plate;
+      topCtx.fillText(t.text, cx, mainY);
+    } else {
+      topCtx.fillStyle = fin.ink;
+      topCtx.fillText(t.text, cx, mainY);
+    }
+
+    if (hasSub) {
+      const subSize = fitText(t.sub, TOPPER_FONT.round, TOPPER_WEIGHT.round, Math.round(mainSize * 0.34), maxW - 40, 26);
+      topCtx.font = `${TOPPER_WEIGHT.round} ${subSize}px ${TOPPER_FONT.round}`;
+      topCtx.fillStyle = freeStanding ? fin.edge : mix(fin.ink, fin.plate, 0.25);
+      topCtx.fillText(t.sub, cx, mainY + mainSize * 0.52 + subSize * 0.6);
+    }
+
+    topCtx.font = `26px "Gowun Dodum", sans-serif`;
+    topCtx.fillStyle = "rgba(70,56,62,.42)";
+    topCtx.fillText("nanal  ·  나날", cx, TH - 52);
+
+    topCanvas.setAttribute("aria-label",
+      `Cake topper: ${SHAPE_LABEL[t.shape].toLowerCase()} in ${fin.label.toLowerCase()}, reading “${t.text}”${t.sub ? ` over “${t.sub}”` : ""}`);
+    renderTopperSpec();
+  }
+
+  function renderTopperSpec() {
+    const fin = FINISH_SPEC[topper.finish];
+    $("topper-text").textContent = topper.text + (topper.sub ? `  /  ${topper.sub}` : "");
+    $("topper-shape").textContent = `${SHAPE_LABEL[topper.shape]} · ${FONT_LABEL[topper.font]}`;
+    $("topper-finish").textContent = fin.label;
+    $("topper-note").textContent = topper.note || "—";
+    $("topper-size").textContent = topper.shape === "banner" ? "Approx. 18 × 7 cm" : "Approx. 15 × 11 cm";
+    const box = $("topper-colors"); box.replaceChildren();
+    for (const hex of [fin.plate, fin.edge, fin.ink]) {
+      const sw = document.createElement("span"); sw.className = "sw";
+      const i = document.createElement("i"); i.style.background = hex;
+      sw.append(i, hex.toUpperCase()); box.append(sw);
+    }
+  }
+
+  function setTopper(t) {
+    topper = t; drawTopper();
+    topCanvas.classList.add("pop"); setTimeout(() => topCanvas.classList.remove("pop"), 380);
   }
 
   /* ---------- card drawing ---------- */
@@ -1213,12 +1204,12 @@ The sender's notes are below between triple quotes. Use their specific details a
 ${f.notes.slice(0, 2000)}
 """
 
-Then design two things for the same person: the front of a 5x7 inch card, and a cake for the day.
+Then design two things for the same person: the front of a 5x7 inch card, and a custom cake topper for the day.
 Visual direction for both: ${STYLE_HINT[f.style] || STYLE_HINT.auto}.
-The cake and the card should look like they belong together.
+The topper and the card should look like they belong together.
 
 Reply in EXACTLY this format and nothing else:
-Line 1: one JSON object on a single line with keys "card" and "cake":
+Line 1: one JSON object on a single line with keys "card" and "topper":
   "card": {
     "headline": card front text, 2 to 5 words (may include the recipient's name),
     "subline": a short handwritten-style line, at most 7 words,
@@ -1226,15 +1217,13 @@ Line 1: one JSON object on a single line with keys "card" and "cake":
     "palette": {"background": "#RRGGBB", "ink": "#RRGGBB", "accent": "#RRGGBB", "accent2": "#RRGGBB"} (ink must be very readable on background),
     "mood": 3 to 6 words describing the design
   },
-  "cake": {
-    "tiers": "one", "two" or "three",
-    "decor": one of "drip", "dots", "stripes", "flowers", "ruffle", "plain",
-    "topper": one of "candles", "number", "flowers", "figure", "sparkler", "none",
-    "number": digits only when topper is "number" (e.g. "80"), otherwise "",
-    "message": at most 18 characters piped onto the cake — leave "" when a number topper already carries it,
-    "flavour": a sponge and filling suited to this person, at most 6 words,
-    "palette": {"sponge": "#RRGGBB", "frosting": "#RRGGBB", "accent": "#RRGGBB", "accent2": "#RRGGBB"},
-    "note": one sentence on why this cake suits them
+  "topper": {
+    "text": the main words cut into the topper, at most 16 characters — a name, an age, or a short phrase,
+    "sub": a smaller second line, at most 22 characters, or "",
+    "shape": one of "arch", "circle", "banner", "cloud", "script", "tag" — "script" means free-standing lettering with no backing plate,
+    "finish": one of "gold", "silver", "acrylic", "wood", "rose",
+    "font": one of "serif", "script", "round",
+    "note": one sentence on why this topper suits them
   }
 Line 2: ---
 After that: the letter as plain text. Greeting line, paragraphs separated by one blank line, a closing line, then the sender's name on its own line. No markdown, no title.`;
@@ -1270,7 +1259,7 @@ After that: the letter as plain text. Greeting line, paragraphs separated by one
     }
     // "card" wrapper is the current shape; a bare object is the older one
     const d = cleanDesign(raw && raw.card ? raw.card : raw, f);
-    return { design: d, cake: cleanCake(raw && raw.cake, f, d.palette) };
+    return { design: d, topper: cleanTopper(raw && raw.topper, f) };
   }
 
   const ERR = {
@@ -1289,11 +1278,12 @@ After that: the letter as plain text. Greeting line, paragraphs separated by one
   const prevBtn = $("prev"), nextBtn = $("next"), restartBtn = $("restart");
 
   const STEP_HINT = {
-    1: "Step 1 of 5 — who is this for?",
-    2: "Step 2 of 5 — what are we celebrating?",
-    3: "Step 3 of 5 — tell us the story.",
-    4: "Step 4 of 5 — pick a look, then write.",
-    5: "Your letter, card and cake.",
+    1: "Step 1 of 6 — who is this for?",
+    2: "Step 2 of 6 — what are we celebrating?",
+    3: "Step 3 of 6 — tell us the story.",
+    4: "Step 4 of 6 — pick a look, then write.",
+    5: "Your letter, card and topper.",
+    6: "Fill this in and your mail app opens with the order written out.",
   };
 
   function showStep(n, scroll = true) {
@@ -1304,9 +1294,11 @@ After that: the letter as plain text. Greeting line, paragraphs separated by one
       if (state) li.dataset.state = state; else delete li.dataset.state;
     });
     prevBtn.hidden = step === 1;
-    nextBtn.hidden = step >= 4;
+    nextBtn.hidden = step === 4 || step === LAST_STEP;
+    nextBtn.textContent = step === RESULT_STEP ? "Order this" : "Next";
     writeBtn.hidden = step !== 4;
-    restartBtn.hidden = step !== LAST_STEP;
+    restartBtn.hidden = step < RESULT_STEP;
+    if (step === LAST_STEP) refreshOrderLinks();
     if (!ctl) statusEl.textContent = STEP_HINT[step];
     if (scroll) $("studio").scrollIntoView({ block: "start", behavior: "smooth" });
   }
@@ -1327,7 +1319,7 @@ After that: the letter as plain text. Greeting line, paragraphs separated by one
     for (const b of resultTabs) b.setAttribute("aria-selected", String(b.dataset.result === name));
     for (const p of resultPanels) p.hidden = p.dataset.panel !== name;
     if (name === "card") drawCard();
-    if (name === "cake") drawCake();
+    if (name === "topper") drawTopper();
   }
 
   function setBusy(on) {
@@ -1346,13 +1338,13 @@ After that: the letter as plain text. Greeting line, paragraphs separated by one
 
     $("result-name").textContent = f.to || "them";
     $("result-tag").textContent = "Draft";
-    showStep(LAST_STEP);
+    showStep(RESULT_STEP);
     showResult("letter");
 
     if (!sample) {
       const d = cleanDesign(null, f);
       setDesign(d);
-      setCake(cleanCake(null, f, d.palette));
+      setTopper(cleanTopper(null, f));
       setLetter(templateLetter(f));
       statusEl.textContent = "Showing a simple template — start the NANAL server (npm start) to have each letter written from your story.";
       return;
@@ -1360,7 +1352,7 @@ After that: the letter as plain text. Greeting line, paragraphs separated by one
 
     ctl = new AbortController();
     setBusy(true);
-    setLetter("Designing your card and cake…", "thinking");
+    setLetter("Designing your card and topper…", "thinking");
     statusEl.textContent = "Reading your story…";
     let designed = false;
     const onText = ({ text }) => {
@@ -1370,8 +1362,8 @@ After that: the letter as plain text. Greeting line, paragraphs separated by one
         designed = true;
         const applied = parseHead(parts.head, f);
         setDesign(applied.design);
-        setCake(applied.cake);
-        statusEl.textContent = "Card and cake ready. Writing the letter…";
+        setTopper(applied.topper);
+        statusEl.textContent = "Card and topper ready. Writing the letter…";
       }
       setLetter(parts.body || "Writing…", parts.body ? null : "thinking");
     };
@@ -1379,15 +1371,15 @@ After that: the letter as plain text. Greeting line, paragraphs separated by one
       const { text, truncated } = await sample(buildPrompt(f), { signal: ctl.signal, cache: false, onText });
       const parts = split(text);
       if (!designed) {
-        const applied = parts ? parseHead(parts.head, f) : { design: cleanDesign(null, f), cake: null };
+        const applied = parts ? parseHead(parts.head, f) : { design: cleanDesign(null, f), topper: null };
         setDesign(applied.design);
-        setCake(applied.cake || cleanCake(null, f, applied.design.palette));
+        setTopper(applied.topper || cleanTopper(null, f));
       }
       setLetter((parts ? parts.body : text.replace(/^\s*\{.*\}\s*$/m, "")).trim());
       $("result-tag").textContent = "Made for you";
       statusEl.textContent = truncated
         ? "The letter was cut short. Try the short note length."
-        : "Done — have a look at the card and the cake too.";
+        : "Done — have a look at the card and the topper too.";
     } catch (e) {
       const partial = e && e.text ? split(e.text) : null;
       if (e?.code === "cancelled") {
@@ -1423,6 +1415,83 @@ After that: the letter as plain text. Greeting line, paragraphs separated by one
     setTimeout(() => { btn.textContent = "Copy letter"; }, 2200);
   });
 
+  /* ---------- email & maker handoff ----------
+     Nothing leaves the page on its own: both buttons build a draft and hand it
+     to the viewer's own mail app, which is why no key or account is needed. */
+  const ORDER_EMAIL = "";   // put NANAL's inbox here and the order opens pre-addressed
+
+  const mailto = (to, subject, body) =>
+    `mailto:${encodeURIComponent(to)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+  function orderText() {
+    const f = readForm(), fin = FINISH_SPEC[topper.finish];
+    const line = (k, v) => `${k}: ${v || "-"}`;
+    return [
+      "NANAL order", "",
+      line("For", f.to), line("From", f.from), line("Occasion", f.occasionLabel), "",
+      "— Topper —",
+      line("Lettering", topper.text + (topper.sub ? ` / ${topper.sub}` : "")),
+      line("Shape", `${SHAPE_LABEL[topper.shape]} · ${FONT_LABEL[topper.font]}`),
+      line("Finish", fin.label), "",
+      "— Card —",
+      line("Front", design.headline + (design.subline ? ` / ${design.subline}` : "")),
+      line("Motif", MOTIF_LABEL[design.motif]),
+      line("Colors", Object.values(design.palette).join("  ")), "",
+      "— Delivery —",
+      line("Recipient", $("ship-name").value.trim()),
+      line("Phone", $("ship-phone").value.trim()),
+      line("Address", $("ship-address").value.trim()),
+      line("Needed by", $("ship-date").value),
+      line("Quantity", $("ship-qty").value.trim()),
+      line("Notes", $("ship-note").value.trim()),
+    ].join("\n");
+  }
+
+  function refreshOrderLinks() {
+    const f = readForm();
+    $("order-mail").href = mailto(ORDER_EMAIL, `NANAL order — ${f.to || "a gift"}`, orderText());
+  }
+
+  function refreshLetterLink() {
+    const f = readForm();
+    $("email-letter").href = mailto("", `A letter for ${f.to || "you"}`, letterEl.textContent.trim());
+  }
+
+  /** A description a maker — or ChatGPT — can turn into a photo of this topper. */
+  function topperImagePrompt() {
+    const f = readForm(), t = topper, fin = FINISH_SPEC[t.finish];
+    const form = t.shape === "script"
+      ? "free-standing cut lettering with no backing plate"
+      : `${SHAPE_LABEL[t.shape].toLowerCase()} backing plate`;
+    return [
+      `A product photograph of a custom cake topper: ${form}, ${fin.label.toLowerCase()},`,
+      `${FONT_LABEL[t.font].toLowerCase()} lettering reading "${t.text}"${t.sub ? `, with a smaller second line reading "${t.sub}"` : ""},`,
+      "mounted on two thin picks and standing upright on a plain cream surface.",
+      `Made for a ${f.occasionLabel.toLowerCase()}.`,
+      "Soft studio lighting, shallow depth of field, shot slightly above eye level.",
+      "Clean minimal styling, no cake, no props, no watermark, and no words beyond the lettering described.",
+    ].join(" ");
+  }
+
+  async function copyText(text, btn, done) {
+    const original = btn.textContent;
+    try {
+      await navigator.clipboard.writeText(text);
+      btn.textContent = done;
+    } catch {
+      btn.textContent = "Couldn't copy — select it by hand";
+    }
+    setTimeout(() => { btn.textContent = original; }, 2400);
+  }
+
+  $("topper-prompt").addEventListener("click", (ev) => copyText(topperImagePrompt(), ev.currentTarget, "Copied — paste into ChatGPT"));
+  $("order-copy").addEventListener("click", (ev) => copyText(orderText(), ev.currentTarget, "Order copied"));
+  $("email-letter").addEventListener("click", refreshLetterLink);
+  $("order-mail").addEventListener("click", refreshOrderLinks);
+  for (const id of ["ship-name", "ship-phone", "ship-address", "ship-date", "ship-qty", "ship-note"]) {
+    $(id).addEventListener("input", refreshOrderLinks);
+  }
+
   function savePng(node, kind) {
     if (!downloads) return;
     node.toBlob(async (blob) => {
@@ -1434,7 +1503,7 @@ After that: the letter as plain text. Greeting line, paragraphs separated by one
   }
 
   $("save").addEventListener("click", () => savePng(canvas, "card"));
-  $("save-cake").addEventListener("click", () => savePng(cakeCanvas, "cake"));
+  $("save-topper").addEventListener("click", () => savePng(topCanvas, "topper"));
 
   /* ---------- boot ---------- */
   buildGrid($("relationship-grid"), "relationship", RELATIONSHIPS, "grandparent");
@@ -1444,12 +1513,15 @@ After that: the letter as plain text. Greeting line, paragraphs separated by one
 
   setLetter(EXAMPLE.letter);
   drawCard();
-  drawCake();
+  drawTopper();
   Promise.all([
     document.fonts.load('700 100px "Gowun Batang"'),
-    document.fonts.load('60px "Nanum Pen Script"'),
-    document.fonts.load('28px "Gowun Dodum"'),
-  ]).catch(() => {}).then(() => { drawCard(); drawCake(); });
+    document.fonts.load('400 140px "Nanum Pen Script"'),
+    document.fonts.load('400 60px "Gowun Dodum"'),
+  ]).catch(() => {}).then(() => { drawCard(); drawTopper(); });
+  // fonts.load resolves per face; fonts.ready waits for the whole set, which is
+  // what the canvas actually needs before it can use the script face
+  if (document.fonts?.ready) document.fonts.ready.then(() => { drawCard(); drawTopper(); }).catch(() => {});
 
   /* ---------- letter backend ----------
      Inside a Claude artifact the page asks Claude directly. When it is served
@@ -1486,7 +1558,7 @@ After that: the letter as plain text. Greeting line, paragraphs separated by one
 
   function showSaveButtons(on) {
     $("save").hidden = !on;
-    $("save-cake").hidden = !on;
+    $("save-topper").hidden = !on;
   }
 
   // Stand-in for the artifact "downloads" capability.
