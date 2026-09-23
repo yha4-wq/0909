@@ -514,7 +514,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap}
           </div>
           <dl class="spec">
             <dt>Lettering</dt><dd id="topper-text"></dd>
-            <dt>Shape</dt><dd id="topper-shape"></dd>
+            <dt>Style</dt><dd id="topper-shape"></dd>
             <dt>Finish</dt><dd id="topper-finish"></dd>
             <dt>Colors</dt><dd><div class="swatches" id="topper-colors"></div></dd>
             <dt>Why this</dt><dd id="topper-note"></dd>
@@ -630,16 +630,16 @@ footer .wrap{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap}
   const topCanvas = $("topper"), topCtx = topCanvas.getContext("2d");
   const TW = topCanvas.width, TH = topCanvas.height;
 
-  const SHAPES = ["arch", "circle", "banner", "cloud", "script", "tag"];
-  const FINISHES = ["gold", "silver", "acrylic", "wood", "rose"];
-  const FONTS = ["serif", "script", "round"];
-  const SHAPE_LABEL = { arch: "Arched plate", circle: "Round disc", banner: "Ribbon banner", cloud: "Cloud outline", script: "Free-standing lettering", tag: "Gift tag" };
+  const TMOTIFS = ["balloons", "heart", "confetti", "flower", "star", "none"];
+  const FINISHES = ["wood", "gold", "silver", "acrylic", "rose"];
+  const FONTS = ["round", "serif", "script"];
+  const TMOTIF_LABEL = { balloons: "Balloons", heart: "Hearts", confetti: "Party popper", flower: "Blossoms", star: "Stars", none: "Lettering only" };
   const FONT_LABEL = { serif: "Serif", script: "Handwritten script", round: "Rounded sans" };
   const FINISH_SPEC = {
+    wood:    { plate: "#D9B98C", edge: "#A9835A", ink: "#3B2716", label: "Birch wood" },
     gold:    { plate: "#D8B05A", edge: "#A9822B", ink: "#4A3712", label: "Brushed gold acrylic" },
     silver:  { plate: "#CDD2D8", edge: "#98A0A9", ink: "#2E343A", label: "Mirror silver acrylic" },
     acrylic: { plate: "#FFFFFF", edge: "#D5CEDA", ink: "#2B2430", label: "Clear acrylic" },
-    wood:    { plate: "#CE9F6B", edge: "#9A7043", ink: "#3B2716", label: "Birch wood" },
     rose:    { plate: "#ECAFC2", edge: "#C8446A", ink: "#4A1B2B", label: "Rose acrylic" },
   };
 
@@ -718,8 +718,8 @@ footer .wrap{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap}
       palette: { background: "#E9F0EA", ink: "#1F3A30", accent: "#C9506B", accent2: "#D9A441" },
     },
     topper: {
-      text: "Happy 80th", sub: "Grandma", shape: "arch", finish: "gold", font: "script",
-      note: "An arched gold plate, so the lettering reads from across the room.",
+      text: "Happy 80th", sub: "Grandma", motif: "balloons", finish: "wood", font: "round",
+      note: "Cut birch lettering with balloons, the shape NANAL is known for.",
     },
     letter: "Dear Grandma,\n\nHappy 80th birthday! I wish I could be there to hug you and eat far too much of your cooking, but I'm sending my love from across the ocean instead.\n\nEvery winter I think of the two of us in your kitchen, sleeves rolled up, making kimchi while you laughed at the red pepper all over my face. And I still remember the candy you always kept in your coat pocket, just for me. Those small things taught me what love looks like.\n\nEighty years of stories, and I'm so lucky to be part of them. Please eat well, rest well, and save me a spot at the table next winter.\n\nWith all my love,\nMinji",
   };
@@ -762,21 +762,23 @@ footer .wrap{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap}
   function cleanTopper(raw, f) {
     const d = raw && typeof raw === "object" ? raw : {};
     return {
-      text: String(d.text || f.to || "Congratulations").slice(0, 16),
-      sub: String(d.sub || "").slice(0, 22),
-      shape: SHAPES.includes(d.shape) ? d.shape : "arch",
-      finish: FINISHES.includes(d.finish) ? d.finish : "gold",
-      font: FONTS.includes(d.font) ? d.font : "script",
+      text: String(d.text || f.to || "Congratulations").slice(0, 14),
+      sub: String(d.sub || "").slice(0, 14),
+      motif: TMOTIFS.includes(d.motif) ? d.motif : "balloons",
+      finish: FINISHES.includes(d.finish) ? d.finish : "wood",
+      font: FONTS.includes(d.font) ? d.font : "round",
       note: String(d.note || "").slice(0, 120),
     };
   }
 
-  /* ---------- topper drawing ---------- */
+  /* ---------- topper drawing ----------
+     The topper is cut lettering, not a printed plate: the glyphs are fattened
+     with a stroke until they merge into one silhouette a laser can cut, with a
+     motif attached and a single pick. It always stands in a plain white cake,
+     so the finish is the only thing that changes colour. */
   const TOPPER_FONT = { serif: '"Gowun Batang", Georgia, serif', script: '"Nanum Pen Script", cursive', round: '"Gowun Dodum", sans-serif' };
-  // Nanum Pen Script and Gowun Dodum ship one weight; asking for 700 drops them to a fallback serif
   const TOPPER_WEIGHT = { serif: 700, script: 400, round: 400 };
 
-  /** Shrinks `text` until it fits `maxW`, and reports the size it settled on. */
   function fitText(text, family, weight, start, maxW, min) {
     let size = start;
     topCtx.font = `${weight} ${size}px ${family}`;
@@ -787,151 +789,287 @@ footer .wrap{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap}
     return size;
   }
 
-  function topperPlate(shape, cx, cy, w, h) {
+  /** One line of cut lettering: spaced so glyphs never collide, outlined like cut edge. */
+  function cutLine(text, x, baseline, size, fin) {
+    topCtx.lineJoin = "round";
+    topCtx.lineCap = "round";
+    topCtx.strokeStyle = fin.edge;
+    topCtx.lineWidth = Math.max(5, size * 0.13);
+    topCtx.strokeText(text, x, baseline);
+    topCtx.fillStyle = fin.plate;
+    topCtx.fillText(text, x, baseline);
+  }
+
+  /** The rail a maker cuts under a line so the separate letters hold together. */
+  function cutRail(x, top, w, h, fin) {
     topCtx.beginPath();
-    if (shape === "circle") {
-      topCtx.arc(cx, cy, Math.min(w, h) / 2, 0, Math.PI * 2);
-    } else if (shape === "arch") {
-      const r = w / 2, bottom = cy + h / 2;
-      topCtx.moveTo(cx - r, bottom);
-      topCtx.lineTo(cx - r, cy - h / 2 + r * 0.72);
-      topCtx.quadraticCurveTo(cx - r, cy - h / 2, cx, cy - h / 2);
-      topCtx.quadraticCurveTo(cx + r, cy - h / 2, cx + r, cy - h / 2 + r * 0.72);
-      topCtx.lineTo(cx + r, bottom);
-      topCtx.closePath();
-    } else if (shape === "banner") {
-      const r = w / 2, t = cy - h / 2, b = cy + h / 2, notch = 54;
-      topCtx.moveTo(cx - r, t);
-      topCtx.lineTo(cx + r, t);
-      topCtx.lineTo(cx + r - notch, cy);
-      topCtx.lineTo(cx + r, b);
-      topCtx.lineTo(cx - r, b);
-      topCtx.lineTo(cx - r + notch, cy);
-      topCtx.closePath();
-    } else if (shape === "cloud") {
-      const r = h * 0.42;
-      for (const [dx, dy, s] of [[-w * 0.3, 0, 1], [0, -h * 0.12, 1.24], [w * 0.3, 0, 1], [-w * 0.15, h * 0.16, 0.9], [w * 0.15, h * 0.16, 0.9]]) {
-        topCtx.moveTo(cx + dx + r * s, cy + dy);
-        topCtx.arc(cx + dx, cy + dy, r * s, 0, Math.PI * 2);
-      }
-    } else {
-      topCtx.roundRect(cx - w / 2, cy - h / 2, w, h, 26);
+    topCtx.roundRect(x - w / 2, top, w, h, h / 2);
+    topCtx.fillStyle = fin.plate;
+    topCtx.fill();
+    topCtx.strokeStyle = fin.edge;
+    topCtx.lineWidth = Math.max(3, h * 0.26);
+    topCtx.stroke();
+  }
+
+  function tBalloons(x, y, s, fin) {
+    topCtx.strokeStyle = fin.edge;
+    topCtx.lineWidth = s * 0.07;
+    for (const [dx, dy, r] of [[-s * 0.34, -s * 0.1, s * 0.34], [s * 0.3, -s * 0.34, s * 0.3]]) {
+      topCtx.beginPath();
+      topCtx.moveTo(x + dx, y + dy + r);
+      topCtx.quadraticCurveTo(x + dx - s * 0.12, y + s * 0.6, x + dx * 0.2, y + s * 0.9);
+      topCtx.stroke();
     }
+    for (const [dx, dy, r] of [[-s * 0.34, -s * 0.1, s * 0.34], [s * 0.3, -s * 0.34, s * 0.3]]) {
+      topCtx.fillStyle = fin.plate;
+      topCtx.strokeStyle = fin.edge;
+      topCtx.lineWidth = s * 0.08;
+      topCtx.beginPath();
+      topCtx.ellipse(x + dx, y + dy, r, r * 1.16, 0, 0, Math.PI * 2);
+      topCtx.fill();
+      topCtx.stroke();
+    }
+  }
+
+  function tHeart(x, y, s, fin) {
+    topCtx.beginPath();
+    topCtx.moveTo(x, y + s * 0.3);
+    topCtx.bezierCurveTo(x, y, x - s * 0.55, y, x - s * 0.55, y + s * 0.32);
+    topCtx.bezierCurveTo(x - s * 0.55, y + s * 0.64, x, y + s * 0.8, x, y + s * 1.05);
+    topCtx.bezierCurveTo(x, y + s * 0.8, x + s * 0.55, y + s * 0.64, x + s * 0.55, y + s * 0.32);
+    topCtx.bezierCurveTo(x + s * 0.55, y, x, y, x, y + s * 0.3);
+    topCtx.fillStyle = fin.plate;
+    topCtx.strokeStyle = fin.edge;
+    topCtx.lineWidth = s * 0.09;
+    topCtx.fill();
+    topCtx.stroke();
+  }
+
+  function tStar(x, y, s, fin) {
+    topCtx.beginPath();
+    for (let i = 0; i < 10; i++) {
+      const rad = i % 2 ? s * 0.24 : s * 0.55, a = Math.PI * i / 5 - Math.PI / 2;
+      topCtx.lineTo(x + Math.cos(a) * rad, y + Math.sin(a) * rad);
+    }
+    topCtx.closePath();
+    topCtx.fillStyle = fin.plate;
+    topCtx.strokeStyle = fin.edge;
+    topCtx.lineWidth = s * 0.09;
+    topCtx.fill();
+    topCtx.stroke();
+  }
+
+  function tFlower(x, y, s, fin) {
+    for (let k = 0; k < 5; k++) {
+      const a = k * Math.PI * 2 / 5;
+      topCtx.beginPath();
+      topCtx.ellipse(x + Math.cos(a) * s * 0.34, y + Math.sin(a) * s * 0.34, s * 0.3, s * 0.21, a, 0, Math.PI * 2);
+      topCtx.fillStyle = fin.plate;
+      topCtx.strokeStyle = fin.edge;
+      topCtx.lineWidth = s * 0.07;
+      topCtx.fill();
+      topCtx.stroke();
+    }
+    topCtx.beginPath();
+    topCtx.arc(x, y, s * 0.16, 0, Math.PI * 2);
+    topCtx.fillStyle = fin.edge;
+    topCtx.fill();
+  }
+
+  function tConfetti(x, y, s, fin) {
+    topCtx.strokeStyle = fin.edge;
+    topCtx.lineWidth = s * 0.1;
+    topCtx.beginPath();
+    topCtx.moveTo(x - s * 0.5, y + s * 0.5);
+    topCtx.lineTo(x - s * 0.1, y - s * 0.1);
+    topCtx.lineTo(x + s * 0.2, y + s * 0.45);
+    topCtx.closePath();
+    topCtx.fillStyle = fin.plate;
+    topCtx.fill();
+    topCtx.stroke();
+    for (const [dx, dy] of [[0.28, -0.5], [0.58, -0.2], [0.5, -0.62], [0.72, -0.5]]) {
+      topCtx.beginPath();
+      topCtx.arc(x + dx * s, y + dy * s, s * 0.1, 0, Math.PI * 2);
+      topCtx.fillStyle = fin.plate;
+      topCtx.strokeStyle = fin.edge;
+      topCtx.lineWidth = s * 0.07;
+      topCtx.fill();
+      topCtx.stroke();
+    }
+  }
+
+  const MOTIF_DRAW_T = { balloons: tBalloons, heart: tHeart, star: tStar, flower: tFlower, confetti: tConfetti };
+
+  /** The cake never changes colour — it is the plain white one the topper ships against. */
+  function drawWhiteCake(surfaceY) {
+    const cx = TW / 2, w = 640, h = 190;
+    const left = cx - w / 2, top = surfaceY;
+
+    topCtx.fillStyle = "rgba(120,104,110,.1)";
+    topCtx.beginPath(); topCtx.ellipse(cx, top + h + 54, w * 0.56, 26, 0, 0, Math.PI * 2); topCtx.fill();
+
+    topCtx.fillStyle = "#F1EDEA";
+    topCtx.beginPath(); topCtx.ellipse(cx, top + h + 44, w * 0.6, 30, 0, 0, Math.PI * 2); topCtx.fill();
+    topCtx.fillStyle = "#FBF9F8";
+    topCtx.beginPath(); topCtx.ellipse(cx, top + h + 36, w * 0.6, 30, 0, 0, Math.PI * 2); topCtx.fill();
+
+    // body
+    topCtx.beginPath();
+    topCtx.moveTo(left, top);
+    topCtx.lineTo(left, top + h);
+    topCtx.quadraticCurveTo(cx, top + h + 40, left + w, top + h);
+    topCtx.lineTo(left + w, top);
+    topCtx.closePath();
+    const side = topCtx.createLinearGradient(left, 0, left + w, 0);
+    side.addColorStop(0, "#EFEAE8");
+    side.addColorStop(0.28, "#FFFFFF");
+    side.addColorStop(0.74, "#FDFBFA");
+    side.addColorStop(1, "#E9E3E1");
+    topCtx.fillStyle = side;
+    topCtx.fill();
+    topCtx.strokeStyle = "rgba(120,102,110,.18)";
+    topCtx.lineWidth = 2.5;
+    topCtx.stroke();
+
+    topCtx.fillStyle = "rgba(118,100,108,.13)";
+    topCtx.beginPath();
+    topCtx.moveTo(left, top + h - 34);
+    topCtx.quadraticCurveTo(cx, top + h + 6, left + w, top + h - 34);
+    topCtx.lineTo(left + w, top + h);
+    topCtx.quadraticCurveTo(cx, top + h + 40, left, top + h);
+    topCtx.closePath();
+    topCtx.fill();
+
+    // top surface with a soft buttercream edge
+    topCtx.fillStyle = "#FFFFFF";
+    topCtx.beginPath(); topCtx.ellipse(cx, top, w / 2, 46, 0, 0, Math.PI * 2); topCtx.fill();
+    topCtx.strokeStyle = "rgba(128,112,118,.16)";
+    topCtx.lineWidth = 3;
+    topCtx.beginPath(); topCtx.ellipse(cx, top, w / 2, 46, 0, 0, Math.PI * 2); topCtx.stroke();
+    topCtx.fillStyle = "rgba(255,255,255,.9)";
+    topCtx.beginPath(); topCtx.ellipse(cx - 40, top - 8, w / 2 - 70, 30, 0, 0, Math.PI * 2); topCtx.fill();
+
+    // buttercream shells along the front rim only
+    for (let i = 0; i < 11; i++) {
+      const a = (i / 10) * Math.PI;
+      topCtx.fillStyle = "#FFFFFF";
+      topCtx.strokeStyle = "rgba(120,102,110,.13)";
+      topCtx.lineWidth = 2;
+      topCtx.beginPath();
+      topCtx.arc(cx - Math.cos(a) * (w / 2 - 26), top + Math.sin(a) * 40 + 4, 20, 0, Math.PI * 2);
+      topCtx.fill();
+      topCtx.stroke();
+    }
+    return top;
   }
 
   function drawTopper() {
     const t = topper, fin = FINISH_SPEC[t.finish], family = TOPPER_FONT[t.font];
-    const cx = TW / 2, cy = 430;
+    const cx = TW / 2, cakeTop = 752;
 
     topCtx.clearRect(0, 0, TW, TH);
     const bg = topCtx.createLinearGradient(0, 0, 0, TH);
-    bg.addColorStop(0, "#FFFFFF");
-    bg.addColorStop(1, mix(fin.plate, "#FFFFFF", 0.86));
+    bg.addColorStop(0, "#FCFAF9");
+    bg.addColorStop(0.6, mix(fin.plate, "#FFFFFF", 0.9));
+    bg.addColorStop(1, mix(fin.plate, "#FFFFFF", 0.74));
     topCtx.fillStyle = bg;
     topCtx.fillRect(0, 0, TW, TH);
 
-    const freeStanding = t.shape === "script";
-    const w = t.shape === "circle" ? 560 : t.shape === "banner" ? 720 : t.shape === "tag" ? 520 : 640;
-    const h = t.shape === "circle" ? 560 : t.shape === "banner" ? 260 : t.shape === "tag" ? 440 : 400;
-    const plateBottom = freeStanding ? cy + 92 : cy + h / 2;
+    const lines = [t.text, t.sub].filter(Boolean);
+    const weight = TOPPER_WEIGHT[t.font];
+    const maxW = 620;
 
-    // picks first, so the plate sits on top of them
-    topCtx.fillStyle = mix(fin.edge, "#FFFFFF", 0.3);
-    for (const off of [-w * 0.19, w * 0.19]) {
-      topCtx.beginPath();
-      topCtx.roundRect(cx + off - 7, plateBottom - 20, 14, 330, 6);
-      topCtx.fill();
-    }
+    // letter-spacing is what stops the glyphs touching; the size shrinks until both lines fit
+    const spacing = t.font === "script" ? 0.05 : 0.08;
+    let size = 128;
+    const measure = (l, s) => {
+      topCtx.letterSpacing = `${Math.round(s * spacing)}px`;
+      topCtx.font = `${weight} ${s}px ${family}`;
+      return topCtx.measureText(l).width;
+    };
+    while (size > 52 && lines.some((l) => measure(l, size) > maxW)) size -= 3;
+    topCtx.letterSpacing = `${Math.round(size * spacing)}px`;
+    topCtx.font = `${weight} ${size}px ${family}`;
 
-    topCtx.fillStyle = "rgba(90,74,80,.09)";
-    topCtx.beginPath(); topCtx.ellipse(cx, plateBottom + 322, w * 0.42, 22, 0, 0, Math.PI * 2); topCtx.fill();
+    const widest = Math.max(...lines.map((l) => topCtx.measureText(l).width));
+    const railW = widest + size * 0.5;
+    const railH = Math.max(15, size * 0.18);
+    const lineGap = size * 1.14;
 
-    if (!freeStanding) {
-      topCtx.save();
-      topCtx.shadowColor = "rgba(70,56,62,.22)";
-      topCtx.shadowBlur = 34;
-      topCtx.shadowOffsetY = 14;
-      topperPlate(t.shape, cx, cy, w, h);
+    // laid out from the bottom: rail, clear of the descenders, then the lines above it
+    const railBottom = 604;
+    const railTop = railBottom - railH;
+    const lastBaseline = railTop - size * 0.24;
+    const baselines = lines.map((_, i) => lastBaseline - (lines.length - 1 - i) * lineGap);
+    const blockTop = baselines[0] - size * 0.78;
+
+    topCtx.textAlign = "center";
+    topCtx.textBaseline = "alphabetic";
+
+    // pick first, then the cake, so the lettering lands on top of both
+    topCtx.fillStyle = mix(fin.edge, "#FFFFFF", 0.26);
+    topCtx.beginPath();
+    topCtx.roundRect(cx - 9, railBottom - 14, 18, cakeTop - railBottom + 104, 7);
+    topCtx.fill();
+
+    drawWhiteCake(cakeTop);
+
+    topCtx.save();
+    topCtx.shadowColor = "rgba(72,56,62,.2)";
+    topCtx.shadowBlur = 22;
+    topCtx.shadowOffsetY = 9;
+
+    // the two struts that hold the upper line to the lower one
+    if (lines.length > 1) {
       topCtx.fillStyle = fin.plate;
-      topCtx.fill();
-      topCtx.restore();
-
-      topperPlate(t.shape, cx, cy, w, h);
       topCtx.strokeStyle = fin.edge;
-      topCtx.lineWidth = 7;
-      topCtx.stroke();
-
-      // a raking highlight, so gold and acrylic read as material rather than flat fill
-      topCtx.save();
-      topperPlate(t.shape, cx, cy, w, h);
-      topCtx.clip();
-      const sheen = topCtx.createLinearGradient(cx - w / 2, cy - h / 2, cx + w / 2, cy + h / 2);
-      sheen.addColorStop(0, "rgba(255,255,255,.55)");
-      sheen.addColorStop(0.45, "rgba(255,255,255,0)");
-      sheen.addColorStop(0.72, "rgba(255,255,255,.3)");
-      sheen.addColorStop(1, "rgba(255,255,255,0)");
-      topCtx.fillStyle = sheen;
-      topCtx.fillRect(cx - w / 2, cy - h / 2, w, h);
-      topCtx.restore();
-
-      if (t.shape === "tag") {
-        topCtx.fillStyle = mix(fin.plate, "#000000", 0.3);
-        topCtx.beginPath(); topCtx.arc(cx, cy - h / 2 + 46, 19, 0, Math.PI * 2); topCtx.fill();
-        topCtx.fillStyle = fin.plate;
-        topCtx.beginPath(); topCtx.arc(cx, cy - h / 2 + 46, 13, 0, Math.PI * 2); topCtx.fill();
+      topCtx.lineWidth = Math.max(3, size * 0.05);
+      for (const off of [-railW * 0.3, railW * 0.3]) {
+        topCtx.beginPath();
+        topCtx.roundRect(cx + off - size * 0.055, baselines[0] + size * 0.1, size * 0.11, lineGap - size * 0.1, size * 0.05);
+        topCtx.fill();
+        topCtx.stroke();
       }
     }
 
-    topCtx.textAlign = "center";
-    topCtx.textBaseline = "middle";
-    const maxW = (freeStanding ? 880 : w) - (t.shape === "banner" ? 150 : 96);
-    const hasSub = Boolean(t.sub);
-    const startSize = freeStanding ? 190 : t.shape === "banner" ? 120 : 140;
-    const mainSize = fitText(t.text, family, TOPPER_WEIGHT[t.font], startSize, maxW, 44);
-    const mainY = hasSub ? cy - mainSize * 0.26 : cy + (t.shape === "tag" ? 22 : 0);
+    cutRail(cx, railTop, railW, railH, fin);
+    topCtx.restore();
 
-    if (freeStanding) {
-      topCtx.save();
-      topCtx.shadowColor = "rgba(70,56,62,.2)";
-      topCtx.shadowBlur = 24;
-      topCtx.shadowOffsetY = 10;
-      topCtx.lineJoin = "round";
-      topCtx.strokeStyle = fin.edge;
-      topCtx.lineWidth = 16;
-      topCtx.strokeText(t.text, cx, mainY);
-      topCtx.restore();
-      topCtx.fillStyle = fin.plate;
-      topCtx.fillText(t.text, cx, mainY);
-    } else {
-      topCtx.fillStyle = fin.ink;
-      topCtx.fillText(t.text, cx, mainY);
+    for (let i = 0; i < lines.length; i++) {
+      topCtx.font = `${weight} ${size}px ${family}`;
+      topCtx.letterSpacing = `${Math.round(size * spacing)}px`;
+      cutLine(lines[i], cx, baselines[i], size, fin);
     }
 
-    if (hasSub) {
-      const subSize = fitText(t.sub, TOPPER_FONT.round, TOPPER_WEIGHT.round, Math.round(mainSize * 0.34), maxW - 40, 26);
-      topCtx.font = `${TOPPER_WEIGHT.round} ${subSize}px ${TOPPER_FONT.round}`;
-      topCtx.fillStyle = freeStanding ? fin.edge : mix(fin.ink, fin.plate, 0.25);
-      topCtx.fillText(t.sub, cx, mainY + mainSize * 0.52 + subSize * 0.6);
+    // motif, clear of the lettering at the top corner
+    const draw = MOTIF_DRAW_T[t.motif];
+    if (draw) {
+      const s = size * 0.62;
+      draw(cx + railW / 2 + s * 0.34, blockTop + size * 0.24, s, fin);
+      if (t.motif === "heart" || t.motif === "star") {
+        draw(cx - railW / 2 - s * 0.34, blockTop + size * 0.42, s * 0.7, fin);
+      }
     }
 
+    topCtx.letterSpacing = "0px";
     topCtx.font = `26px "Gowun Dodum", sans-serif`;
-    topCtx.fillStyle = "rgba(70,56,62,.42)";
-    topCtx.fillText("nanal  ·  나날", cx, TH - 52);
+    topCtx.fillStyle = "rgba(72,56,62,.38)";
+    topCtx.fillText("nanal  ·  나날", cx, TH - 44);
 
     topCanvas.setAttribute("aria-label",
-      `Cake topper: ${SHAPE_LABEL[t.shape].toLowerCase()} in ${fin.label.toLowerCase()}, reading “${t.text}”${t.sub ? ` over “${t.sub}”` : ""}`);
+      `Cake topper: cut ${fin.label.toLowerCase()} lettering reading “${lines.join(" ")}”${t.motif !== "none" ? ` with ${TMOTIF_LABEL[t.motif].toLowerCase()}` : ""}, standing in a plain white cake`);
     renderTopperSpec();
   }
 
   function renderTopperSpec() {
     const fin = FINISH_SPEC[topper.finish];
-    $("topper-text").textContent = topper.text + (topper.sub ? `  /  ${topper.sub}` : "");
-    $("topper-shape").textContent = `${SHAPE_LABEL[topper.shape]} · ${FONT_LABEL[topper.font]}`;
+    $("topper-text").textContent = [topper.text, topper.sub].filter(Boolean).join("  /  ");
+    $("topper-shape").textContent = `Cut lettering · ${FONT_LABEL[topper.font]} · ${TMOTIF_LABEL[topper.motif]}`;
     $("topper-finish").textContent = fin.label;
     $("topper-note").textContent = topper.note || "—";
-    $("topper-size").textContent = topper.shape === "banner" ? "Approx. 18 × 7 cm" : "Approx. 15 × 11 cm";
+    $("topper-size").textContent = "Approx. 15 × 10 cm, on a single pick";
     const box = $("topper-colors"); box.replaceChildren();
-    for (const hex of [fin.plate, fin.edge, fin.ink]) {
+    for (const hex of [fin.plate, fin.edge]) {
       const sw = document.createElement("span"); sw.className = "sw";
       const i = document.createElement("i"); i.style.background = hex;
       sw.append(i, hex.toUpperCase()); box.append(sw);
@@ -1205,6 +1343,7 @@ ${f.notes.slice(0, 2000)}
 """
 
 Then design two things for the same person: the front of a 5x7 inch card, and a custom cake topper for the day.
+The topper is cut lettering on a single pick, standing in a plain white cake. Two short stacked lines read best, and the lettering is always English.
 Visual direction for both: ${STYLE_HINT[f.style] || STYLE_HINT.auto}.
 The topper and the card should look like they belong together.
 
@@ -1218,11 +1357,11 @@ Line 1: one JSON object on a single line with keys "card" and "topper":
     "mood": 3 to 6 words describing the design
   },
   "topper": {
-    "text": the main words cut into the topper, at most 16 characters — a name, an age, or a short phrase,
-    "sub": a smaller second line, at most 22 characters, or "",
-    "shape": one of "arch", "circle", "banner", "cloud", "script", "tag" — "script" means free-standing lettering with no backing plate,
-    "finish": one of "gold", "silver", "acrylic", "wood", "rose",
-    "font": one of "serif", "script", "round",
+    "text": the first line cut into the topper, ALWAYS IN ENGLISH even when the letter is Korean, at most 14 characters,
+    "sub": the second line, also in English, at most 14 characters, or "" for a single line,
+    "motif": one of "balloons", "heart", "confetti", "flower", "star", "none",
+    "finish": one of "wood", "gold", "silver", "acrylic", "rose",
+    "font": one of "round", "serif", "script",
     "note": one sentence on why this topper suits them
   }
 Line 2: ---
@@ -1431,7 +1570,7 @@ After that: the letter as plain text. Greeting line, paragraphs separated by one
       line("For", f.to), line("From", f.from), line("Occasion", f.occasionLabel), "",
       "— Topper —",
       line("Lettering", topper.text + (topper.sub ? ` / ${topper.sub}` : "")),
-      line("Shape", `${SHAPE_LABEL[topper.shape]} · ${FONT_LABEL[topper.font]}`),
+      line("Style", `Cut lettering · ${FONT_LABEL[topper.font]} · ${TMOTIF_LABEL[topper.motif]}`),
       line("Finish", fin.label), "",
       "— Card —",
       line("Front", design.headline + (design.subline ? ` / ${design.subline}` : "")),
@@ -1459,17 +1598,15 @@ After that: the letter as plain text. Greeting line, paragraphs separated by one
 
   /** A description a maker — or ChatGPT — can turn into a photo of this topper. */
   function topperImagePrompt() {
-    const f = readForm(), t = topper, fin = FINISH_SPEC[t.finish];
-    const form = t.shape === "script"
-      ? "free-standing cut lettering with no backing plate"
-      : `${SHAPE_LABEL[t.shape].toLowerCase()} backing plate`;
+    const t = topper, fin = FINISH_SPEC[t.finish];
+    const lines = [t.text, t.sub].filter(Boolean);
     return [
-      `A product photograph of a custom cake topper: ${form}, ${fin.label.toLowerCase()},`,
-      `${FONT_LABEL[t.font].toLowerCase()} lettering reading "${t.text}"${t.sub ? `, with a smaller second line reading "${t.sub}"` : ""},`,
-      "mounted on two thin picks and standing upright on a plain cream surface.",
-      `Made for a ${f.occasionLabel.toLowerCase()}.`,
-      "Soft studio lighting, shallow depth of field, shot slightly above eye level.",
-      "Clean minimal styling, no cake, no props, no watermark, and no words beyond the lettering described.",
+      `A product photograph of a Korean-style cut-out cake topper made of ${fin.label.toLowerCase()}:`,
+      `the ${FONT_LABEL[t.font].toLowerCase()} lettering "${lines.join(" / ")}" laser-cut as one connected silhouette${lines.length > 1 ? ", set as two stacked lines" : ""},`,
+      t.motif === "none" ? "with no extra ornament," : `with small cut-out ${TMOTIF_LABEL[t.motif].toLowerCase()} attached at the edge of the lettering,`,
+      "mounted on one thin pick and standing upright in a plain white frosted cake.",
+      "Soft studio lighting, pale neutral background, shallow depth of field, shot slightly above eye level.",
+      "Clean minimal styling, no props, no watermark, and no words beyond the lettering described.",
     ].join(" ");
   }
 
