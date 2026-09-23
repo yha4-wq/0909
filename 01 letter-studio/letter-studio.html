@@ -20,27 +20,27 @@ img{max-width:100%}
   color-scheme: light;
 
   /* warm white, biased a touch toward the rose accent rather than neutral grey */
-  --ground:#FAF8F7;
+  --ground:#F5F6F7;
   --surface:#FFFFFF;
   --raised:#FFFFFF;
-  --paper:#FFFDFC;
-  --paper-line:#F0E9EC;
-  --ink:#1C1A1D;
-  --ink-soft:#453F48;
-  --muted:#7A7280;
-  --faint:#A8A1AC;
-  --line:#EDE7EA;
-  --line-strong:#E0D8DD;
-  --accent:#C8446A;
+  --paper:#FFFFFF;
+  --paper-line:#E8EAE6;
+  --ink:#393939;
+  --ink-soft:#55585B;
+  --muted:#7C838A;
+  --faint:#A4B6C2;
+  --line:#E6E7E3;
+  --line-strong:#D0D0C4;
+  --accent:#F37A1F;
   --accent-ink:#FFFFFF;
-  --accent-soft:#FDF3F6;
-  --accent-edge:#F3D9E2;
-  --gold:#B8863B;
-  --focus:#8A5BD6;
+  --accent-soft:#FEF2E8;
+  --accent-edge:#F6C79E;
+  --gold:#D0D0C4;
+  --focus:#5B7C93;
 
-  --shadow-sm:0 1px 2px rgba(28,26,29,.04), 0 2px 8px rgba(28,26,29,.04);
-  --shadow-md:0 2px 4px rgba(28,26,29,.03), 0 12px 28px -12px rgba(28,26,29,.14);
-  --shadow-lg:0 4px 8px rgba(28,26,29,.03), 0 28px 56px -24px rgba(28,26,29,.22);
+  --shadow-sm:0 1px 2px rgba(57,57,57,.04), 0 2px 8px rgba(57,57,57,.04);
+  --shadow-md:0 2px 4px rgba(57,57,57,.03), 0 12px 28px -12px rgba(57,57,57,.14);
+  --shadow-lg:0 4px 8px rgba(57,57,57,.03), 0 28px 56px -24px rgba(57,57,57,.22);
 
   --display:"Gowun Batang","Iowan Old Style",Georgia,serif;
   --body:"Gowun Dodum","Pretendard","Avenir Next","Segoe UI",system-ui,sans-serif;
@@ -111,7 +111,7 @@ nav a[aria-current]{color:var(--ink)}
 }
 .intro h1{font-size:clamp(2.1rem,4.6vw,3.4rem);letter-spacing:-.025em}
 .intro h1 em{
-  font-style:normal;font-family:var(--hand);font-weight:400;color:var(--accent);
+  font-style:normal;font-family:var(--hand);font-weight:400;color:var(--ink-soft);
   font-size:1.28em;line-height:.9;
 }
 .intro p{color:var(--muted);max-width:42ch;font-size:1.02rem}
@@ -244,9 +244,9 @@ input:focus,select:focus,textarea:focus{
 .btn:disabled{opacity:.42;cursor:default;transform:none}
 .btn.primary{
   background:var(--accent);color:var(--accent-ink);border-color:var(--accent);font-weight:600;
-  box-shadow:0 1px 2px rgba(200,68,106,.2), 0 8px 20px -8px rgba(200,68,106,.5);
+  box-shadow:0 1px 2px rgba(243,122,31,.2), 0 8px 20px -8px rgba(243,122,31,.5);
 }
-.btn.primary:hover{background:#B93B60;border-color:#B93B60;box-shadow:0 2px 4px rgba(200,68,106,.22), 0 12px 26px -8px rgba(200,68,106,.55)}
+.btn.primary:hover{background:#D9680F;border-color:#D9680F;box-shadow:0 2px 4px rgba(243,122,31,.22), 0 12px 26px -8px rgba(243,122,31,.55)}
 .btn.primary:disabled{box-shadow:none}
 .btn.small{padding:7px 15px;font-size:.87rem}
 
@@ -332,7 +332,7 @@ canvas#topper.pop{transform:scale(1.015)}
 @media (max-width:780px){.services{grid-template-columns:1fr;gap:30px;padding-block:46px}}
 .services h3{font-size:1.22rem;margin-bottom:8px}
 .services p{color:var(--muted);font-size:.95rem}
-.services .kicker{font-family:var(--hand);color:var(--accent);font-size:1.5rem;line-height:1;margin-bottom:4px}
+.services .kicker{font-family:var(--hand);color:var(--faint);font-size:1.5rem;line-height:1;margin-bottom:4px}
 
 .about{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.45fr);gap:32px 72px;padding-block:76px}
 @media (max-width:780px){.about{grid-template-columns:1fr;padding-block:52px;gap:24px}}
@@ -631,7 +631,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap}
   const TW = topCanvas.width, TH = topCanvas.height;
 
   const TMOTIFS = ["balloons", "heart", "confetti", "flower", "star", "none"];
-  const FINISHES = ["wood", "gold", "silver", "acrylic", "rose"];
+  const FINISHES = ["wood", "gold", "silver", "acrylic", "orange"];
   const FONTS = ["round", "serif", "script"];
   const TMOTIF_LABEL = { balloons: "Balloons", heart: "Hearts", confetti: "Party popper", flower: "Blossoms", star: "Stars", none: "Lettering only" };
   const FONT_LABEL = { serif: "Serif", script: "Handwritten script", round: "Rounded sans" };
@@ -640,7 +640,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap}
     gold:    { plate: "#D8B05A", edge: "#A9822B", ink: "#4A3712", label: "Brushed gold acrylic" },
     silver:  { plate: "#CDD2D8", edge: "#98A0A9", ink: "#2E343A", label: "Mirror silver acrylic" },
     acrylic: { plate: "#FFFFFF", edge: "#D5CEDA", ink: "#2B2430", label: "Clear acrylic" },
-    rose:    { plate: "#ECAFC2", edge: "#C8446A", ink: "#4A1B2B", label: "Rose acrylic" },
+    orange:  { plate: "#F79B55", edge: "#D9680F", ink: "#40230B", label: "Amber acrylic" },
   };
 
   const OCCASIONS = [
@@ -693,29 +693,29 @@ footer .wrap{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap}
   };
 
   const PRESETS = {
-    birthday:    { motif: "balloons", palette: { background: "#FFE9EE", ink: "#3A1F2B", accent: "#E0457B", accent2: "#F2B84B" }, headline: "Happy Birthday" },
-    milestone:   { motif: "blossoms", palette: { background: "#E9F0EA", ink: "#1F3A30", accent: "#C9506B", accent2: "#D9A441" }, headline: "Happy Birthday" },
-    dol:         { motif: "stars",    palette: { background: "#E6F0FB", ink: "#1E3050", accent: "#F07C9A", accent2: "#E9B949" }, headline: "Happy First Birthday" },
-    wedding:     { motif: "ribbon",   palette: { background: "#F3F0FA", ink: "#2E2748", accent: "#9C7BD1", accent2: "#CFB06A" }, headline: "Happily Ever After" },
-    graduation:  { motif: "confetti", palette: { background: "#1F2A44", ink: "#F7F2E6", accent: "#F2B84B", accent2: "#7FB3E8" }, headline: "You Did It" },
-    admission:   { motif: "stars",    palette: { background: "#EAF2FF", ink: "#1E2F52", accent: "#4B79D6", accent2: "#F2B84B" }, headline: "A Bright Start" },
-    promotion:   { motif: "confetti", palette: { background: "#F0EEE6", ink: "#2C2A22", accent: "#B07634", accent2: "#3C6E5B" }, headline: "Well Deserved" },
-    opening:     { motif: "ribbon",   palette: { background: "#FFF1E3", ink: "#402A18", accent: "#D9534F", accent2: "#E0A526" }, headline: "Congratulations" },
-    housewarming:{ motif: "blossoms", palette: { background: "#F1F4EC", ink: "#2A3324", accent: "#7A9A5B", accent2: "#D28A4C" }, headline: "Welcome Home" },
-    anniversary: { motif: "hearts",   palette: { background: "#FBE9E7", ink: "#4A1E24", accent: "#C8323F", accent2: "#E9A3A0" }, headline: "Happy Anniversary" },
-    retirement:  { motif: "blossoms", palette: { background: "#EAF1F5", ink: "#1E3342", accent: "#E07A5F", accent2: "#6FA3B8" }, headline: "Happy Retirement" },
-    discharge:   { motif: "stars",    palette: { background: "#ECF1EC", ink: "#22301F", accent: "#4F7A4A", accent2: "#D9A441" }, headline: "Welcome Back" },
-    recovery:    { motif: "blossoms", palette: { background: "#F2F7F4", ink: "#23392F", accent: "#5E9C86", accent2: "#E7B7C2" }, headline: "Get Well Soon" },
-    pet:         { motif: "confetti", palette: { background: "#FFF3E0", ink: "#3A2A1A", accent: "#E5804B", accent2: "#77B6A8" }, headline: "Happy Day" },
-    thanks:      { motif: "ribbon",   palette: { background: "#FDF1DD", ink: "#3B2A12", accent: "#D6336C", accent2: "#3B8E7A" }, headline: "Thank You" },
-    other:       { motif: "confetti", palette: { background: "#F2EEF8", ink: "#2A2233", accent: "#D6336C", accent2: "#F2B84B" }, headline: "For You" },
+    birthday:    { motif: "balloons", palette: { background: "#FFFFFF", ink: "#393939", accent: "#F37A1F", accent2: "#A4B6C2" }, headline: "Happy Birthday" },
+    milestone:   { motif: "blossoms", palette: { background: "#F2F4F5", ink: "#393939", accent: "#F37A1F", accent2: "#D0D0C4" }, headline: "Happy Birthday" },
+    dol:         { motif: "stars",    palette: { background: "#EDF1F4", ink: "#31404A", accent: "#F37A1F", accent2: "#A4B6C2" }, headline: "Happy First Birthday" },
+    wedding:     { motif: "ribbon",   palette: { background: "#FFFFFF", ink: "#393939", accent: "#A4B6C2", accent2: "#F37A1F" }, headline: "Happily Ever After" },
+    graduation:  { motif: "confetti", palette: { background: "#393939", ink: "#F5F6F7", accent: "#F37A1F", accent2: "#A4B6C2" }, headline: "You Did It" },
+    admission:   { motif: "stars",    palette: { background: "#EDF1F4", ink: "#31404A", accent: "#5B7C93", accent2: "#F37A1F" }, headline: "A Bright Start" },
+    promotion:   { motif: "confetti", palette: { background: "#F2F2EC", ink: "#393939", accent: "#F37A1F", accent2: "#8C8C7E" }, headline: "Well Deserved" },
+    opening:     { motif: "ribbon",   palette: { background: "#FFFFFF", ink: "#393939", accent: "#F37A1F", accent2: "#D0D0C4" }, headline: "Congratulations" },
+    housewarming:{ motif: "blossoms", palette: { background: "#F2F2EC", ink: "#3A3A30", accent: "#8C8C7E", accent2: "#F37A1F" }, headline: "Welcome Home" },
+    anniversary: { motif: "hearts",   palette: { background: "#FFFFFF", ink: "#393939", accent: "#F37A1F", accent2: "#A4B6C2" }, headline: "Happy Anniversary" },
+    retirement:  { motif: "blossoms", palette: { background: "#EDF1F4", ink: "#31404A", accent: "#F37A1F", accent2: "#A4B6C2" }, headline: "Happy Retirement" },
+    discharge:   { motif: "stars",    palette: { background: "#F2F2EC", ink: "#393939", accent: "#8C8C7E", accent2: "#F37A1F" }, headline: "Welcome Back" },
+    recovery:    { motif: "blossoms", palette: { background: "#F2F4F5", ink: "#393939", accent: "#A4B6C2", accent2: "#F37A1F" }, headline: "Get Well Soon" },
+    pet:         { motif: "confetti", palette: { background: "#FFFFFF", ink: "#393939", accent: "#F37A1F", accent2: "#A4B6C2" }, headline: "Happy Day" },
+    thanks:      { motif: "ribbon",   palette: { background: "#F2F2EC", ink: "#393939", accent: "#F37A1F", accent2: "#D0D0C4" }, headline: "Thank You" },
+    other:       { motif: "confetti", palette: { background: "#FFFFFF", ink: "#393939", accent: "#F37A1F", accent2: "#A4B6C2" }, headline: "For You" },
   };
 
   const EXAMPLE = {
     design: {
       headline: "Happy 80th, Grandma", subline: "Save me a spot at the table",
-      motif: "blossoms", mood: "soft sage, spring blossoms, gold",
-      palette: { background: "#E9F0EA", ink: "#1F3A30", accent: "#C9506B", accent2: "#D9A441" },
+      motif: "blossoms", mood: "pale sage, quiet blossoms, amber",
+      palette: { background: "#F2F4F5", ink: "#393939", accent: "#F37A1F", accent2: "#D0D0C4" },
     },
     topper: {
       text: "Happy 80th", sub: "Grandma", motif: "balloons", finish: "wood", font: "round",
@@ -1360,7 +1360,7 @@ Line 1: one JSON object on a single line with keys "card" and "topper":
     "text": the first line cut into the topper, ALWAYS IN ENGLISH even when the letter is Korean, at most 14 characters,
     "sub": the second line, also in English, at most 14 characters, or "" for a single line,
     "motif": one of "balloons", "heart", "confetti", "flower", "star", "none",
-    "finish": one of "wood", "gold", "silver", "acrylic", "rose",
+    "finish": one of "wood", "gold", "silver", "acrylic", "orange",
     "font": one of "round", "serif", "script",
     "note": one sentence on why this topper suits them
   }
